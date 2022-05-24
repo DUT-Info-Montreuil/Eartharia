@@ -91,7 +91,7 @@ public class Controleur implements Initializable {
 				perso.gauche();
 				break;
 			case RIGHT :
-				perso.addInventaire(new Item(0));
+				//perso.addInventaire(new Item(0));
 				perso.droite();
 				break;
 			case I  :
@@ -99,7 +99,7 @@ public class Controleur implements Initializable {
 				break;
 			case SPACE  :
 				//TOUCHE POUR TEST
-				perso.addInventaire(new Item(cmpt));
+				//perso.addInventaire(new Weapon(cmpt));
 				cmpt++;
 				break;
 			default:
