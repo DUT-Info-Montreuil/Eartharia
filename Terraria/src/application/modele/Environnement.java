@@ -17,12 +17,15 @@ import application.modele.fonctionnalitees.LimiteMapException;
 public class Environnement {
 
 	private int colonne,ligne;
-	private Bloc [][] map ;
+	private ArrayList<Bloc> map ;
 	private Perso perso;
 	private int gravite;
+	private ArrayList<Acteur> listActeur;
+	
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
+		listActeur= new ArrayList<>();
 		perso = new Perso(this, 0, 0);
 	}
 
@@ -36,15 +39,14 @@ public class Environnement {
 			JSONObject layers = (JSONObject) ((ArrayList) Jsonbject.get("layers")).get(0);
 			this.colonne  = ((Long) layers.get("width")).intValue();
 			this.ligne = ((Long) layers.get("height")).intValue();
-			this.map = new Bloc[ligne][colonne];
+			this.map = new ArrayList<Bloc>();
 			JSONArray data = (JSONArray) layers.get("data");
-			for (int i = 0; i < ligne; i++) {
-				for (int j = 0; j < colonne; j++) {
-					int idBloc = ((Long)data.get(i*colonne+j)).intValue();
-					map[i][j]=new Bloc(idBloc,Constante.estUnBlocSolide(idBloc));
-				}
+			int idBloc;
+			for (int i = 0; i < ligne*colonne; i++) {
+				idBloc = ((Long)data.get(i)).intValue();
+				map.add(new Bloc(idBloc,Constante.estUnBlocSolide(idBloc)));
 			}
-			vueNombre();
+			//vueNombre();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -55,15 +57,18 @@ public class Environnement {
 	}
 
 	public boolean boxCollisionBloc(int ligne, int colonne){
-		return this.map[ligne][colonne].estSolide();
+		return this.map.get(ligne*this.colonne+colonne).estSolide();
 	}
 	public void vueNombre() {
 		for (int i = 0; i < ligne; i++) {
 			for (int j = 0; j <colonne; j++) {
-				System.out.print(map[i][j].getId()+"\t");
+				System.out.print(this.map.get(i*ligne+j).getId()+"\t");
 			}
 			System.out.println();
 		}
+	}
+	public void unTour() {
+
 	}
 	public void gravite() {
 		//plus tard faire un for each pour la liste acteur
@@ -78,11 +83,12 @@ public class Environnement {
 			e.printStackTrace();
 		};
 	}
+
 	public int getCase(int ligne, int colonne) {
-		return this.map[ligne][colonne].getId();
+		return this.map.get(ligne*this.colonne+colonne).getId();
 	}
 	public Bloc getBloc(int ligne, int colonne) {
-		return this.map[ligne][colonne];
+		return this.map.get(ligne*this.colonne+colonne);
 	}
 	public int getColonne() {
 		return colonne;
@@ -93,5 +99,4 @@ public class Environnement {
 	public Perso getPerso () {
 		return this.perso;
 	}
-
 }

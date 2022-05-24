@@ -44,6 +44,7 @@ public class vueMapTerraria {
 		x = x*16;
 		y = y*16;
 		img.setViewport(new Rectangle2D(x,y, 16,16));
+		img.setId(null);
 		this.TileP.getChildren().add(img);
 	}
 }
