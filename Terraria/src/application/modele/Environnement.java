@@ -13,19 +13,21 @@ import org.json.simple.parser.ParseException;
 import application.modele.fonctionnalitees.CollisionException;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.fonctionnalitees.LimiteMapException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Environnement {
 
 	private int colonne,ligne;
-	private ArrayList<Bloc> map ;
+	private ObservableList <Bloc> map ;
 	private Perso perso;
 	private int gravite;
-	private ArrayList<Acteur> listActeur;
+	private ObservableList<Acteur> listActeur;
 	
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		listActeur= new ArrayList<>();
+		listActeur= FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
 	}
 
@@ -39,12 +41,12 @@ public class Environnement {
 			JSONObject layers = (JSONObject) ((ArrayList) Jsonbject.get("layers")).get(0);
 			this.colonne  = ((Long) layers.get("width")).intValue();
 			this.ligne = ((Long) layers.get("height")).intValue();
-			this.map = new ArrayList<Bloc>();
+			this.map = FXCollections.<Bloc>observableArrayList();
 			JSONArray data = (JSONArray) layers.get("data");
 			int idBloc;
 			for (int i = 0; i < ligne*colonne; i++) {
-				idBloc = ((Long)data.get(i)).intValue();
-				map.add(new Bloc(idBloc,Constante.estUnBlocSolide(idBloc)));
+				idBloc = (((Long)data.get(i)).intValue());
+				map.add(new Bloc(i,idBloc,Constante.estUnBlocSolide(idBloc)));
 			}
 			//vueNombre();
 		} catch (FileNotFoundException e) {
@@ -84,8 +86,8 @@ public class Environnement {
 		};
 	}
 
-	public int getCase(int ligne, int colonne) {
-		return this.map.get(ligne*this.colonne+colonne).getId();
+	public int getIdTuile(int ligne, int colonne) {
+		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}
 	public Bloc getBloc(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne);
@@ -98,5 +100,9 @@ public class Environnement {
 	}
 	public Perso getPerso () {
 		return this.perso;
+	}
+	public void setBlock(int yClic, int xClic,int idTuile) {
+		getBloc(yClic,xClic).setIdTuile(idTuile);
+		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
 	}
 }

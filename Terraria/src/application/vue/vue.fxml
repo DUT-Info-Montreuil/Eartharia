@@ -10,7 +10,7 @@
    <center>
       <Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#move" prefHeight="320.0" prefWidth="320.0" BorderPane.alignment="CENTER">
          <children>
-            <TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="320.0" style="-fx-background-color: grey;" />
+            <TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#removeBloc" prefHeight="320.0" prefWidth="320.0" style="-fx-background-color: grey;" />
             <TilePane fx:id="tPaneInv" opacity="0.75" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </Pane>

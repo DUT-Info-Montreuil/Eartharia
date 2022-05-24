@@ -6,6 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
@@ -101,5 +102,40 @@ public class Controleur implements Initializable {
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
+	}
+	@FXML
+	public void removeBloc(MouseEvent m) {
+		int xClic = (int) m.getX()/16 ;
+		int yClic = (int) m.getY()/16 ;
+		int idTuile = env.getIdTuile(yClic, xClic);
+		System.out.println(idTuile);
+		//env.setCase(yClic, xClic); impossible d'échanger l'id de la case 
+		try {
+			switch(m.getButton()) {
+
+			case PRIMARY :
+				env.setBlock(yClic,xClic,0);
+				vueMap.refresh(env.getBloc(yClic, xClic).getId(),0);
+				//m.getTarget().equals(env.getLigne());
+				//System.out.println(m.getTarget().equals(vueperso.getImgV().getOnKeyPressed()));
+				//System.out.println(vueperso.getImgV().getOnKeyPressed());
+				System.out.println("gauche");
+				break;
+
+			case SECONDARY : 
+				env.setBlock(yClic,xClic,1);
+				vueMap.refresh(env.getBloc(yClic, xClic).getId(),1);
+
+				System.out.println("Droit");
+				break;
+
+			default : System.out.println("probleme");
+			break;
+
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

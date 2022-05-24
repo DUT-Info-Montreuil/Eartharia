@@ -31,20 +31,36 @@ public class vueMapTerraria {
 		for (int i = 0; i < terrain.getLigne(); i++) {
 			for (int j = 0; j < terrain.getColonne(); j++) {
 				imgV = new ImageView(this.imgTileP);
-				afficherMap(imgV,this.terrain.getCase(i, j));
+				afficherMap(imgV,this.terrain.getIdTuile(i, j),this.terrain.getBloc(i, j).getId());
 			}
 		}
 	}
-	public void afficherMap(ImageView img, int id) {
+	public void afficherMap(ImageView img, int idTuile,int id) {
 		int x;
 		int y;
-		id=id-1;
-		y = (int) (id/(imgTileP.getHeight()/16));
-		x = (int) (id%(imgTileP.getWidth()/16));
+		idTuile=idTuile-1;
+		y = (int) (idTuile/(imgTileP.getHeight()/16));
+		x = (int) (idTuile%(imgTileP.getWidth()/16));
 		x = x*16;
 		y = y*16;
 		img.setViewport(new Rectangle2D(x,y, 16,16));
-		img.setId(null);
+		img.setId(String.valueOf(id));
 		this.TileP.getChildren().add(img);
+	}
+	public void refreshTuile(ImageView img, int idTuile,int id) {
+		int x;
+		int y;
+		idTuile=idTuile-1;
+		y = (int) (idTuile/(imgTileP.getHeight()/16));
+		x = (int) (idTuile%(imgTileP.getWidth()/16));
+		x = x*16;
+		y = y*16;
+		img.setViewport(new Rectangle2D(x,y, 16,16));
+		img.setId(String.valueOf(id));
+	}
+	public void refresh(int idBlock,int idTuile) {
+		ImageView v =(ImageView) TileP.lookup("#"+idBlock);
+		System.out.println(TileP.lookup("#"+idBlock));
+		refreshTuile(v,idTuile,idBlock);
 	}
 }
