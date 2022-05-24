@@ -14,6 +14,7 @@ public class Constante {
 		listBloc.add(204);
 		listBloc.add(205);
 		listBloc.add(206);
+		listBloc.add(233);//terre
 		listBloc.add(1);
 		return listBloc;
 	}

@@ -1,6 +1,6 @@
 package application.vue;
 
-import application.modele.Perso;
+import application.modele.personnage.Perso;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
