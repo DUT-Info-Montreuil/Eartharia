@@ -1,4 +1,6 @@
-package application.modele;
+package application.modele.acteur;
+
+import application.modele.Environnement;
 
 public class Marchand extends Pnj {
 

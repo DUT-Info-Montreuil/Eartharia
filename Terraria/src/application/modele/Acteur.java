@@ -3,30 +3,44 @@ package application.modele;
 import application.modele.fonctionnalitees.Box;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public abstract class Acteur {
 
+	private int attaque;
 	private IntegerProperty x;
 	private IntegerProperty y;
-	private int saut;
-	private int hp;
+	private IntegerProperty hp;
 	private Environnement env;
 	private int vitesse;
 	private Box boxPlayer;
-
-	public Acteur(Environnement env, int x, int y, int hp,int vitesse,int saut, int xBox, int yBox) {
+	public static int compteur = 0;
+	private String idActeur;
+	
+	
+	public Acteur(Environnement env, int x, int y, int hp, int atq) {
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
+		this.hp = new SimpleIntegerProperty(hp);
 		this.env = env;
-		this.saut = saut;
-		this.boxPlayer = new Box(xBox, yBox,this);
-		this.vitesse = vitesse;
+		this.boxPlayer = new Box(16, 16,this);
+		this.vitesse =16;
+		this.attaque = atq;
+		this.idActeur = "A" + this.compteur;
+		compteur ++;
 	}
-	public int getSaut() {
-		return saut;
+	public String getIdActeur() {
+		return idActeur;
 	}
-	public void setSaut(int saut) {
-		this.saut = saut;
+	public void setIdActeur(String idActeur) {
+		this.idActeur = idActeur;
+	}
+	public int getAttaque() {
+		return attaque;
+	}
+	public void setAttaque(int atq) {
+		 attaque = atq;
 	}
 	public int getVitesse() {
 		return vitesse;
@@ -34,11 +48,14 @@ public abstract class Acteur {
 	public Box getBoxPlayer() {
 		return boxPlayer;
 	}
+	public IntegerProperty getHpProperty() {
+		return this.hp;
+	}
 	public int getHp() {
-		return hp;
+		return this.hp.getValue();
 	}
 	public void setHp(int hp) {
-		this.hp = hp;
+		this.hp.setValue(hp);
 	}
 	public Environnement getEnv() {
 		return env;
@@ -67,4 +84,11 @@ public abstract class Acteur {
 	public int caseY() {
 		return this.y.get()/16;
 	}
+	public boolean estMort () {
+		return this.hp.get() <= 0;
+	}	
+	public void dommage(int damage) {
+		this.hp.set(this.getHp() - damage);
+	}
+	public abstract void agir();
 }
