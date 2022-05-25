@@ -27,7 +27,7 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 	}
 	private void ajout(List<? extends Item> addedSubList) {
 		for (Item item : addedSubList) {
-			vueInventaire.afficherItem(1);
+			vueInventaire.afficherItem(item.getId());
 		}
 		System.out.println("Ajout");
 	}

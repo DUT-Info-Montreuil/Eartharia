@@ -23,16 +23,14 @@ public class VueInventaire {
 
 	private ObservableList<Item> inventaire;
 	private Image img_inventaire;
-	private ImageView imgVI;
 	private TilePane tPane;
 	private boolean visibility;
 
-	public VueInventaire(TilePane tPane,  ObservableList<Item> inventaire) {
+	public VueInventaire(TilePane tPane,  ObservableList<Item> inventaire){
 		this.tPane=tPane;
-		this.imgVI=new ImageView(img_inventaire);
-		this.inventaire=inventaire;
 		this.visibility = false;
-		background();
+		this.inventaire=inventaire;		
+		paneSet();
 		try {
 			initItem();
 		} catch (FileNotFoundException e) {
@@ -41,13 +39,19 @@ public class VueInventaire {
 		}
 	}
 
+	private void paneSet() {
+		this.tPane.setPrefSize(128, 128);
+		this.tPane.setVisible(false);
+		background();
+	}
+	
 	public void ouvFerInv() {
 		this.tPane.setVisible(visibility);
 		visibility=!visibility;
 	}
 
 	private void background() {
-		Image img = new Image("ressources/Inventaire.jpeg");
+		Image img = new Image("ressources/Inventaire.png");
 		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		Background bGround = new Background(bImg);
 		tPane.setBackground(bGround);
@@ -55,7 +59,7 @@ public class VueInventaire {
 	public void initItem() throws FileNotFoundException {
 		FileInputStream fichierTileSet = null;
 		try {
-			fichierTileSet = new FileInputStream("src/ressources/imageItem.jpg");
+			fichierTileSet = new FileInputStream("src/ressources/equipment.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,16 +68,16 @@ public class VueInventaire {
 	public void afficherItem(int id) {
 		int x;
 		int y;
-		int colonne;
-		int ligne;
-
-		y = id/(int) img_inventaire.getHeight()/16;;
-		x = id%(int) img_inventaire.getWidth()/16;;
-		colonne = x*16;
-		ligne = y*16;
-		ImageView imgv= new ImageView(this.img_inventaire);
-		imgv.setViewport(new Rectangle2D(colonne,ligne, 16,16));
-		this.tPane.getChildren().add(imgv);
+		y = (int) (id/(img_inventaire.getHeight()/32));
+		x = (int) (id%(img_inventaire.getWidth()/32));
+		x = x*32;
+		y = y*32;
+		ImageView img = new ImageView(img_inventaire);
+		img.setViewport(new Rectangle2D(x,y, 32,32));
+		img.setId(String.valueOf(id));
+		this.tPane.getChildren().add(img);
 	}
-
+	public Item getItem(ImageView img) {
+		return inventaire.get(tPane.getChildren().indexOf(img));
+	}
 }

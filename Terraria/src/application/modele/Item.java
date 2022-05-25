@@ -1,6 +1,4 @@
-package application.modele;
-
-import java.util.Objects;
+ package application.modele;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -8,75 +6,29 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class Item {
     
 	private int id;
-    private IntegerProperty x;
-    private IntegerProperty y;
     private IntegerProperty quantite;
-    private Environnement env;
-    private String descri;
     
-    public Item (int x, int y, Environnement env, String descri) {
-        this.x =new SimpleIntegerProperty(x) ;
-        this.y =new SimpleIntegerProperty(y) ;
-        this.env=env;
-        this.descri=descri;
-        this.id = 1 ;
-        //this.quantite.setValue(1);
+    public Item (int id) {
+    	this.id = id ;
+        this.quantite = new SimpleIntegerProperty(1);
     }
-    
-    public int getX() {
-        return this.x.getValue();
+    public Item (int id,int quantite) {
+    	this.id = id ;
+        this.quantite = new SimpleIntegerProperty(quantite);
     }
-    
-    public IntegerProperty getxProperty() {
-        return this.x;
-    }
-    
-    public int getY() {
-        return this.y.getValue();
-    }
-    
-    public IntegerProperty getyProperty() {
-        return this.y;
-    }
-    
-    public String getDescri() {
-        return this.descri;
-    }
-    
-    public IntegerProperty getQuantite() {
+    public IntegerProperty getQuantiteProperty() {
     	return this.quantite;
     }
-    
-    public void addQuantite() {
-    	this.quantite.setValue(quantite.getValue()+1);
+    public int getQuantite() {
+    	return this.quantite.get();
     }
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(descri);
+    public boolean equals(Item item) {
+		return item.getId()==id;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		return Objects.equals(descri, other.descri);
-	}
-
+	public void addQuantite(int nombre) {
+    	this.quantite.setValue(quantite.getValue()+nombre);
+    }
 	public int getId() {
 		return id;
 	}
-    
-/*    public int caseX() {
-        return this.x.get()/16;
-    }
-    public int caseY() {
-        return this.y.get()/16;
-    }*/
-    
 }

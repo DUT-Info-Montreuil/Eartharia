@@ -6,12 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
-      <Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#move" prefHeight="320.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#move" onKeyReleased="#moveRelease" prefHeight="320.0" prefWidth="320.0" BorderPane.alignment="CENTER">
          <children>
             <TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#removeBloc" prefHeight="320.0" prefWidth="320.0" style="-fx-background-color: grey;" />
-            <TilePane fx:id="tPaneInv" opacity="0.75" prefHeight="200.0" prefWidth="200.0" />
+            <TilePane fx:id="tPaneHp" alignment="TOP_RIGHT" prefHeight="166.0" prefWidth="320.0" />
+            <TilePane fx:id="tPaneInv" onMouseClicked="#inventaireMouse" opacity="0.75" prefColumns="4" prefHeight="200.0" prefRows="3" prefWidth="200.0" />
          </children>
       </Pane>
    </center>

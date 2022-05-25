@@ -7,13 +7,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
-public class vueMapTerraria {
+public class VueMapTerraria {
 	private Environnement terrain;
 	private TilePane TileP;
 	private Image imgTileP;
 	private ImageView imgV;
 
-	public vueMapTerraria(Environnement env, TilePane tilePane) {
+	public VueMapTerraria(Environnement env, TilePane tilePane) {
 		this.terrain = env;
 		this.TileP = tilePane;
 		
@@ -22,7 +22,7 @@ public class vueMapTerraria {
 	private void initTerrain() {
 		FileInputStream fichierTileSet = null;
 		try {
-			fichierTileSet = new FileInputStream("src/ressources/tuile_zelda.png");
+			fichierTileSet = new FileInputStream("src/ressources/TuileMap.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,8 +39,11 @@ public class vueMapTerraria {
 		int x;
 		int y;
 		idTuile=idTuile-1;
-		y = (int) (idTuile/(imgTileP.getHeight()/16));
 		x = (int) (idTuile%(imgTileP.getWidth()/16));
+		y = (int) (idTuile/(imgTileP.getHeight()/16));
+
+		System.out.println(x);
+		System.out.println(y);
 		x = x*16;
 		y = y*16;
 		img.setViewport(new Rectangle2D(x,y, 16,16));

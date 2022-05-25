@@ -10,9 +10,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import application.modele.fonctionnalitees.CollisionException;
+import application.modele.Exception.CollisionException;
+import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Constante;
-import application.modele.fonctionnalitees.LimiteMapException;
+import application.modele.personnage.Perso;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

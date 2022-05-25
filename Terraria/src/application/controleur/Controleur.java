@@ -5,6 +5,8 @@ import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -15,22 +17,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.modele.Environnement;
-import application.modele.Perso;
+import application.modele.Exception.CollisionException;
+import application.modele.Exception.InventaireCaseVideException;
+import application.modele.Exception.InventairePleinException;
+import application.modele.Exception.LimiteMapException;
 import application.modele.Item;
-import application.modele.fonctionnalitees.CollisionException;
-import application.modele.fonctionnalitees.InventairePleinException;
-import application.modele.fonctionnalitees.LimiteMapException;
 import application.modele.fonctionnalitees.ObserveInventaire;
-import application.vue.VueInventaire;
-import application.vue.VuePerso;
-import application.vue.vueMapTerraria;
+import application.modele.personnage.Perso;
+import application.vue.*;
 
 public class Controleur implements Initializable {
 
 	private Environnement env;
-	private vueMapTerraria vueMap;
+	private VueMapTerraria vueMap;
 	private VuePerso vueperso;
 	private Timeline tour;	
+	private vueHp vueHp;
 	private VueInventaire vueInventaire;
 
 	@FXML
@@ -39,6 +41,8 @@ public class Controleur implements Initializable {
 	private Pane pane;
 	@FXML
 	private TilePane tileP;
+	@FXML
+	private TilePane tPaneHp;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
@@ -48,28 +52,31 @@ public class Controleur implements Initializable {
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		gameLoop();
 	}
-
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
-		this.vueMap = new vueMapTerraria(env, tileP);
+		this.vueMap = new VueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInv,this.env.getPerso().getInventaire());
+		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
 	}
 
+	private int cmpt = 0;
 	@FXML
 	public void move (KeyEvent k) {
-//		perso.addInventaire(new Item(0, 0, env, null));
 		this.env.getPerso();
 		Perso perso = this.env.getPerso();
+		
 		try {
+			//perso.addInventaire(new Item(cmpt));
+			cmpt++;
 			switch (k.getCode()) {
 			case UP    :
 				perso.saut();
-			break;
+				break;
 			case DOWN  :
 				perso.tombe(16); //va servir a traverser des bloc semi traversable ex : echafaudage plateforme... comme dans mario
-			break;
+				break;
 			case LEFT  :
 				perso.gauche();
 				break;
@@ -78,6 +85,10 @@ public class Controleur implements Initializable {
 				break;
 			case I  :
 				vueInventaire.ouvFerInv();
+				break;
+			case A :
+				this.env.getPerso().setHp(-1);
+				System.out.println(this.env.getPerso().getHp());
 				break;
 			default:
 				break;
@@ -92,6 +103,18 @@ public class Controleur implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	@FXML
+	public void moveRelease (KeyEvent k) {
+		this.env.getPerso();
+		Perso perso = this.env.getPerso();
+		switch (k.getCode()) {
+		case UP    :
+			perso.setSaut(false);
+			break;
+		default:
+			break;
+		}
+	}
 	private void gameLoop (){
 		tour = new Timeline();
 		tour.setCycleCount(Timeline.INDEFINITE);           
@@ -99,33 +122,29 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					this.env.gravite();
+					this.vueHp.refresh();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
 	}
 	@FXML
-	public void removeBloc(MouseEvent m) {
+	private void removeBloc(MouseEvent m) {
 		int xClic = (int) m.getX()/16 ;
 		int yClic = (int) m.getY()/16 ;
 		int idTuile = env.getIdTuile(yClic, xClic);
 		System.out.println(idTuile);
-		//env.setCase(yClic, xClic); impossible d'échanger l'id de la case 
 		try {
 			switch(m.getButton()) {
 
 			case PRIMARY :
 				env.setBlock(yClic,xClic,0);
 				vueMap.refresh(env.getBloc(yClic, xClic).getId(),0);
-				//m.getTarget().equals(env.getLigne());
-				//System.out.println(m.getTarget().equals(vueperso.getImgV().getOnKeyPressed()));
-				//System.out.println(vueperso.getImgV().getOnKeyPressed());
 				System.out.println("gauche");
 				break;
 
 			case SECONDARY : 
 				env.setBlock(yClic,xClic,1);
 				vueMap.refresh(env.getBloc(yClic, xClic).getId(),1);
-
 				System.out.println("Droit");
 				break;
 
@@ -137,5 +156,29 @@ public class Controleur implements Initializable {
 			e.printStackTrace();
 		}
 
+	}
+	@FXML
+	private void inventaireMouse(MouseEvent m) {
+		int xClic = (int) m.getX()/32 ;
+		int yClic = (int) m.getY()/32 ;
+
+		try {
+			Item idTuile = env.getPerso().getItem(yClic*4+xClic);
+			switch(m.getButton()) {
+			case PRIMARY :
+				//Doit avoir objet en main
+				System.out.println("Gauche");
+				break;
+			case SECONDARY : 
+				System.out.println("Quantite : "+idTuile.getQuantite());
+				System.out.println("Droit");
+				break;
+
+			default : System.out.println("probleme");
+			break;
+			}
+		}catch (InventaireCaseVideException e) {
+			System.out.println("Case Vide");		
+		}
 	}
 }
