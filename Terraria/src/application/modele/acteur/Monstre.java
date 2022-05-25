@@ -9,8 +9,8 @@ public abstract class Monstre extends Acteur{
 	private String idMonstre;
 
 
-	public Monstre(Environnement env, int x, int y, int hp, int atq) {
-		super(env, x, y, hp, atq);
+	public Monstre(Environnement env, int x, int y,int vitesse, int hp, int atq, int xBox, int yBox) {
+		super(env, x, y,vitesse, hp, atq, xBox, yBox);
 		this.idMonstre = "M" + Acteur.compteur;
 
 	}

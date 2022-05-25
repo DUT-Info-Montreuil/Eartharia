@@ -2,11 +2,14 @@ package application.vue;
 
 import application.modele.Acteur;
 import application.modele.acteur.Monstre;
+import application.modele.acteur.Perso;
 import application.modele.monstre.Sol;
 import application.modele.monstre.volant;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class vueActeur {
 	private Acteur a;
@@ -20,6 +23,12 @@ public class vueActeur {
 		this.pane = p;
 		this.img = new Image(selection(a));
 		this.imgV = new ImageView(img);
+		Rectangle r = new Rectangle(20, 20);
+		r.setFill(Color.BLACK);
+		this.a = a;
+		r.xProperty().bind(a.getxProperty());
+		r.yProperty().bind(a.getyProperty());
+		this.pane.getChildren().add(r);
 		this.pane.getChildren().add(imgV);
 		bindPosition();
 	}
@@ -31,9 +40,13 @@ public class vueActeur {
 			System.out.println("volant");
 			chemin = "ressources/fantome16pix.png";
 		}
-		else if (a instanceof Sol){
+		if (a instanceof Sol){
 			System.out.println("sol");
 		}
+//		if (a instanceof Perso){
+//			System.out.println("perso"); tableau de string et releve l'occurence ou il ya perso
+//			chemin = "ressources/perso16pix.png";
+//		}
 		return chemin;
 	}
 	public void bindPosition() {

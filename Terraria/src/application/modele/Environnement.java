@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
+import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.CollisionException;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.fonctionnalitees.LimiteMapException;
@@ -86,16 +87,20 @@ public class Environnement {
 	}
 	public void gravite() {
 		//plus tard faire un for each pour la liste acteur
-		try {
-			if(!perso.surDuSol())
-				this.perso.tombe(gravite);
-		}catch (LimiteMapException e) {
-			System.out.println("fin limite map");
-		}catch (CollisionException e) {
-			System.out.println("Boite de collision touche un bloc");
-		}catch (Exception e) {
-			e.printStackTrace();
-		};
+		for (Acteur acteur : listActeur) {
+			try {
+				if(!perso.surDuSol()|| !acteur.surDuSol())
+					this.perso.tombe(gravite);
+					acteur.tombe(gravite);
+			}catch (LimiteMapException e) {
+				System.out.println("fin limite map");
+			}catch (CollisionException e) {
+				System.out.println("Boite de collision touche un bloc");
+			}catch (Exception e) {
+				e.printStackTrace();
+			};
+		}
+		
 	}
 	
 //	public void getIdBLoc (int position) {

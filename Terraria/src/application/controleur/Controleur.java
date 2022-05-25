@@ -13,6 +13,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.CollisionException;
@@ -38,7 +39,7 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 		gameLauncher();
 		gameLoop();
-        this.env.getActeurs().addListener(new ObservateurActeur (pane));       
+       //this.env.getActeurs().addListener(new ObservateurActeur (pane));       
 
 	}
 

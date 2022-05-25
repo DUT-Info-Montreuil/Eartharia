@@ -6,7 +6,7 @@ import application.modele.acteur.Monstre;
 public class Sol extends Monstre{
 
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y, 50, 10);
+		super(env, x, y,8, 50, 10,32,32);
 		// TODO Auto-generated constructor stub
 	}
 

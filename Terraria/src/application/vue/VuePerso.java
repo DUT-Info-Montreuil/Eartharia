@@ -1,5 +1,6 @@
 package application.vue;
 
+import application.modele.Acteur;
 import application.modele.acteur.Perso;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,17 +10,17 @@ import javafx.scene.shape.Rectangle;
 
 public class VuePerso {
 	
-	private Perso perso;
+	private Acteur perso;
 	protected Image img_perso;
 	protected ImageView imgVP;
 	protected Pane pane;
 	
 	
-	public VuePerso (Pane pane, Perso perso) {
+	public VuePerso (Pane pane, Acteur perso) {
 		this.pane=pane;
 		this.img_perso = new Image("ressources/perso16pix.png");
 		this.imgVP = new ImageView(img_perso);
-		Rectangle r = new Rectangle(16, 16);
+		Rectangle r = new Rectangle(20, 20);
 		r.setFill(Color.RED);
 		this.perso = perso;
 		r.xProperty().bind(perso.getxProperty());
