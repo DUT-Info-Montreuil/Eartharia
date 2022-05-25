@@ -27,9 +27,13 @@ import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
+import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.item.BlocItem;
+import application.modele.item.Hache;
+import application.modele.item.Pioche;
 import application.modele.personnage.Perso;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
@@ -41,7 +45,7 @@ public class Controleur implements Initializable {
 	private VueMapTerraria vueMap;
 	private VuePerso vueperso;
 	private Timeline tour;
-	
+
 
 	private VueInventaire vueInventaire;
 	@FXML
@@ -54,13 +58,13 @@ public class Controleur implements Initializable {
 	private TilePane tileP;
 	@FXML
 	private Label description;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
 		gameLauncher();
 		gameLoop();
-		
+
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv, vueInventaire);
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 	}
@@ -76,7 +80,6 @@ public class Controleur implements Initializable {
 	private int cmpt=0;
 	@FXML
 	public void move (KeyEvent k) {
-		this.env.getPerso();
 		Perso perso = this.env.getPerso();
 		try {
 
@@ -97,9 +100,14 @@ public class Controleur implements Initializable {
 			case I  :
 				vueInventaire.ouvFerInv();
 				break;
-			case SPACE  :
-				//TOUCHE POUR TEST
-				//perso.addInventaire(new Weapon(cmpt));
+			case P  :
+				perso.addInventaire(new Pioche());
+				break;
+			case B  :
+				perso.addInventaire(new BlocItem(0,233));
+				break;
+			case H  :
+				perso.addInventaire(new Hache());
 				cmpt++;
 				break;
 			default:
@@ -140,6 +148,7 @@ public class Controleur implements Initializable {
 	}
 	@FXML
 	private void removeBloc(MouseEvent m) {
+		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16 ;
 		int yClic = (int) m.getY()/16 ;
 		int idTuile = env.getIdTuile(yClic, xClic);
@@ -148,22 +157,23 @@ public class Controleur implements Initializable {
 			switch(m.getButton()) {
 
 			case PRIMARY :
-				env.setBlock(yClic,xClic,233);
-				vueMap.refresh(env.getBloc(yClic, xClic).getId(),233);
-				System.out.println("Map gauche");
+				perso.useEquipe(yClic, xClic);
+				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
 				break;
- 
+
 			case SECONDARY : 
-				env.setBlock(yClic,xClic,1);
-				vueMap.refresh(env.getBloc(yClic, xClic).getId(),1);
-				System.out.println("Map Droit");
+				perso.useEquipe(yClic, xClic);
+				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
 				break;
 
 			default : System.out.println("probleme");
 			break;
 
 			}
-		}catch (Exception e) {
+		}catch (RienEquiperExeception e) {
+			System.out.println("Le personnage n'a rien equiper");
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -171,24 +181,22 @@ public class Controleur implements Initializable {
 	private void inventaireMouse(MouseEvent m) {
 		int xClic = (int) m.getX()/32 ;
 		int yClic = (int) m.getY()/32 ;
+		Perso perso = this.env.getPerso();
 		Item item;
 		try {
 			if(m.getSource() ==  tPaneInv)
 				item = env.getPerso().getItem(yClic*4+xClic+4);
 			else
 				item = env.getPerso().getItem(yClic*4+xClic);
-			
+
 			switch(m.getButton()) {
 			case PRIMARY :
-				//Doit avoir objet en main
-				System.out.println("Mouse Gauche");
+				perso.prendEnMain(item);
+				System.out.println("Prend en main : "+item);
 				break;
 			case SECONDARY : 
 				this.vueInventaire.descriptionItem(description,item,m.getX(),m.getY());
-				System.out.println("Quantite : "+item.getQuantite());
-				System.out.println("Mouse Droit");
 				break;
-
 			default :
 				System.out.println("probleme");
 				break;

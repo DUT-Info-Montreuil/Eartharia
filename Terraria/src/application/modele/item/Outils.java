@@ -1,8 +1,9 @@
 package application.modele.item;
 
+import application.modele.Environnement;
 import application.modele.Item;
 
-public class Outils extends Item {
+public abstract class Outils extends Item {
 
 	public Outils(int id) {
 		super(id);
@@ -14,10 +15,8 @@ public class Outils extends Item {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void utilise() {
-		// TODO Auto-generated method stub
-		
+	public void Casse(int y, int x,Environnement env){
+		env.setBlock(y, x, 0);
 	}
-
+	public abstract void agit(int y, int x,Environnement env) ;
 }

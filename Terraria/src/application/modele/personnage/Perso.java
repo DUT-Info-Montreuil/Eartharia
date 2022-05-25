@@ -7,14 +7,20 @@ import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
+import application.modele.item.Arme;
+import application.modele.item.BlocItem;
+import application.modele.item.Outils;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
+import application.modele.Exception.RienEquiperExeception;
 
 
 
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
+	private Item equipe;
+	
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
@@ -86,6 +92,33 @@ public class Perso extends Acteur{
 		}catch(Exception e) {
 			throw new InventaireCaseVideException();
 		}
+	}
+
+	
+	public void useEquipe(int y,int x) throws Exception{
+		if(equipe== null)
+			throw new RienEquiperExeception();
+		
+		if (equipe instanceof Outils) {
+			Outils outils = (Outils) equipe;
+			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+				outils.agit(y, x, getEnv());
+		}
+		else if (equipe instanceof BlocItem) {
+			BlocItem bloc = (BlocItem) equipe;
+			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+				bloc.place(y, x, getEnv());
+		}
+		else if (equipe instanceof Arme) {
+			Arme arme = (Arme) equipe;
+		}
+	}
+	public Item getEquipe() {
+		return equipe;
+	}
+
+	public void prendEnMain(Item item) {
+		this.equipe = item;		
 	}
 
 

@@ -14,9 +14,7 @@ public class Arme extends Item {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void utilise() {
-		// TODO Auto-generated method stub
+	public void Attaque() {
 		
 	}
 

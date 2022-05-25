@@ -3,6 +3,9 @@ package application.modele.fonctionnalitees;
 import java.util.List;
 
 import application.modele.Item;
+import application.modele.item.Arme;
+import application.modele.item.BlocItem;
+import application.modele.item.Outils;
 import application.vue.VueInventaire;
 import javafx.collections.ListChangeListener;
 import javafx.scene.image.ImageView;
@@ -27,7 +30,13 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 	}
 	private void ajout(List<? extends Item> addedSubList) {
 		for (Item item : addedSubList) {
-			vueInventaire.afficherItem(item.getId());
+			if (item instanceof Outils || item instanceof Arme) {
+				vueInventaire.afficherItemOutils(item.getId());
+			}
+			if (item instanceof BlocItem) {
+				BlocItem bloc = (BlocItem) item;
+				vueInventaire.afficherItemBloc(bloc.getIdTuile(),bloc.getId());
+			}
 		}
 		System.out.println("Ajout");
 	}

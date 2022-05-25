@@ -1,8 +1,5 @@
 package application.modele;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 public abstract class Item {
     
 	private int id;
@@ -31,5 +28,4 @@ public abstract class Item {
 	public int getId() {
 		return id;
 	}
-	public abstract void utilise() ;
 }

@@ -29,7 +29,8 @@ import javafx.scene.shape.Rectangle;
 public class VueInventaire {
 
 	private ObservableList<Item> inventaire;
-	private Image img_inventaire;
+	private Image img_item;
+	private Image img_bloc;
 	private TilePane tPaneInventaire;
 	private TilePane tPaneInventaireRapide;
 	private boolean visibility;
@@ -85,18 +86,47 @@ public class VueInventaire {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.img_inventaire = new Image(fichierTileSet);
+		this.img_item = new Image(fichierTileSet);
+
+		try {
+			fichierTileSet = new FileInputStream("src/ressources/TuileMap.png");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.img_bloc = new Image(fichierTileSet);
 	}
-	public void afficherItem(int id) {
+	public void afficherItemOutils(int id) {
 		int x;
 		int y;
-		y = (int) (id/(img_inventaire.getHeight()/32));
-		x = (int) (id%(img_inventaire.getWidth()/32));
+		y = (int) (id/(img_item.getHeight()/32));
+		x = (int) (id%(img_item.getWidth()/32));
 		x = x*32;
 		y = y*32;
-		ImageView img = new ImageView(img_inventaire);
+		ImageView img = new ImageView(img_item);
 		img.setViewport(new Rectangle2D(x,y, 32,32));
 		img.setId(String.valueOf(id));
+		if(this.tPaneInventaireRapide.getChildren().size()<4)
+			tPaneInventaireRapide.getChildren().add(img);
+		else
+			this.tPaneInventaire.getChildren().add(img);
+	}
+
+	public void afficherItemBloc(int idTuile,int id) {
+		int x;
+		int y;
+		idTuile=idTuile-1;
+		x = (int) (idTuile%(img_bloc.getWidth()/16));
+		y = (int) (idTuile/(img_bloc.getHeight()/16));
+
+		System.out.println(x);
+		System.out.println(y);
+		x = x*16;
+		y = y*16;
+		ImageView img = new ImageView(img_bloc);
+		img.setViewport(new Rectangle2D(x,y, 16,16));
+		img.setId(String.valueOf(id));
+		img.setFitHeight(32);
+		img.setFitWidth(32);
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
