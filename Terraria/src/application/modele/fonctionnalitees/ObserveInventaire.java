@@ -31,19 +31,19 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 	private void ajout(List<? extends Item> addedSubList) {
 		for (Item item : addedSubList) {
 			if (item instanceof Outils || item instanceof Arme) {
-				vueInventaire.afficherItemOutils(item.getId());
+				vueInventaire.afficherItemOutils(item.getIdItem());
 			}
 			if (item instanceof BlocItem) {
 				BlocItem bloc = (BlocItem) item;
-				vueInventaire.afficherItemBloc(bloc.getIdTuile(),bloc.getId());
+				vueInventaire.afficherItemBloc(bloc.getIdItem());
 			}
 		}
 		System.out.println("Ajout");
 	}
 	private void suppresion(List<? extends Item> getRemoved) {
 		for (Item item : getRemoved) {
-			ImageView imgV =(ImageView) tilePane.lookup("#"+item.getId());
-			this.tilePane.getChildren().remove(imgV);
+			System.out.println(this.tilePane.lookup("#"+item.getId()));
+			this.tilePane.getChildren().remove(this.tilePane.lookup("#"+item.getId()));
 		}
 		System.out.println("Suppression");
 	}

@@ -16,13 +16,14 @@ public class Hache extends Outils {
 	}
 	
 	@Override
-	public void agit(int y, int x,Environnement env){
+	public BlocItem agit(int y, int x,Environnement env){
 		if(Constante.estUnBlocBois(env.getIdTuile(y, x))) {
-			super.Casse(y, x, env);
+			return super.Casse(y, x, env);
 		}
 		else{
 			System.out.println("Pas un bloc de bois");
 			//throws exception can't be break
+			return null;
 		}
 	}
 }

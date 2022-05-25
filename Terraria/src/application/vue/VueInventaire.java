@@ -6,7 +6,6 @@ import java.util.Timer;
 
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
-import application.modele.fonctionnalitees.Saut;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -20,11 +19,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class VueInventaire {
 
@@ -95,23 +91,28 @@ public class VueInventaire {
 		}
 		this.img_bloc = new Image(fichierTileSet);
 	}
-	public void afficherItemOutils(int id) {
+	public void afficherItemOutils(int idOutils) {
 		int x;
 		int y;
-		y = (int) (id/(img_item.getHeight()/32));
-		x = (int) (id%(img_item.getWidth()/32));
+		y = (int) (idOutils/(img_item.getHeight()/32));
+		x = (int) (idOutils%(img_item.getWidth()/32));
 		x = x*32;
 		y = y*32;
 		ImageView img = new ImageView(img_item);
 		img.setViewport(new Rectangle2D(x,y, 32,32));
-		img.setId(String.valueOf(id));
+		img.setId(String.valueOf(idOutils));
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
 			this.tPaneInventaire.getChildren().add(img);
+
+		System.out.println("id : "+img.getId());
+//		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
+		
+		System.out.println("id pane : "+tPaneInventaire.lookup("#"+String.valueOf(idOutils)));
 	}
 
-	public void afficherItemBloc(int idTuile,int id) {
+	public void afficherItemBloc(int idTuile) {
 		int x;
 		int y;
 		idTuile=idTuile-1;
@@ -124,23 +125,49 @@ public class VueInventaire {
 		y = y*16;
 		ImageView img = new ImageView(img_bloc);
 		img.setViewport(new Rectangle2D(x,y, 16,16));
-		img.setId(String.valueOf(id));
 		img.setFitHeight(32);
 		img.setFitWidth(32);
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
 			this.tPaneInventaire.getChildren().add(img);
+		System.out.println("id : "+img.getId());
+//		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
+		System.out.println("id pane : "+tPaneInventaire.lookup("#"+img.getId()));
 	}
 	public Item getItem(ImageView img) {
 		return inventaire.get(tPaneInventaire.getChildren().indexOf(img));
 	}
 	public void descriptionItem(Label label,Item i,double x ,double y) {
 		label.setVisible(true);
-		label.setText(" id : "+i.getId()+"\n QuantitÃ© : "+i.getQuantite());
+		label.setText(" id : "+i.getId()+"\n Quantité : "+i.getQuantite());
 		label.setBackground(new Background(new BackgroundFill(Color.DARKGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 		label.setTranslateX(x);
 		label.setTranslateY(y);
 		new Timer().schedule(new Description(label), 5000);
 	}
 }
+
+/*private void afficherItem(int idTuile,String id,int largeur,int longueur, ImageView img) {
+		int x;
+		int y;
+		x = (int) (idTuile%(img_bloc.getWidth()/largeur));
+		y = (int) (idTuile/(img_bloc.getHeight()/longueur));
+
+		System.out.println(x);
+		System.out.println(y);
+		x = x*largeur;
+		y = y*longueur;
+		img.setViewport(new Rectangle2D(x,y, largeur,longueur));
+		img.setFitHeight(32);
+		img.setFitWidth(32);
+		img.setId(id);
+		System.out.println("id : "+img.getId());
+		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
+		System.out.println("id pane : "+tPaneInventaire.lookup("#"+img.getId()));
+		
+		if(this.tPaneInventaireRapide.getChildren().size()<4)
+			tPaneInventaireRapide.getChildren().add(img);
+		else
+			this.tPaneInventaire.getChildren().add(img);
+	}*/

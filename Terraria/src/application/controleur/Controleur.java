@@ -151,8 +151,6 @@ public class Controleur implements Initializable {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16 ;
 		int yClic = (int) m.getY()/16 ;
-		int idTuile = env.getIdTuile(yClic, xClic);
-		System.out.println(idTuile);
 		try {
 			switch(m.getButton()) {
 
@@ -192,7 +190,6 @@ public class Controleur implements Initializable {
 			switch(m.getButton()) {
 			case PRIMARY :
 				perso.prendEnMain(item);
-				System.out.println("Prend en main : "+item);
 				break;
 			case SECONDARY : 
 				this.vueInventaire.descriptionItem(description,item,m.getX(),m.getY());

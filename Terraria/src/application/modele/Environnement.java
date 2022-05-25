@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.item.BlocItem;
 import application.modele.personnage.Perso;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +50,6 @@ public class Environnement {
 				idBloc = (((Long)data.get(i)).intValue());
 				map.add(new Bloc(i,idBloc,Constante.estUnBlocSolide(idBloc)));
 			}
-			//vueNombre();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

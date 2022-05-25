@@ -79,7 +79,7 @@ public class Perso extends Acteur{
 	}
 	public boolean estPresent(Item i) {
 		for (Item item : inventaire) {
-			if(item.getId()==i.getId()) {
+			if(item.getIdItem()==i.getIdItem()) {
 				item.addQuantite(i.getQuantite());
 				return false;
 			}
@@ -101,18 +101,31 @@ public class Perso extends Acteur{
 		
 		if (equipe instanceof Outils) {
 			Outils outils = (Outils) equipe;
-			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
-				outils.agit(y, x, getEnv());
+			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5)) {
+				BlocItem i = outils.agit(y, x, getEnv());
+				if (i != null) 
+					addInventaire(i);
+			}
 		}
 		else if (equipe instanceof BlocItem) {
 			BlocItem bloc = (BlocItem) equipe;
-			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5)) {
 				bloc.place(y, x, getEnv());
+			}
 		}
 		else if (equipe instanceof Arme) {
 			Arme arme = (Arme) equipe;
 		}
+		encoreUtilisable();
 	}
+	private void encoreUtilisable() {
+		if(equipe.getQuantite()<=0) {
+			inventaire.remove(equipe);
+			prendEnMain(null);
+		}
+			
+	}
+
 	public Item getEquipe() {
 		return equipe;
 	}
