@@ -91,7 +91,7 @@ public class VueInventaire {
 		}
 		this.img_bloc = new Image(fichierTileSet);
 	}
-	public void afficherItemOutils(int idOutils) {
+	public void afficherItemOutils(int idOutils,String id) {
 		int x;
 		int y;
 		y = (int) (idOutils/(img_item.getHeight()/32));
@@ -100,19 +100,15 @@ public class VueInventaire {
 		y = y*32;
 		ImageView img = new ImageView(img_item);
 		img.setViewport(new Rectangle2D(x,y, 32,32));
-		img.setId(String.valueOf(idOutils));
+		
+		img.setId(id);
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
 			this.tPaneInventaire.getChildren().add(img);
-
-		System.out.println("id : "+img.getId());
-//		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
-		
-		System.out.println("id pane : "+tPaneInventaire.lookup("#"+String.valueOf(idOutils)));
 	}
 
-	public void afficherItemBloc(int idTuile) {
+	public void afficherItemBloc(int idTuile,String id) {
 		int x;
 		int y;
 		idTuile=idTuile-1;
@@ -127,13 +123,12 @@ public class VueInventaire {
 		img.setViewport(new Rectangle2D(x,y, 16,16));
 		img.setFitHeight(32);
 		img.setFitWidth(32);
+		
+		img.setId(id);
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
 			this.tPaneInventaire.getChildren().add(img);
-		System.out.println("id : "+img.getId());
-//		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
-		System.out.println("id pane : "+tPaneInventaire.lookup("#"+img.getId()));
 	}
 	public Item getItem(ImageView img) {
 		return inventaire.get(tPaneInventaire.getChildren().indexOf(img));

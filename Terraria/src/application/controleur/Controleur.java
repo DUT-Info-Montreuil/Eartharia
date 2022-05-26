@@ -65,7 +65,7 @@ public class Controleur implements Initializable {
 		gameLauncher();
 		gameLoop();
 
-		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv, vueInventaire);
+		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 	}
 	private void gameLauncher() {
