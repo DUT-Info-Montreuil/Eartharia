@@ -5,25 +5,24 @@ import application.modele.fonctionnalitees.Constante;
 
 public class Hache extends Outils {
 
-	public Hache() {
-		super(0);
+	public Hache(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Hache(int quantite) {
-		super(0, quantite);
+	public Hache(int id, int quantite) {
+		super(id, quantite);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public BlocItem agit(int y, int x,Environnement env){
-		if(Constante.estUnBlocBois(env.getIdTuile(y, x))) {
-			return super.Casse(y, x, env);
+	public void agit(int y, int x,Environnement env){
+		if(Constante.estUnBlocPierre(env.getIdTuile(y, x))) {
+			super.Casse(y, x, env);
 		}
 		else{
 			System.out.println("Pas un bloc de bois");
 			//throws exception can't be break
-			return null;
 		}
 	}
 }

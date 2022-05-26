@@ -18,10 +18,10 @@ public class Constante {
 	}
 	private static ArrayList<Integer> BlocPierre(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(44); //Pierre
-		listBloc.add(76); //Pierre + cuivre
-		listBloc.add(78); //Pierre + fer
-		listBloc.add(81); //Pierre + plomb
+		listBloc.add(43); //Pierre
+		listBloc.add(75); //Pierre + cuivre
+		listBloc.add(77); //Pierre + fer
+		listBloc.add(80); //Pierre + plomb
 		return listBloc;
 	}
 	private static ArrayList<Integer> BlocBois(){

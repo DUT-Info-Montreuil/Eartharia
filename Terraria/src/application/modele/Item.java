@@ -1,41 +1,31 @@
 package application.modele;
 
 public abstract class Item {
-
-	private int idItem;
-	private int quantite;
-	public static int compteur=0;
-	private String id;
-
-	public Item (int idItem) {
-		this.idItem = idItem ;
-		this.quantite = 1;
-
-		this.id="I"+compteur;
-		compteur++;
-	}
-	public Item (int idItem,int quantite) {
-		this.idItem = idItem ;
-		this.quantite = quantite;
-		this.id="I"+compteur;
-		compteur++;
-	}
-	public int getQuantite() {
-		return this.quantite;
-	}
-	public void setQuantite(int quantite) {
-		this.quantite = quantite;
-	}
-	public boolean equals(Item item) {
-		return item.getIdItem()==idItem;
+    
+	private int id;
+    private int quantite;
+    
+    public Item (int id) {
+    	this.id = id ;
+        this.quantite = 1;
+    }
+    public Item (int id,int quantite) {
+    	this.id = id ;
+        this.quantite = quantite;
+    }
+    public int getQuantite() {
+    	return this.quantite;
+    }
+    public void setQuantite(int quantite) {
+    	this.quantite = quantite;
+    }
+    public boolean equals(Item item) {
+		return item.getId()==id;
 	}
 	public void addQuantite(int nombre) {
 		setQuantite(quantite+nombre);
-	}
-	public int getIdItem() {
-		return idItem;
-	}
-	public String getId() {
+    }
+	public int getId() {
 		return id;
 	}
 }

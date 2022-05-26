@@ -5,24 +5,24 @@ import application.modele.fonctionnalitees.Constante;
 
 public class Pioche extends Outils {
 
-	public Pioche() {
-		super(19,50);
+	public Pioche(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pioche(int quantite) {
-		super(19, quantite);
+	public Pioche(int id, int quantite) {
+		super(id, quantite);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public BlocItem agit(int y, int x,Environnement env){
+	public void agit(int y, int x,Environnement env){
 		if(Constante.estUnBlocPierre(env.getIdTuile(y, x))) {
-			return super.Casse(y, x, env);
+			super.Casse(y, x, env);
 		}
 		else{
 			System.out.println("Pas un bloc de pierre");
-			return null;
+			//throws exception can't be break
 		}
 	}
 }

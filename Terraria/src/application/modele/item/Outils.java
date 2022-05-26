@@ -15,11 +15,8 @@ public abstract class Outils extends Item {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BlocItem Casse(int y, int x,Environnement env){
-		setQuantite(getQuantite()-1);
-		BlocItem item = new BlocItem(env.getBloc(y, x).getIdTuile());
+	public void Casse(int y, int x,Environnement env){
 		env.setBlock(y, x, 0);
-		return item;
 	}
-	public abstract BlocItem agit(int y, int x,Environnement env) ;
+	public abstract void agit(int y, int x,Environnement env) ;
 }

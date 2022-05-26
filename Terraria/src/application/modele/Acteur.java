@@ -75,13 +75,13 @@ public abstract class Acteur {
 	}
 	
 	private void limiteDeMap(int x, int y) throws LimiteMapException{
-		if((caseX()+x)<0)
+		if(caseX()==0 && x<0)
 			throw new LimiteMapException();
-		if((caseY()+y)<0)
+		if(caseY()==0 && y<0)
 			throw new LimiteMapException();
-		if(caseX()>=getEnv().getColonne())
+		if(caseX()==getEnv().getColonne() && x>0)
 			throw new LimiteMapException();
-		if(caseY()>=getEnv().getLigne())
+		if(caseY()==getEnv().getLigne() && y>0)
 			throw new LimiteMapException();
 	}
 	public void deplacement(int x, int y) throws Exception{

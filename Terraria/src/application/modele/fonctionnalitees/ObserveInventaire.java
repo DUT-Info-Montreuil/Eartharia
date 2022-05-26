@@ -3,23 +3,18 @@ package application.modele.fonctionnalitees;
 import java.util.List;
 
 import application.modele.Item;
-import application.modele.item.Arme;
-import application.modele.item.BlocItem;
-import application.modele.item.Outils;
 import application.vue.VueInventaire;
 import javafx.collections.ListChangeListener;
-import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
 public class ObserveInventaire implements ListChangeListener<Item >{
-
-	private TilePane PaneInventaire;
-	private TilePane PaneInventaireRapide;
+	
+	private TilePane tilePane;
 	private VueInventaire vueInventaire;
-
-	public ObserveInventaire(TilePane tileInventaire,TilePane tileInventaireRapide,VueInventaire vueInventaire) {
-		this.PaneInventaire = tileInventaire;
-		this.PaneInventaireRapide = tileInventaireRapide;
+	
+	public ObserveInventaire(TilePane tp,VueInventaire vueInventaire) {
+		tilePane = tp;
 		this.vueInventaire = vueInventaire;
 	}
 	@Override
@@ -32,27 +27,14 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 	}
 	private void ajout(List<? extends Item> addedSubList) {
 		for (Item item : addedSubList) {
-			if (item instanceof Outils || item instanceof Arme) {
-				vueInventaire.afficherItemOutils(item.getIdItem(),item.getId());
-			}
-			if (item instanceof BlocItem) {
-				BlocItem bloc = (BlocItem) item;
-				vueInventaire.afficherItemBloc(bloc.getIdItem(),item.getId());
-			}
+			vueInventaire.afficherItem(item.getId());
 		}
 		System.out.println("Ajout");
 	}
 	private void suppresion(List<? extends Item> getRemoved) {
 		for (Item item : getRemoved) {
-			Node n = this.PaneInventaire.lookup("#"+item.getId());
-			if(n!=null) {
-				this.PaneInventaire.getChildren().remove(n);
-
-			}
-			else{
-				n = this.PaneInventaireRapide.lookup("#"+item.getId());
-				this.PaneInventaireRapide.getChildren().remove(n);
-			}
+			ImageView imgV =(ImageView) tilePane.lookup("#"+item.getId());
+			this.tilePane.getChildren().remove(imgV);
 		}
 		System.out.println("Suppression");
 	}
