@@ -77,7 +77,7 @@ public class VueInventaire {
 	public void initItem() throws FileNotFoundException {
 		FileInputStream fichierTileSet = null;
 		try {
-			fichierTileSet = new FileInputStream("src/ressources/equipment.png");
+			fichierTileSet = new FileInputStream("src/ressources/equipement.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
