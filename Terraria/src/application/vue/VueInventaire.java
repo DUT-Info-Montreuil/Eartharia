@@ -73,7 +73,6 @@ public class VueInventaire {
 		tPaneInventaireRapide.setTranslateY(5);
 		tPaneInventaire.setTranslateX(5);
 		tPaneInventaire.setTranslateY(47);
-
 	}
 	public void initItem() throws FileNotFoundException {
 		FileInputStream fichierTileSet = null;
@@ -91,44 +90,26 @@ public class VueInventaire {
 		}
 		this.img_bloc = new Image(fichierTileSet);
 	}
-	public void afficherItemOutils(int idOutils,String id) {
-		int x;
-		int y;
-		y = (int) (idOutils/(img_item.getHeight()/32));
-		x = (int) (idOutils%(img_item.getWidth()/32));
-		x = x*32;
-		y = y*32;
-		ImageView img = new ImageView(img_item);
-		img.setViewport(new Rectangle2D(x,y, 32,32));
-		
+	private void afficherItem(int idItem,String id,int dimention, ImageView img) {
+		int y = (int) (idItem/(img.getImage().getHeight()/dimention));
+		int x = (int) (idItem%(img.getImage().getWidth()/dimention));
+		x = x*dimention;
+		y = y*dimention;
+		img.setViewport(new Rectangle2D(x,y, dimention,dimention));
+		img.setFitHeight(32);
+		img.setFitWidth(32);
 		img.setId(id);
 		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			tPaneInventaireRapide.getChildren().add(img);
 		else
 			this.tPaneInventaire.getChildren().add(img);
 	}
+	public void afficherItemOutils(int idOutils,String id) {
+		afficherItem(idOutils, id, 32, new ImageView(img_item));
+	}
 
 	public void afficherItemBloc(int idTuile,String id) {
-		int x;
-		int y;
-		idTuile=idTuile-1;
-		x = (int) (idTuile%(img_bloc.getWidth()/16));
-		y = (int) (idTuile/(img_bloc.getHeight()/16));
-
-		System.out.println(x);
-		System.out.println(y);
-		x = x*16;
-		y = y*16;
-		ImageView img = new ImageView(img_bloc);
-		img.setViewport(new Rectangle2D(x,y, 16,16));
-		img.setFitHeight(32);
-		img.setFitWidth(32);
-		
-		img.setId(id);
-		if(this.tPaneInventaireRapide.getChildren().size()<4)
-			tPaneInventaireRapide.getChildren().add(img);
-		else
-			this.tPaneInventaire.getChildren().add(img);
+		afficherItem(idTuile-1,id, 16,new ImageView(img_bloc));
 	}
 	public Item getItem(ImageView img) {
 		return inventaire.get(tPaneInventaire.getChildren().indexOf(img));
@@ -143,26 +124,3 @@ public class VueInventaire {
 	}
 }
 
-/*private void afficherItem(int idTuile,String id,int largeur,int longueur, ImageView img) {
-		int x;
-		int y;
-		x = (int) (idTuile%(img_bloc.getWidth()/largeur));
-		y = (int) (idTuile/(img_bloc.getHeight()/longueur));
-
-		System.out.println(x);
-		System.out.println(y);
-		x = x*largeur;
-		y = y*longueur;
-		img.setViewport(new Rectangle2D(x,y, largeur,longueur));
-		img.setFitHeight(32);
-		img.setFitWidth(32);
-		img.setId(id);
-		System.out.println("id : "+img.getId());
-		System.out.println("id (id) : "+tPaneInventaire.lookup("#"+id));
-		System.out.println("id pane : "+tPaneInventaire.lookup("#"+img.getId()));
-		
-		if(this.tPaneInventaireRapide.getChildren().size()<4)
-			tPaneInventaireRapide.getChildren().add(img);
-		else
-			this.tPaneInventaire.getChildren().add(img);
-	}*/

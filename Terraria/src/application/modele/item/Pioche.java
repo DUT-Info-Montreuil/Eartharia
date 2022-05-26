@@ -6,7 +6,7 @@ import application.modele.fonctionnalitees.Constante;
 public class Pioche extends Outils {
 
 	public Pioche() {
-		super(19);
+		super(19,50);
 		// TODO Auto-generated constructor stub
 	}
 

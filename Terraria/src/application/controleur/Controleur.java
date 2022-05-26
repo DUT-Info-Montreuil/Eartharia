@@ -77,7 +77,6 @@ public class Controleur implements Initializable {
 		description.setVisible(false);
 	}
 
-	private int cmpt=0;
 	@FXML
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
@@ -101,14 +100,13 @@ public class Controleur implements Initializable {
 				vueInventaire.ouvFerInv();
 				break;
 			case P  :
-				perso.addInventaire(new Pioche());
+				perso.addInventaire(new Pioche(5));
 				break;
 			case B  :
-				perso.addInventaire(new BlocItem(0,233));
+				perso.addInventaire(new BlocItem(233,5));
 				break;
 			case H  :
 				perso.addInventaire(new Hache());
-				cmpt++;
 				break;
 			default:
 				break;

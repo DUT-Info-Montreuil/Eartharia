@@ -9,15 +9,14 @@ import application.modele.item.Outils;
 import application.vue.VueInventaire;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
 public class ObserveInventaire implements ListChangeListener<Item >{
-	
+
 	private TilePane PaneInventaire;
 	private TilePane PaneInventaireRapide;
 	private VueInventaire vueInventaire;
-	
+
 	public ObserveInventaire(TilePane tileInventaire,TilePane tileInventaireRapide,VueInventaire vueInventaire) {
 		this.PaneInventaire = tileInventaire;
 		this.PaneInventaireRapide = tileInventaireRapide;

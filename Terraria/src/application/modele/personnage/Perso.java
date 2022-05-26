@@ -20,7 +20,7 @@ import application.modele.Exception.RienEquiperExeception;
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
 	private Item equipe;
-	
+
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
@@ -94,11 +94,11 @@ public class Perso extends Acteur{
 		}
 	}
 
-	
+
 	public void useEquipe(int y,int x) throws Exception{
 		if(equipe== null)
 			throw new RienEquiperExeception();
-		
+
 		if (equipe instanceof Outils) {
 			Outils outils = (Outils) equipe;
 			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5)) {
@@ -123,7 +123,7 @@ public class Perso extends Acteur{
 			inventaire.remove(equipe);
 			prendEnMain(null);
 		}
-			
+
 	}
 
 	public Item getEquipe() {
