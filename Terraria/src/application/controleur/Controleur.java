@@ -81,7 +81,6 @@ public class Controleur implements Initializable {
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
 		try {
-
 			switch (k.getCode()) {
 			case UP    :
 				perso.saut();
@@ -95,6 +94,18 @@ public class Controleur implements Initializable {
 			case RIGHT :
 				//perso.addInventaire(new Item(0));
 				perso.droite();
+				break;
+			case DIGIT1  :
+				perso.equiperItem(0);
+				break;
+			case DIGIT2  :
+				perso.equiperItem(1);
+				break;
+			case DIGIT3  :
+				perso.equiperItem(3);
+				break;
+			case DIGIT4  :
+				perso.equiperItem(4);
 				break;
 			case I  :
 				vueInventaire.ouvFerInv();
@@ -117,6 +128,10 @@ public class Controleur implements Initializable {
 			System.out.println("Collision Bloc map !");
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
+		}catch (RienEquiperExeception e) {
+			System.out.println("Le personnage n'a rien equiper");
+		}catch (InventaireCaseVideException e) {
+			System.out.println("Case Vide");		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

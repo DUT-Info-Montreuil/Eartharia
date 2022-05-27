@@ -123,7 +123,6 @@ public class Perso extends Acteur{
 			inventaire.remove(equipe);
 			prendEnMain(null);
 		}
-
 	}
 
 	public Item getEquipe() {
@@ -133,6 +132,7 @@ public class Perso extends Acteur{
 	public void prendEnMain(Item item) {
 		this.equipe = item;		
 	}
-
-
+	public void equiperItem(int index) throws InventaireCaseVideException{
+		prendEnMain(getItem(index)); 
+	}
 }
