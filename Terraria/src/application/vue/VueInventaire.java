@@ -123,4 +123,3 @@ public class VueInventaire {
 		new Timer().schedule(new Description(label), 5000);
 	}
 }
-

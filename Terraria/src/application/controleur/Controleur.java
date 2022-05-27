@@ -1,5 +1,4 @@
 package application.controleur;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
@@ -37,6 +36,7 @@ import application.modele.item.Pioche;
 import application.modele.personnage.Perso;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
+import application.vue.vueHp;
 import application.vue.VueMapTerraria;
 
 public class Controleur implements Initializable {
@@ -44,6 +44,7 @@ public class Controleur implements Initializable {
 	private Environnement env;
 	private VueMapTerraria vueMap;
 	private VuePerso vueperso;
+	private vueHp vueHp;
 	private Timeline tour;
 
 
@@ -57,8 +58,9 @@ public class Controleur implements Initializable {
 	@FXML
 	private TilePane tileP;
 	@FXML
+	private TilePane tPaneHp;
+	@FXML
 	private Label description;
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
@@ -75,12 +77,16 @@ public class Controleur implements Initializable {
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		description.setVisible(false);
+		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
 	}
 
+	private int cmpt = 0;
 	@FXML
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
 		try {
+			//perso.addInventaire(new Item(cmpt));
+			cmpt++;
 			switch (k.getCode()) {
 			case UP    :
 				perso.saut();
@@ -109,6 +115,10 @@ public class Controleur implements Initializable {
 				break;
 			case I  :
 				vueInventaire.ouvFerInv();
+				break;
+			case A :
+				this.env.getPerso().setHp(-1);
+				System.out.println(this.env.getPerso().getHp());
 				break;
 			case P  :
 				perso.addInventaire(new Pioche(5));
@@ -155,6 +165,7 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					this.env.gravite();
+					this.vueHp.refresh();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    

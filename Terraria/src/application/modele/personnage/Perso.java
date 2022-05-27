@@ -22,7 +22,7 @@ public class Perso extends Acteur{
 	private Item equipe;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 200,4,16,16);
+		super(env, x, y, 8,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
 	}
 

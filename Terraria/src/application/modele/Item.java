@@ -10,7 +10,6 @@ public abstract class Item {
 	public Item (int idItem) {
 		this.idItem = idItem ;
 		this.quantite = 1;
-
 		this.id="I"+compteur;
 		compteur++;
 	}

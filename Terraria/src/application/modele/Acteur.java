@@ -11,18 +11,21 @@ public abstract class Acteur {
 	private IntegerProperty x;
 	private IntegerProperty y;
 	private boolean saut;
-	private int hp;
+	private IntegerProperty hpMax;
+	private IntegerProperty hp;
 	private Environnement env;
 	private int vitesse;
 	private Box boxPlayer;
 
-	public Acteur(Environnement env, int x, int y, int hp,int vitesse, int xBox, int yBox) {
+	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox) {
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
 		this.env = env;
 		this.saut = false;
 		this.boxPlayer = new Box(xBox, yBox,this);
 		this.vitesse = vitesse;
+		this.hpMax =new SimpleIntegerProperty(hpMax) ;
+		this.hp =new SimpleIntegerProperty(hpMax) ;
 	}
 	
 
@@ -40,11 +43,38 @@ public abstract class Acteur {
 	public Box getBoxPlayer() {
 		return boxPlayer;
 	}
-	public int getHp() {
+	public IntegerProperty getHpProperty() {
 		return hp;
 	}
-	public void setHp(int hp) {
-		this.hp = hp;
+	
+	public int getHp() {
+		return this.hp.getValue();
+	}
+	
+	public void setHp(int hpPlus) {
+		this.hp.setValue(this.hp.getValue()+hpPlus);
+	}
+	
+	public IntegerProperty getHpMaxProperty() {
+		return this.hpMax;
+	}
+	
+	public int getHpMax() {
+		return this.hpMax.getValue();
+	}
+	
+	/*public void augHpMax(int hpPlus) {
+		this.hpMax.setValue(this.hpMax.getValue()+hpPlus);
+	}*/
+	
+	public void limiteHp() {
+		if (this.hp.getValue()>this.hpMax.getValue()) {
+			this.hp.setValue(this.hpMax.getValue());
+		}
+		
+		else if (this.hp.getValue()<0) {
+			this.hp.setValue(0);
+		}
 	}
 	public Environnement getEnv() {
 		return env;
