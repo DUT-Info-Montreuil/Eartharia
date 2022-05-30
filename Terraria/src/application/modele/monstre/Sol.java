@@ -3,17 +3,43 @@ package application.modele.monstre;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 
-public class Sol extends Monstre{
+public class Sol extends Monstre {
 
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y,8, 50, 10,32,32);
+		super(env, x, y, 8, 50, 10, 16, 16);
 		// TODO Auto-generated constructor stub
 	}
 
+//	public void mouvementDroite() {
+//		this.x.set(getX() + 8);
+//	}
+//
+//	public void mouvementGauche() {
+//		this.x.set(getX() - 8);
+//	}
+//
+//	public void mouvementHaut() {
+//		this.y.set(getY() - 8);
+//	}
+//
+//	public void mouvementBas() {
+//		this.y.set(getY() + 8);
+//	}
+
 	@Override
-	public void agir() {
-		// TODO Auto-generated method stub
-		
+	public void agir() {//se deplace et attaquer 
+		try {
+			if(this.env.getTemp() % 20 == 1)
+			super.tombe(16);
+			if (this.env.getTemp() % 10 == 0) {
+				super.droite();
+			}
+			if (this.env.getTemp() % 10 == 1) {
+				this.gauche();
+			}
+		} catch (Exception e) {
+
+		}
 	}
 
 }

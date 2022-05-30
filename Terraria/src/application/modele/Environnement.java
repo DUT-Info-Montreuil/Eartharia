@@ -10,16 +10,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import application.modele.acteur.Monstre;
+import application.modele.Exception.CollisionException;
+import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
-import application.modele.fonctionnalitees.Box;
-import application.modele.fonctionnalitees.CollisionException;
 import application.modele.fonctionnalitees.Constante;
-import application.modele.fonctionnalitees.LimiteMapException;
-import application.modele.monstre.Sol;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 
 public class Environnement {
 
@@ -28,15 +24,20 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
+	private int temps = 0;
+
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		this.listActeur= FXCollections.observableArrayList(
-				new Sol(this, 15, 10));
+		listActeur= FXCollections.observableArrayList(new application.modele.monstre.Sol(this, 10, 10)
+//				,new Sol(this, 1, 10),
+//				new Sol(this, 5, 5),
+//				new Sol(this,7, 10)
+				);
 		perso = new Perso(this, 0, 0);
 	}
 
-	public void initialisation(){
+	private void initialisation(){
 		Object ob;
 		try {
 			ob = new JSONParser().parse(new FileReader("src/JSONFile.json"));
@@ -48,11 +49,12 @@ public class Environnement {
 			this.ligne = ((Long) layers.get("height")).intValue();
 			this.map = FXCollections.<Bloc>observableArrayList();
 			JSONArray data = (JSONArray) layers.get("data");
+			int idBloc;
 			for (int i = 0; i < ligne*colonne; i++) {
-				int idBloc = (((Long)data.get(i)).intValue());
+				idBloc = (((Long)data.get(i)).intValue());
 				map.add(new Bloc(i,idBloc,Constante.estUnBlocSolide(idBloc)));
 			}
-			vueNombre();
+			//vueNombre();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -68,53 +70,42 @@ public class Environnement {
 	public void vueNombre() {
 		for (int i = 0; i < ligne; i++) {
 			for (int j = 0; j <colonne; j++) {
-				//System.out.print(this.map.get(i*ligne+j).getId()+"\t");
+				System.out.print(this.map.get(i*ligne+j).getId()+"\t");
 			}
-			//System.out.println();
+			System.out.println();
 		}
 	}
 	public void unTour() {
-		for(int i = this.listActeur.size() -1; i>= 0; i --) {
-			Acteur monstre = listActeur.get(i);
-			if(monstre.estMort()){
-			this.listActeur.remove(i);
+//		for(int i = this.listActeur.size() -1; i>= 0; i --) {
+//			Acteur monstre = listActeur.get(i);
+//			if(monstre.estMort()){
+//			this.listActeur.remove(i);
+//			}
+//		}
+		for( Acteur a : listActeur ) {
+			a.agir();
+		}
+		
+		if (temps%5==0){
 			}
-		}
-		for( Acteur m : listActeur ) {
-			m.agir();
-		}
-
+			temps++;
 	}
 	public void gravite() {
 		//plus tard faire un for each pour la liste acteur
-		for (Acteur acteur : listActeur) {
-			try {
-				if(!perso.surDuSol()|| !acteur.surDuSol())
-					this.perso.tombe(gravite);
-					acteur.tombe(gravite);
-			}catch (LimiteMapException e) {
-				System.out.println("fin limite map");
-			}catch (CollisionException e) {
-				System.out.println("Boite de collision touche un bloc");
-			}catch (Exception e) {
-				e.printStackTrace();
-			};
-		}
-		
+		try {
+			if(!perso.surDuSol())
+				this.perso.tombe(gravite);
+		}catch (LimiteMapException e) {
+			System.out.println("fin limite map");
+		}catch (CollisionException e) {
+			System.out.println("Boite de collision touche un bloc");
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
 	}
-	
-//	public void getIdBLoc (int position) {
-//		this.map.get(position);
-//	}
-//	
-//	public void setCase (int colonne, int ligne) {
-//		map.get(getCase(ligne, colonne)).getId();
-//	}
-	
-	public ObservableList<Bloc> listBloc(){
-		return this.map;
+	public int getTemp() {
+		return this.temps;
 	}
-
 	public int getIdTuile(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}
@@ -130,13 +121,13 @@ public class Environnement {
 	public Perso getPerso () {
 		return this.perso;
 	}
-	public ObservableList <Acteur> getActeurs(){
-		return this.listActeur;
+	public Acteur getActeurs () {
+		Acteur act = null;
+		for (Acteur a : this.listActeur){
+			act = a;
+		}
+		return act;
 	}
-	public void ajoutMonstre (Monstre m) {
-		this.listActeur.add(m);
-	}
-
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));

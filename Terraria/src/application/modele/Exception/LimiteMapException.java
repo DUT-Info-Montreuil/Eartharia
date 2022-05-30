@@ -1,4 +1,4 @@
-package application.modele.fonctionnalitees;
+package application.modele.Exception;
 
 public class LimiteMapException extends Exception {
 

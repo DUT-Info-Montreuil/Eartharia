@@ -6,20 +6,20 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public class ObservateurActeur  implements ListChangeListener <Acteur>{
+public class ObservateurMonstre  implements ListChangeListener <Monstre>{
 
 	private Pane paneActeur;
 	
-	public ObservateurActeur(Pane paneActeur) {		
+	public ObservateurMonstre(Pane paneActeur) {		
 		this.paneActeur=paneActeur;
 	}
 	
 
 	@Override
-	public void onChanged(Change<? extends Acteur> change) {
+	public void onChanged(Change<? extends Monstre> change) {
 		while ( change.next()) {
-			for( Acteur a : change.getRemoved()) {
-				Node node = this.paneActeur.lookup("#" + a.getIdActeur());
+			for( Monstre m : change.getRemoved()) {
+				Node node = this.paneActeur.lookup("#" + m.getId());
 				boolean result = this.paneActeur.getChildren().remove(node);
 				
 			}

@@ -10,10 +10,27 @@ public class volant  extends Monstre{
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	public void mouvementDroite () {
+		this.x.set(getX() + 8);	
+	}
+	public void mouvementGauche() {
+		this.x.set(getX() - 8);
+	}
+	public void mouvementHaut () {
+		this.y.set(getY() - 8);
+	}
+	public void mouvementBas () {
+		this.y.set(getY() + 8);
+	}
 	@Override
 	public void agir() {
-		// TODO Auto-generated method stub
-		
+		if (this.env.getTemp()%2 == 0) {
+			this.mouvementDroite(); 
+		}
+		if (this.env.getTemp()%2 == 1){
+			this.mouvementGauche();
+		}
 	}
 
 }
