@@ -1,5 +1,15 @@
 package application.modele.item;
 
-public class Epee {
+import application.modele.Environnement;
+
+public class Epee extends Arme{
+
+	public Epee(int id, int degats, Environnement env) {
+		super(id, degats, env);
+	}
+	
+	public Epee(int id, int quantite,  int degats, Environnement env) {
+		super(id, quantite, degats, env);
+	}
 
 }

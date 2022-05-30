@@ -63,10 +63,9 @@ public abstract class Acteur {
 		return this.hpMax.getValue();
 	}
 	
-	/*public void augHpMax(int hpPlus) {
-		this.hpMax.setValue(this.hpMax.getValue()+hpPlus);
-	}*/
-	
+	public void setHpMax(int hpPlus) {
+		this.hpMax.setValue(this.getHpMax()+hpPlus);
+	}
 	public void limiteHp() {
 		if (this.hp.getValue()>this.hpMax.getValue()) {
 			this.hp.setValue(this.hpMax.getValue());

@@ -9,7 +9,9 @@ import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
 import application.modele.item.Arme;
 import application.modele.item.BlocItem;
+import application.modele.item.CoeurDePhoenix;
 import application.modele.item.Outils;
+import application.modele.item.PlumeDePhoenix;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
@@ -135,4 +137,23 @@ public class Perso extends Acteur{
 	public void equiperItem(int index) throws InventaireCaseVideException{
 		prendEnMain(getItem(index)); 
 	}
+	
+	public void augHpMax(int hpPlus) {
+		for (int i=0; i <inventaire.size();i++) {
+			if (inventaire.get(i) instanceof CoeurDePhoenix) {
+				this.setHpMax(50);
+			}
+		}
+	}
+	
+	public void ressusciter() {
+		if(this.getHp()==0) {
+			for (int i=0; i<inventaire.size();i++) {
+				if (inventaire.get(i) instanceof PlumeDePhoenix) {
+					this.setHp(this.getHpMax()/2);
+				}
+			}
+		}
+	}
+	
 }

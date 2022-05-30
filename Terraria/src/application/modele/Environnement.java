@@ -15,6 +15,7 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.BlocItem;
 import application.modele.personnage.Perso;
+import application.modele.personnage.Pnj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -105,5 +106,17 @@ public class Environnement {
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
+	}
+	public ObservableList<Acteur> getListActeur() {
+		return this.listActeur;
+	}
+	public ArrayList<Acteur> ennemiPresent() {
+		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();
+		for (int i=0; i<listActeur.size(); i++) {
+			if ((listActeur.get(i).getX()<=this.perso.getX()+1 || listActeur.get(i).getX()>=this.perso.getX()-1 || listActeur.get(i).getY()>=this.perso.getY()-1 || (listActeur.get(i).getX()>=this.perso.getX()-1 && listActeur.get(i).getY()>=this.perso.getY()-1) || (listActeur.get(i).getX()<=this.perso.getX()+1 && listActeur.get(i).getY()>=this.perso.getY()-1)) && listActeur.get(i) instanceof Pnj ) {
+				ennemis.add(listActeur.get(i));
+			}
+		}
+		return ennemis; 
 	}
 }
