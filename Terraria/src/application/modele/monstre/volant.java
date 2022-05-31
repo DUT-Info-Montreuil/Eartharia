@@ -12,10 +12,10 @@ public class volant  extends Monstre{
 
 	
 	public void mouvementDroite () {
-		this.x.set(getX() + 8);	
+		this.x.set(getX() + 2);	
 	}
 	public void mouvementGauche() {
-		this.x.set(getX() - 8);
+		this.x.set(getX() - 2);
 	}
 	public void mouvementHaut () {
 		this.y.set(getY() - 8);
@@ -25,10 +25,10 @@ public class volant  extends Monstre{
 	}
 	@Override
 	public void agir() {
-		if (this.env.getTemp()%2 == 0) {
+		if (this.env.getTemp()%4 == 0) {
 			this.mouvementDroite(); 
 		}
-		if (this.env.getTemp()%2 == 1){
+		if (this.env.getTemp()%4 == 1){
 			this.mouvementGauche();
 		}
 	}

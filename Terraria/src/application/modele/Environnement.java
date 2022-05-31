@@ -14,6 +14,7 @@ import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.monstre.Sol;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -29,10 +30,11 @@ public class Environnement {
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		listActeur= FXCollections.observableArrayList(new application.modele.monstre.Sol(this, 10, 10)
-//				,new Sol(this, 1, 10),
-//				new Sol(this, 5, 5),
-//				new Sol(this,7, 10)
+		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
+				new Sol(this, 0, 10)
+				,new Sol(this, 15, 4),
+				new Sol(this, 5, 5),
+				new Sol(this,7, 10)
 				);
 		perso = new Perso(this, 0, 0);
 	}
@@ -76,6 +78,7 @@ public class Environnement {
 		}
 	}
 	public void unTour() {
+		this.gravite();
 //		for(int i = this.listActeur.size() -1; i>= 0; i --) {
 //			Acteur monstre = listActeur.get(i);
 //			if(monstre.estMort()){
@@ -127,6 +130,9 @@ public class Environnement {
 			act = a;
 		}
 		return act;
+	}
+	public ObservableList <Acteur> getListeActeur(){
+		return this.listActeur;
 	}
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);

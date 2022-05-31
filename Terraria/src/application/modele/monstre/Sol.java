@@ -6,7 +6,7 @@ import application.modele.acteur.Monstre;
 public class Sol extends Monstre {
 
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y, 8, 50, 10, 16, 16);
+		super(env, x, y, 1, 20, 10, 16, 16);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,17 +28,25 @@ public class Sol extends Monstre {
 
 	@Override
 	public void agir() {//se deplace et attaquer 
+		System.out.println(super.getVitesse());
+
 		try {
-			if(this.env.getTemp() % 20 == 1)
+			if(this.env.getTemp() % 4 == 0)
 			super.tombe(16);
-			if (this.env.getTemp() % 10 == 0) {
+			
+		} catch (Exception e) {
+			System.out.println("COLLISION BAS");
+
+		}
+		try {
+			if (this.env.getTemp() % 20 == 0) {
 				super.droite();
 			}
-			if (this.env.getTemp() % 10 == 1) {
+			if (this.env.getTemp() % 20 == 1) {
 				this.gauche();
 			}
 		} catch (Exception e) {
-
+			System.out.println("COLLISION D ET G");
 		}
 	}
 

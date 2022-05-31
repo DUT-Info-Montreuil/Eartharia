@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
@@ -31,6 +32,7 @@ import application.modele.acteur.Perso;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.monstre.Sol;
 import application.vue.*;
 
 
@@ -68,7 +70,13 @@ public class Controleur implements Initializable {
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.vueMap = new vueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
-		this.vue_acteur = new vueActeur(env.getActeurs(), pane);
+			for(Acteur a : this.env.getListeActeur()) {
+				if(a instanceof Sol) {
+					new vueActeur((Sol) a, pane);
+				}
+			}//dans la vue et le modèle
+		
+
 		//this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		description.setVisible(false);
 	}
@@ -130,13 +138,14 @@ public class Controleur implements Initializable {
 	private void gameLoop (){
 		tour = new Timeline();
 		tour.setCycleCount(Timeline.INDEFINITE);           
-		KeyFrame kf = new KeyFrame(
-				Duration.millis(25),
+		
+		KeyFrame kfAct = new KeyFrame(
+				Duration.seconds(0.05),
 				(ev -> {
-					this.env.gravite();
 					this.env.unTour();
 				}));
-		this.tour.getKeyFrames().add(kf);
+		this.tour.getKeyFrames().add(kfAct);
+
 		this.tour.play();    
 	}
 	@FXML
