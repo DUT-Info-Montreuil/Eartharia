@@ -26,7 +26,6 @@ public abstract class Acteur {
 		this.vitesse = vitesse;
 		this.hpMax =new SimpleIntegerProperty(hpMax) ;
 		this.hp =new SimpleIntegerProperty(hpMax) ;
-
 	}
 	
 
@@ -64,10 +63,9 @@ public abstract class Acteur {
 		return this.hpMax.getValue();
 	}
 	
-	/*public void augHpMax(int hpPlus) {
-		this.hpMax.setValue(this.hpMax.getValue()+hpPlus);
-	}*/
-	
+	public void setHpMax(int hpPlus) {
+		this.hpMax.setValue(this.getHpMax()+hpPlus);
+	}
 	public void limiteHp() {
 		if (this.hp.getValue()>this.hpMax.getValue()) {
 			this.hp.setValue(this.hpMax.getValue());
@@ -106,13 +104,9 @@ public abstract class Acteur {
 	}
 	
 	private void limiteDeMap(int x, int y) throws LimiteMapException{
-		if(caseX()==0 && x<0)
+		if((getX()+x)<0)
 			throw new LimiteMapException();
-		if(caseY()==0 && y<0)
-			throw new LimiteMapException();
-		if(caseX()==getEnv().getColonne() && x>0)
-			throw new LimiteMapException();
-		if(caseY()==getEnv().getLigne() && y>0)
+		if((getY()+y)<0)
 			throw new LimiteMapException();
 	}
 	public void deplacement(int x, int y) throws Exception{
