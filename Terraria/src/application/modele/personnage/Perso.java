@@ -24,7 +24,7 @@ public class Perso extends Acteur{
 	private Item equipe;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 8,4,16,16);
+		super(env, x, y, 200,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
 	}
 
@@ -138,7 +138,7 @@ public class Perso extends Acteur{
 		prendEnMain(getItem(index)); 
 	}
 	
-	public void augHpMax(int hpPlus) {
+	public void augHpMax() {
 		for (int i=0; i <inventaire.size();i++) {
 			if (inventaire.get(i) instanceof CoeurDePhoenix) {
 				this.setHpMax(50);

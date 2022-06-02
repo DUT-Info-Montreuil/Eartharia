@@ -5,6 +5,7 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
 
 public abstract class Acteur {
 
@@ -24,8 +25,8 @@ public abstract class Acteur {
 		this.saut = false;
 		this.boxPlayer = new Box(xBox, yBox,this);
 		this.vitesse = vitesse;
-		this.hpMax =new SimpleIntegerProperty(hpMax) ;
-		this.hp =new SimpleIntegerProperty(hpMax) ;
+		this.hpMax =new SimpleIntegerProperty(hpMax);
+		this.hp =new SimpleIntegerProperty(hpMax);
 	}
 	
 
@@ -53,6 +54,7 @@ public abstract class Acteur {
 	
 	public void setHp(int hpPlus) {
 		this.hp.setValue(this.hp.getValue()+hpPlus);
+		limiteHp();
 	}
 	
 	public IntegerProperty getHpMaxProperty() {
@@ -65,13 +67,14 @@ public abstract class Acteur {
 	
 	public void setHpMax(int hpPlus) {
 		this.hpMax.setValue(this.getHpMax()+hpPlus);
+		
 	}
 	public void limiteHp() {
-		if (this.hp.getValue()>this.hpMax.getValue()) {
+		if (this.hp.getValue()>=this.hpMax.getValue()) {
 			this.hp.setValue(this.hpMax.getValue());
 		}
 		
-		else if (this.hp.getValue()<0) {
+		else if (this.hp.getValue()<=0) {
 			this.hp.setValue(0);
 		}
 	}

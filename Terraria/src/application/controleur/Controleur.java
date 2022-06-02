@@ -1,6 +1,8 @@
 package application.controleur;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,14 +32,14 @@ import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
+import application.modele.item.CoeurDePhoenix;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
+import application.modele.item.Projectile;
 import application.modele.personnage.Perso;
-import application.vue.VueInventaire;
-import application.vue.VuePerso;
-import application.vue.vueHp;
-import application.vue.VueMapTerraria;
+import application.vue.*;
 
 public class Controleur implements Initializable {
 
@@ -46,6 +48,8 @@ public class Controleur implements Initializable {
 	private VuePerso vueperso;
 	private vueHp vueHp;
 	private Timeline tour;
+	private VueProjectile vueProjectile;
+	private Projectile projectile;
 
 
 	private VueInventaire vueInventaire;
@@ -64,11 +68,14 @@ public class Controleur implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
+		this.projectile=new Projectile(11, 20, env, this.env.getPerso());
 		gameLauncher();
 		gameLoop();
 
-		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
+		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);		
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
+		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
+		
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -77,7 +84,7 @@ public class Controleur implements Initializable {
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		description.setVisible(false);
-		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
+		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);		
 	}
 
 	private int cmpt = 0;
@@ -117,7 +124,9 @@ public class Controleur implements Initializable {
 				vueInventaire.ouvFerInv();
 				break;
 			case A :
-				this.env.getPerso().setHp(-1);
+				this.env.getPerso().setHp(-25);
+				/*perso.addInventaire(new CoeurDePhoenix(7));
+				perso.augHpMax();*/
 				System.out.println(this.env.getPerso().getHp());
 				break;
 			case P  :
@@ -128,6 +137,11 @@ public class Controleur implements Initializable {
 				break;
 			case H  :
 				perso.addInventaire(new Hache());
+				break;
+			case V :
+				Projectile p = new Projectile(11, 20, env, perso);
+				this.vueProjectile= new VueProjectile(p, pane);
+				env.addListProjectiles(p);
 				break;
 			default:
 				break;
@@ -165,7 +179,7 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					this.env.gravite();
-					this.vueHp.refresh();
+					env.lancerProjectiles();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    

@@ -1,4 +1,4 @@
-package application.vue;
+ package application.vue;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -116,7 +116,7 @@ public class VueInventaire {
 	}
 	public void descriptionItem(Label label,Item i,double x ,double y) {
 		label.setVisible(true);
-		label.setText(" id : "+i.getId()+"\n Quantité : "+i.getQuantite());
+		label.setText(" id : "+i.getId()+"\n Quantitï¿½ : "+i.getQuantite());
 		label.setBackground(new Background(new BackgroundFill(Color.DARKGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 		label.setTranslateX(x);
 		label.setTranslateY(y);
