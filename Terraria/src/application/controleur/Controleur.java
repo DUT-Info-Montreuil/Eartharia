@@ -48,7 +48,7 @@ public class Controleur implements Initializable {
 	private VuePerso vueperso;
 	private vueHp vueHp;
 	private Timeline tour;
-	private VueProjectile vueProjectile;
+	public VueProjectile vueProjectile;
 	private Projectile projectile;
 
 
@@ -58,7 +58,7 @@ public class Controleur implements Initializable {
 	@FXML
 	private TilePane tPaneInv;
 	@FXML
-	private Pane pane;
+	public Pane pane;
 	@FXML
 	private TilePane tileP;
 	@FXML
@@ -68,7 +68,7 @@ public class Controleur implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
-		this.projectile=new Projectile(11, 20, env, this.env.getPerso());
+		this.projectile=new Projectile(11, env, this.env.getPerso(), this.env.getLigne(), this.env.getColonne());
 		gameLauncher();
 		gameLoop();
 
@@ -139,10 +139,7 @@ public class Controleur implements Initializable {
 				perso.addInventaire(new Hache());
 				break;
 			case V :
-				Projectile p = new Projectile(11, 20, env, perso);
-				this.vueProjectile= new VueProjectile(p, pane);
-				env.addListProjectiles(p);
-				break;
+				perso.addInventaire(new BatonMagique(16, 25, this.env));
 			default:
 				break;
 			}
@@ -179,7 +176,7 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					this.env.gravite();
-					env.lancerProjectiles();
+					this.env.lancerProjectiles();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
@@ -194,6 +191,10 @@ public class Controleur implements Initializable {
 
 			case PRIMARY :
 				perso.useEquipe(yClic, xClic);
+				System.out.println(this.env.getPerso().getProjectile());
+				if(this.env.getPerso().getEquipe() instanceof BatonMagique) {
+					this.vueProjectile= new VueProjectile(this.env.getPerso().getProjectile(), pane);
+				}
 				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
 				break;
 

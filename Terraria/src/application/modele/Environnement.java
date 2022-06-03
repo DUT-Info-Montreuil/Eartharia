@@ -97,7 +97,6 @@ public class Environnement {
 	
 	public void lancerProjectiles() {
 		for (int i=0; i<projectiles.size(); i++) {
-			if(!boxCollisionBloc(getLigne()+1, getColonne()+1))
 				projectiles.get(i).lancer();
 		}
 	}

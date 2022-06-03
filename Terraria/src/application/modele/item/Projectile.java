@@ -9,13 +9,17 @@ public class Projectile extends Arme{
 
 	private IntegerProperty x;
 	private IntegerProperty y;
+	private int xDest;
+	private int yDest;
 	private Perso p;
 	
-	public Projectile(int id, int degats, Environnement env, Perso p) {
-		super(id, degats, env);
+	public Projectile(int id,  Environnement env, Perso p, int xDest, int yDest) {
+		super(id, 25, env);
 		this.p=p;
 		this.x= new SimpleIntegerProperty(this.p.getX()/*128*/);
 		this.y= new SimpleIntegerProperty(this.p.getY()/*128*/);
+		this.xDest=xDest;
+		this.yDest=yDest;
 		System.out.println(p.getX());
 		System.out.println(p.getY());
 
@@ -46,7 +50,11 @@ public class Projectile extends Arme{
 	}
 	
 	public void lancer() {
-				this.setXProperty(1);
+		if (this.x.getValue()!=this.xDest || this.y.getValue()!=this.yDest)
+			if (this.xDest!=0)
+				this.setXProperty(3);
+			if(this.yDest!=0)
+				this.setYProperty(3);
 	}
 	
 }

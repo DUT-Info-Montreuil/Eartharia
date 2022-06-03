@@ -2,16 +2,20 @@ package application.modele.personnage;
 
 import java.util.Timer;
 import application.modele.Item;
+import application.controleur.Controleur;
 import application.modele.Acteur;
 import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
 import application.modele.item.Arme;
+import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.CoeurDePhoenix;
 import application.modele.item.Outils;
 import application.modele.item.PlumeDePhoenix;
+import application.modele.item.Projectile;
+import application.vue.VueProjectile;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
@@ -20,8 +24,10 @@ import application.modele.Exception.RienEquiperExeception;
 
 
 public class Perso extends Acteur{
+	
 	private ObservableList<Item> inventaire;
 	private Item equipe;
+	private Projectile projectile;
 
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,16);
@@ -95,6 +101,9 @@ public class Perso extends Acteur{
 			throw new InventaireCaseVideException();
 		}
 	}
+	public Projectile getProjectile() {
+		return this.projectile;
+	}
 
 
 	public void useEquipe(int y,int x) throws Exception{
@@ -115,8 +124,14 @@ public class Perso extends Acteur{
 				bloc.place(y, x, getEnv());
 			}
 		}
-		else if (equipe instanceof Arme) {
+		/*else if (equipe instanceof Arme) {
 			Arme arme = (Arme) equipe;
+		}*/
+		
+		else if (equipe instanceof BatonMagique) {
+			Projectile p = new Projectile(11, this.getEnv(), this, 25, 25);
+			this.projectile=p;
+			this.getEnv().addListProjectiles(p);
 		}
 		encoreUtilisable();
 	}
