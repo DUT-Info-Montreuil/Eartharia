@@ -9,15 +9,16 @@ import application.modele.item.Outils;
 import application.vue.VueInventaire;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 
 public class ObserveInventaire implements ListChangeListener<Item >{
 
-	private TilePane PaneInventaire;
-	private TilePane PaneInventaireRapide;
+	private GridPane PaneInventaire;
+	private GridPane PaneInventaireRapide;
 	private VueInventaire vueInventaire;
 
-	public ObserveInventaire(TilePane tileInventaire,TilePane tileInventaireRapide,VueInventaire vueInventaire) {
+	public ObserveInventaire(GridPane tileInventaire,GridPane tileInventaireRapide,VueInventaire vueInventaire) {
 		this.PaneInventaire = tileInventaire;
 		this.PaneInventaireRapide = tileInventaireRapide;
 		this.vueInventaire = vueInventaire;

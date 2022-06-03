@@ -6,6 +6,8 @@ import java.util.Timer;
 
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
+import application.modele.fonctionnalitees.ClickItemFonctionnalite;
+import application.modele.fonctionnalitees.Tableau;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -19,19 +21,22 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class VueInventaire {
 
 	private ObservableList<Item> inventaire;
 	private Image img_item;
 	private Image img_bloc;
-	private TilePane tPaneInventaire;
-	private TilePane tPaneInventaireRapide;
+	private GridPane tPaneInventaire;
+	private GridPane tPaneInventaireRapide;
 	private boolean visibility;
 
-	public VueInventaire(TilePane tPaneInventaireRapide,TilePane tpInventaire,  ObservableList<Item> inventaire){
+	public VueInventaire(GridPane tPaneInventaireRapide,GridPane tpInventaire,  ObservableList<Item> inventaire){
 		this.tPaneInventaire=tpInventaire;
 		this.tPaneInventaireRapide = tPaneInventaireRapide;
 		this.visibility = false;
@@ -46,7 +51,7 @@ public class VueInventaire {
 	}
 
 	private void paneSet() {
-		this.tPaneInventaire.setPrefSize(128, 128);
+		this.tPaneInventaire.setPrefSize(128, 96);
 		this.tPaneInventaire.setVisible(false);
 
 		this.tPaneInventaireRapide.setPrefSize(128, 32);
@@ -69,10 +74,10 @@ public class VueInventaire {
 		bGround = new Background(bImg);
 		tPaneInventaireRapide.setBackground(bGround);
 
-		tPaneInventaireRapide.setTranslateX(5);
-		tPaneInventaireRapide.setTranslateY(5);
-		tPaneInventaire.setTranslateX(5);
-		tPaneInventaire.setTranslateY(47);
+		tPaneInventaireRapide.setLayoutX(5);
+		tPaneInventaireRapide.setLayoutY(5);
+		tPaneInventaire.setLayoutX(5);
+		tPaneInventaire.setLayoutY(47);
 	}
 	public void initItem() throws FileNotFoundException {
 		FileInputStream fichierTileSet = null;
@@ -99,10 +104,14 @@ public class VueInventaire {
 		img.setFitHeight(32);
 		img.setFitWidth(32);
 		img.setId(id);
-		if(this.tPaneInventaireRapide.getChildren().size()<4)
-			tPaneInventaireRapide.getChildren().add(img);
-		else
-			this.tPaneInventaire.getChildren().add(img);
+		if(this.tPaneInventaireRapide.getChildren().size()<4) {
+			Tableau.add(tPaneInventaireRapide,img);
+			new ClickItemFonctionnalite(img,tPaneInventaireRapide);
+		}
+		else {
+			Tableau.add(tPaneInventaire,img);
+			new ClickItemFonctionnalite(img,tPaneInventaire);
+		}
 	}
 	public void afficherItemOutils(int idOutils,String id) {
 		afficherItem(idOutils, id, 32, new ImageView(img_item));

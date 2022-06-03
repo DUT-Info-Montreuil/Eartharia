@@ -4,23 +4,18 @@ import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Bloc;
 import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
@@ -28,7 +23,6 @@ import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
-import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
@@ -50,9 +44,9 @@ public class Controleur implements Initializable {
 
 	private VueInventaire vueInventaire;
 	@FXML
-	private TilePane tPaneInvRapide;
+	private GridPane tPaneInvRapide;
 	@FXML
-	private TilePane tPaneInv;
+	private GridPane tPaneInv;
 	@FXML
 	private Pane pane;
 	@FXML
@@ -80,7 +74,7 @@ public class Controleur implements Initializable {
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
 	}
 
-	private int cmpt = 0;
+	private int cmpt = 50;
 	@FXML
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
@@ -89,6 +83,7 @@ public class Controleur implements Initializable {
 			cmpt++;
 			switch (k.getCode()) {
 			case UP    :
+				perso.addInventaire(new BlocItem(cmpt));
 				perso.saut();
 				break;
 			case DOWN  :
@@ -98,7 +93,6 @@ public class Controleur implements Initializable {
 				perso.gauche();
 				break;
 			case RIGHT :
-				//perso.addInventaire(new Item(0));
 				perso.droite();
 				break;
 			case DIGIT1  :
