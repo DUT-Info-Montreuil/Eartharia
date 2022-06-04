@@ -41,7 +41,6 @@ public class Controleur implements Initializable {
 	private vueHp vueHp;
 	private Timeline tour;
 
-
 	private VueInventaire vueInventaire;
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -219,5 +218,9 @@ public class Controleur implements Initializable {
 		}catch (InventaireCaseVideException e) {
 			System.out.println("Case Vide");		
 		}
+	}
+	@FXML
+	public void mouseEnter() {
+		
 	}
 }

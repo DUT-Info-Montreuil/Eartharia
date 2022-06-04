@@ -71,4 +71,28 @@ public class Tableau {
 	    node2.setTranslateX(0);
 	    node2.setTranslateY(0);
 	}
+	
+//	public static void changement(GridPane otherParent,GridPane parent,Node node) {
+//		double column = node.getParent().getLayoutX()+node.getTranslateX()+GridPane.getColumnIndex(node)*32;
+//		double row = node.getParent().getLayoutY()+node.getTranslateY()+GridPane.getRowIndex(node)*32;
+//		column=(column-otherParent.getLayoutX())/32;
+//		row=(row-otherParent.getLayoutY())/32;
+//		System.out.println("Tableau.changement()");
+//		if(libre(otherParent, (int)row,(int)column)) {
+//			System.out.println("libre");
+//			parent.getChildren().remove(node);
+//			node.setTranslateX(0);
+//			node.setTranslateY(0);
+//			otherParent.add(node,(int)column, (int)row);
+//		}else {
+//			System.out.println("non libre");
+//			Node node2 = getCell(otherParent,(int)row,(int)column);
+//			otherParent.getChildren().remove(node2);
+//			parent.add(node2,GridPane.getColumnIndex(node),GridPane.getRowIndex(node));
+//			System.out.println(node2.getParent().getId());
+//		}
+//
+//		
+//		System.out.println(node.getParent().getId());
+//	}
 }

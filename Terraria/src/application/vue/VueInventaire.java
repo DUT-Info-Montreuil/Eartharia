@@ -53,6 +53,9 @@ public class VueInventaire {
 	private void paneSet() {
 		this.tPaneInventaire.setPrefSize(128, 96);
 		this.tPaneInventaire.setVisible(false);
+		this.tPaneInventaire.setId("inventaire");
+		this.tPaneInventaireRapide.setId("inventaireRapide");
+
 
 		this.tPaneInventaireRapide.setPrefSize(128, 32);
 		background();
@@ -61,6 +64,10 @@ public class VueInventaire {
 	public void ouvFerInv() {
 		visibility=!visibility;
 		this.tPaneInventaire.setVisible(visibility);
+		if(visibility) 
+			this.tPaneInventaire.toFront();
+		else
+			this.tPaneInventaire.toBack();
 	}
 
 	private void background() {
@@ -73,7 +80,7 @@ public class VueInventaire {
 		bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		bGround = new Background(bImg);
 		tPaneInventaireRapide.setBackground(bGround);
-
+		
 		tPaneInventaireRapide.setLayoutX(5);
 		tPaneInventaireRapide.setLayoutY(5);
 		tPaneInventaire.setLayoutX(5);
@@ -106,11 +113,11 @@ public class VueInventaire {
 		img.setId(id);
 		if(this.tPaneInventaireRapide.getChildren().size()<4) {
 			Tableau.add(tPaneInventaireRapide,img);
-			new ClickItemFonctionnalite(img,tPaneInventaireRapide);
+			new ClickItemFonctionnalite(img,tPaneInventaireRapide,tPaneInventaire);
 		}
 		else {
 			Tableau.add(tPaneInventaire,img);
-			new ClickItemFonctionnalite(img,tPaneInventaire);
+			new ClickItemFonctionnalite(img,tPaneInventaire,tPaneInventaireRapide);
 		}
 	}
 	public void afficherItemOutils(int idOutils,String id) {
