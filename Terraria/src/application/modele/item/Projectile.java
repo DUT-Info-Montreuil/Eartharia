@@ -50,11 +50,20 @@ public class Projectile extends Arme{
 	}
 	
 	public void lancer() {
-		if (this.x.getValue()!=this.xDest || this.y.getValue()!=this.yDest)
-			if (this.xDest!=0)
-				this.setXProperty(3);
-			if(this.yDest!=0)
-				this.setYProperty(3);
+		
+				//if (this.x.getValue()>this.xDest) {
+					this.setXProperty((this.xDest-this.getX())/this.p.getEnv().getColonne());
+				
+				/*else if (this.x.getValue()<this.xDest) {
+					this.setXProperty(2);
+				}*/
+
+				//if (this.y.getValue()>this.yDest) {
+					this.setYProperty((this.yDest-this.getY())/this.p.getEnv().getLigne());
+				
+				/*else if (this.y.getValue()<this.yDest) {
+					this.setYProperty(2);
+				}*/
 	}
 	
 }

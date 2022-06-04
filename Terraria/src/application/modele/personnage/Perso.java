@@ -129,7 +129,7 @@ public class Perso extends Acteur{
 		}*/
 		
 		else if (equipe instanceof BatonMagique) {
-			Projectile p = new Projectile(11, this.getEnv(), this, 25, 25);
+			Projectile p = new Projectile(11, this.getEnv(), this, x*16, y*16);
 			this.projectile=p;
 			this.getEnv().addListProjectiles(p);
 		}
