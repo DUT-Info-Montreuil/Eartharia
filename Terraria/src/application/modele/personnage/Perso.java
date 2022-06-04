@@ -14,6 +14,7 @@ import application.modele.item.Outils;
 import application.modele.item.PlumeDePhoenix;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
+import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 
@@ -88,11 +89,11 @@ public class Perso extends Acteur{
 		}
 		return true;
 	}
-	public Item getItem(int index) throws InventaireCaseVideException{
+	public Item getItem(int index) throws ItemNonTrouverException{
 		try {
 			return inventaire.get(index);
 		}catch(Exception e) {
-			throw new InventaireCaseVideException();
+			throw new ItemNonTrouverException();
 		}
 	}
 
@@ -134,8 +135,13 @@ public class Perso extends Acteur{
 	public void prendEnMain(Item item) {
 		this.equipe = item;		
 	}
-	public void equiperItem(int index) throws InventaireCaseVideException{
-		prendEnMain(getItem(index)); 
+	public void equiperItem(int index){
+		try {
+			prendEnMain(getItem(index));
+		} catch (ItemNonTrouverException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	public void augHpMax(int hpPlus) {

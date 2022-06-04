@@ -5,6 +5,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -20,10 +21,12 @@ import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
+import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.fonctionnalitees.Tableau;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
@@ -95,20 +98,25 @@ public class Controleur implements Initializable {
 				perso.droite();
 				break;
 			case DIGIT1  :
-				perso.equiperItem(0);
+			case NUMPAD1  :
+				perso.prendEnMain(vueInventaire.getItem(0));
 				break;
 			case DIGIT2  :
-				perso.equiperItem(1);
+			case NUMPAD2  :
+				perso.prendEnMain(vueInventaire.getItem(1));
 				break;
 			case DIGIT3  :
-				perso.equiperItem(3);
+			case NUMPAD3  :
+				perso.prendEnMain(vueInventaire.getItem(2));
 				break;
 			case DIGIT4  :
-				perso.equiperItem(4);
+			case NUMPAD4  :
+				perso.prendEnMain(vueInventaire.getItem(3));
 				break;
 			case I  :
 				vueInventaire.ouvFerInv();
 				break;
+			//Code Cheat
 			case A :
 				this.env.getPerso().setHp(-1);
 				System.out.println(this.env.getPerso().getHp());
@@ -194,33 +202,27 @@ public class Controleur implements Initializable {
 	}
 	@FXML
 	private void inventaireMouse(MouseEvent m) {
-		int xClic = (int) m.getX()/32 ;
-		int yClic = (int) m.getY()/32 ;
 		Perso perso = this.env.getPerso();
-		Item item;
+		ImageView img =	(ImageView) m.getTarget();
 		try {
-			if(m.getSource() ==  tPaneInv)
-				item = env.getPerso().getItem(yClic*4+xClic+4);
-			else
-				item = env.getPerso().getItem(yClic*4+xClic);
-
 			switch(m.getButton()) {
 			case PRIMARY :
-				perso.prendEnMain(item);
+				perso.prendEnMain(vueInventaire.getItem(img));
 				break;
-			case SECONDARY : 
-				this.vueInventaire.descriptionItem(description,item,m.getX(),m.getY());
+			case SECONDARY :
+				
 				break;
 			default :
 				System.out.println("probleme");
 				break;
 			}
-		}catch (InventaireCaseVideException e) {
-			System.out.println("Case Vide");		
+		}
+		catch (ItemNonTrouverException e) {
+			e.printStackTrace();
 		}
 	}
 	@FXML
 	public void mouseEnter() {
-		
+
 	}
 }

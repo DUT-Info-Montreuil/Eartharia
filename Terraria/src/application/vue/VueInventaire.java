@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.util.Timer;
 
 import application.modele.Item;
+import application.modele.Exception.InventaireCaseVideException;
+import application.modele.Exception.ItemNonTrouverException;
 import application.modele.fonctionnalitees.Description;
-import application.modele.fonctionnalitees.ClickItemFonctionnalite;
+import application.modele.fonctionnalitees.ItemFonctionnalite;
 import application.modele.fonctionnalitees.Tableau;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,12 +45,8 @@ public class VueInventaire {
 		this.visibility = false;
 		this.inventaire=inventaire;		
 		paneSet();
-		try {
-			initItem();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); 
-		}
+		background();
+		initItem();
 	}
 
 	private void paneSet() {
@@ -55,10 +54,34 @@ public class VueInventaire {
 		this.tPaneInventaire.setVisible(false);
 		this.tPaneInventaire.setId("inventaire");
 		this.tPaneInventaireRapide.setId("inventaireRapide");
-
-
 		this.tPaneInventaireRapide.setPrefSize(128, 32);
-		background();
+	}
+	private void background() {
+		Image img = new Image("ressources/Inventaire.png");
+		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
+		Background bGround = new Background(bImg);
+		tPaneInventaire.setBackground(bGround);	
+
+		img = new Image("ressources/InventaireRapide.png");
+		bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
+		bGround = new Background(bImg);
+		tPaneInventaireRapide.setBackground(bGround);
+
+		tPaneInventaireRapide.setLayoutX(5);
+		tPaneInventaireRapide.setLayoutY(5);
+		tPaneInventaire.setLayoutX(5);
+		tPaneInventaire.setLayoutY(47);
+	}
+	private void initItem(){
+		try {
+			FileInputStream fichierTileSet  = new FileInputStream("src/ressources/equipement.png");
+			this.img_item = new Image(fichierTileSet);
+			fichierTileSet = new FileInputStream("src/ressources/TuileMap.png");
+			this.img_bloc = new Image(fichierTileSet);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void ouvFerInv() {
@@ -70,38 +93,6 @@ public class VueInventaire {
 			this.tPaneInventaire.toBack();
 	}
 
-	private void background() {
-		Image img = new Image("ressources/Inventaire.png");
-		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
-		Background bGround = new Background(bImg);
-		tPaneInventaire.setBackground(bGround);	
-
-		img = new Image("ressources/InventaireRapide.png");
-		bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
-		bGround = new Background(bImg);
-		tPaneInventaireRapide.setBackground(bGround);
-		
-		tPaneInventaireRapide.setLayoutX(5);
-		tPaneInventaireRapide.setLayoutY(5);
-		tPaneInventaire.setLayoutX(5);
-		tPaneInventaire.setLayoutY(47);
-	}
-	public void initItem() throws FileNotFoundException {
-		FileInputStream fichierTileSet = null;
-		try {
-			fichierTileSet = new FileInputStream("src/ressources/equipement.png");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		this.img_item = new Image(fichierTileSet);
-
-		try {
-			fichierTileSet = new FileInputStream("src/ressources/TuileMap.png");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		this.img_bloc = new Image(fichierTileSet);
-	}
 	private void afficherItem(int idItem,String id,int dimention, ImageView img) {
 		int y = (int) (idItem/(img.getImage().getHeight()/dimention));
 		int x = (int) (idItem%(img.getImage().getWidth()/dimention));
@@ -111,31 +102,32 @@ public class VueInventaire {
 		img.setFitHeight(32);
 		img.setFitWidth(32);
 		img.setId(id);
-		if(this.tPaneInventaireRapide.getChildren().size()<4) {
+		if(this.tPaneInventaireRapide.getChildren().size()<4)
 			Tableau.add(tPaneInventaireRapide,img);
-			new ClickItemFonctionnalite(img,tPaneInventaireRapide,tPaneInventaire);
-		}
-		else {
+		else
 			Tableau.add(tPaneInventaire,img);
-			new ClickItemFonctionnalite(img,tPaneInventaire,tPaneInventaireRapide);
-		}
+		new ItemFonctionnalite(img,tPaneInventaire,tPaneInventaireRapide);
 	}
 	public void afficherItemOutils(int idOutils,String id) {
 		afficherItem(idOutils, id, 32, new ImageView(img_item));
 	}
-
 	public void afficherItemBloc(int idTuile,String id) {
 		afficherItem(idTuile-1,id, 16,new ImageView(img_bloc));
 	}
-	public Item getItem(ImageView img) {
-		return inventaire.get(tPaneInventaire.getChildren().indexOf(img));
+
+	public Item getItem(ImageView img)throws ItemNonTrouverException {
+		for (Item item : inventaire) {
+			if(item.getId()==img.getId())
+				return item;
+		}
+		throw new ItemNonTrouverException();
 	}
-	public void descriptionItem(Label label,Item i,double x ,double y) {
-		label.setVisible(true);
-		label.setText(" id : "+i.getId()+"\n Quantité : "+i.getQuantite());
-		label.setBackground(new Background(new BackgroundFill(Color.DARKGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		label.setTranslateX(x);
-		label.setTranslateY(y);
-		new Timer().schedule(new Description(label), 5000);
+	public Item getItem(int place)throws ItemNonTrouverException {
+		Node node = Tableau.getCell(tPaneInventaireRapide, 0, place);
+		for (Item item : inventaire) {
+			if(item.getId()==node.getId())
+				return item;
+		}
+		throw new ItemNonTrouverException();
 	}
 }

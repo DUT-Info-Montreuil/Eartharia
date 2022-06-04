@@ -1,23 +1,23 @@
 package application.modele.fonctionnalitees;
 
+import application.modele.Exception.ItemNonTrouverException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 
 public class Tableau {
 
-	public static void add(GridPane gridPane,Node node){
+	public static boolean add(GridPane gridPane,Node node){
 		boolean ajout =false;
 		for (int ligne = 0; ligne < gridPane.getRowCount() && !ajout; ligne++) {
 			for (int colonne = 0; colonne < gridPane.getColumnCount() && !ajout; colonne++) {
 				if (libre(gridPane, ligne,colonne)) {
 					gridPane.add(node, colonne, ligne);
-					ajout= true;
+					return true;
 				}
 			}
 		}
-
+		return false;
 	}
 	private static boolean libre(GridPane gridPane,int row,int column) {
 		ObservableList<Node> childrens = gridPane.getChildren();
@@ -35,18 +35,23 @@ public class Tableau {
 			move(node, column, row);
 		}
 		else {
-			Node node2 = getCell(gridPane, row, column);
-			reverse(node,node2);
+			try {
+				Node node2 = getCell(gridPane, row, column);
+				reverse(node,node2);
+			} catch (ItemNonTrouverException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-	private static Node getCell(GridPane gridPane,int row,int column) {
+	public static Node getCell(GridPane gridPane,int row,int column) throws ItemNonTrouverException {
 		ObservableList<Node> childrens = gridPane.getChildren();
 		for (Node node : childrens) {
 			if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
 				return node;
 			}
 		}
-		return null;
+		throw new ItemNonTrouverException();
 	}
 	private static void move(Node node1,int column,int row) {
 		GridPane.setColumnIndex(node1,column);
@@ -72,27 +77,24 @@ public class Tableau {
 	    node2.setTranslateY(0);
 	}
 	
-//	public static void changement(GridPane otherParent,GridPane parent,Node node) {
-//		double column = node.getParent().getLayoutX()+node.getTranslateX()+GridPane.getColumnIndex(node)*32;
-//		double row = node.getParent().getLayoutY()+node.getTranslateY()+GridPane.getRowIndex(node)*32;
-//		column=(column-otherParent.getLayoutX())/32;
-//		row=(row-otherParent.getLayoutY())/32;
-//		System.out.println("Tableau.changement()");
-//		if(libre(otherParent, (int)row,(int)column)) {
-//			System.out.println("libre");
-//			parent.getChildren().remove(node);
-//			node.setTranslateX(0);
-//			node.setTranslateY(0);
-//			otherParent.add(node,(int)column, (int)row);
-//		}else {
-//			System.out.println("non libre");
-//			Node node2 = getCell(otherParent,(int)row,(int)column);
-//			otherParent.getChildren().remove(node2);
-//			parent.add(node2,GridPane.getColumnIndex(node),GridPane.getRowIndex(node));
-//			System.out.println(node2.getParent().getId());
-//		}
-//
-//		
-//		System.out.println(node.getParent().getId());
-//	}
+	public static void changement(GridPane otherParent,GridPane parent,Node node) {
+		double column = node.getParent().getLayoutX()+node.getTranslateX()+GridPane.getColumnIndex(node)*32;
+		double row = node.getParent().getLayoutY()+node.getTranslateY()+GridPane.getRowIndex(node)*32;
+		column=(column-otherParent.getLayoutX())/32;
+		row=(row-otherParent.getLayoutY())/32;
+		if(!libre(otherParent, (int)row,(int)column)) {
+			try {
+				Node node2 = getCell(otherParent,(int)row,(int)column);
+				otherParent.getChildren().remove(node2);
+				parent.add(node2,GridPane.getColumnIndex(node),GridPane.getRowIndex(node));
+			} catch (ItemNonTrouverException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		parent.getChildren().remove(node);
+		node.setTranslateX(0);
+		node.setTranslateY(0);
+		otherParent.add(node,(int)column, (int)row);
+	}
 }
