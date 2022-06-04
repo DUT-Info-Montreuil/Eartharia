@@ -16,7 +16,6 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.modele.Bloc;
 import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
@@ -35,7 +34,7 @@ import application.vue.VueInventaire;
 import application.vue.VuePerso;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
-
+ 
 public class Controleur implements Initializable {
 
 	private Environnement env;
