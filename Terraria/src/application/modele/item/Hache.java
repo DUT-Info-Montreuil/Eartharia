@@ -16,14 +16,7 @@ public class Hache extends Outils {
 	}
 	
 	@Override
-	public BlocItem agit(int y, int x,Environnement env){
-		if(Constante.estUnBlocBois(env.getIdTuile(y, x))) {
-			return super.Casse(y, x, env);
-		}
-		else{
-			System.out.println("Pas un bloc de bois");
-			//throws exception can't be break
-			return null;
-		}
+	public boolean peuxDetruire(int y, int x, Environnement env) {
+		return Constante.estUnBlocBois(env.getIdTuile(y, x));
 	}
 }

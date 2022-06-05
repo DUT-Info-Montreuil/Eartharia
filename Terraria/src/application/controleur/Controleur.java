@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Bloc;
 import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.InventaireCaseVideException;
@@ -25,7 +26,7 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.ObserveInventaire;
-import application.modele.fonctionnalitees.Tableau;
+import application.modele.fonctionnalitees.ObserveMap;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
@@ -63,7 +64,10 @@ public class Controleur implements Initializable {
 		gameLoop();
 
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
+		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
+		this.env.getMap().addListener(observeMap);
+
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -71,7 +75,7 @@ public class Controleur implements Initializable {
 		this.vueMap = new VueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
-		description.setVisible(false);
+		this.description.setVisible(false);
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
 	}
 
@@ -180,12 +184,10 @@ public class Controleur implements Initializable {
 
 			case PRIMARY :
 				perso.useEquipe(yClic, xClic);
-				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
 				break;
 
 			case SECONDARY : 
 				perso.useEquipe(yClic, xClic);
-				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
 				break;
 
 			default : System.out.println("probleme");
@@ -202,11 +204,13 @@ public class Controleur implements Initializable {
 	@FXML
 	private void inventaireMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
-		ImageView img =	(ImageView) m.getTarget();
 		try {
 			switch(m.getButton()) {
 			case PRIMARY :
-				perso.prendEnMain(vueInventaire.getItem(img));
+				if (m.getTarget() instanceof ImageView) {
+					ImageView img =	(ImageView) m.getTarget();
+					perso.prendEnMain(vueInventaire.getItem(img));
+				}
 				break;
 			case SECONDARY :
 				

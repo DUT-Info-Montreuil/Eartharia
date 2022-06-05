@@ -26,7 +26,7 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
-	
+
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
@@ -49,7 +49,7 @@ public class Environnement {
 			int idBloc;
 			for (int i = 0; i < ligne*colonne; i++) {
 				idBloc = (((Long)data.get(i)).intValue());
-				map.add(new Bloc(i,idBloc,Constante.estUnBlocSolide(idBloc)));
+				map.add(new Bloc(i,idBloc));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -103,12 +103,24 @@ public class Environnement {
 	public Perso getPerso () {
 		return this.perso;
 	}
+	public ObservableList<Bloc> getMap() {
+		return map;
+	}
+	public ObservableList<Acteur> getListActeur() {
+		return this.listActeur;
+	}
+	
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
 	}
-	public ObservableList<Acteur> getListActeur() {
-		return this.listActeur;
+	public void ajoutBloc(int ligne, int colonne,int idTuile) {
+		map.remove(getBloc(ligne,colonne));
+		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,idTuile));
+	}
+	public void destructBlock(int ligne, int colonne) {
+		map.remove(getBloc(ligne,colonne));
+		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,0));
 	}
 	public ArrayList<Acteur> ennemiPresent() {
 		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();

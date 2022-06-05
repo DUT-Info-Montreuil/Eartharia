@@ -37,4 +37,6 @@ public abstract class Item {
 	public String getId() {
 		return id;
 	}
+	public abstract void agit(int y, int x,Environnement env) ;
+
 }

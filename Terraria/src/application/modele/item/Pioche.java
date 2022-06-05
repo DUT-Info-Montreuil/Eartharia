@@ -14,15 +14,9 @@ public class Pioche extends Outils {
 		super(19, quantite);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
-	public BlocItem agit(int y, int x,Environnement env){
-		if(Constante.estUnBlocPierre(env.getIdTuile(y, x))) {
-			return super.Casse(y, x, env);
-		}
-		else{
-			System.out.println("Pas un bloc de pierre");
-			return null;
-		}
+	public boolean peuxDetruire(int y, int x, Environnement env) {
+		return Constante.estUnBlocPierre(env.getIdTuile(y, x));
 	}
 }

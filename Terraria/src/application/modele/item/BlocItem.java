@@ -14,10 +14,10 @@ public class BlocItem extends Item {
 		super(idTuile, quantite);
 	}
 
-	public void place(int y,int x,Environnement env) {
+	public void agit(int y,int x,Environnement env) {
 		if(env.getIdTuile(y, x)==0) {
-			env.setBlock(y, x, getIdItem());
 			setQuantite(getQuantite()-1);
+			env.ajoutBloc(y, x, getIdItem());
 		}
 		else
 			System.out.println("Ne peut pas placer y a un bloc");

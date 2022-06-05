@@ -7,18 +7,10 @@ import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
-import application.modele.item.Arme;
-import application.modele.item.BlocItem;
-import application.modele.item.CoeurDePhoenix;
-import application.modele.item.Outils;
-import application.modele.item.PlumeDePhoenix;
-import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
-
-
 
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
@@ -102,23 +94,9 @@ public class Perso extends Acteur{
 		if(equipe== null)
 			throw new RienEquiperExeception();
 
-		if (equipe instanceof Outils) {
-			Outils outils = (Outils) equipe;
-			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5)) {
-				BlocItem i = outils.agit(y, x, getEnv());
-				if (i != null) 
-					addInventaire(i);
-			}
-		}
-		else if (equipe instanceof BlocItem) {
-			BlocItem bloc = (BlocItem) equipe;
-			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5)) {
-				bloc.place(y, x, getEnv());
-			}
-		}
-		else if (equipe instanceof Arme) {
-			Arme arme = (Arme) equipe;
-		}
+		if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+			equipe.agit(y, x, getEnv());
+
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
@@ -135,31 +113,7 @@ public class Perso extends Acteur{
 	public void prendEnMain(Item item) {
 		this.equipe = item;		
 	}
-	public void equiperItem(int index){
-		try {
-			prendEnMain(getItem(index));
-		} catch (ItemNonTrouverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+	public void equiperItem(int index) throws ItemNonTrouverException{
+		prendEnMain(getItem(index));
 	}
-	
-	public void augHpMax(int hpPlus) {
-		for (int i=0; i <inventaire.size();i++) {
-			if (inventaire.get(i) instanceof CoeurDePhoenix) {
-				this.setHpMax(50);
-			}
-		}
-	}
-	
-	public void ressusciter() {
-		if(this.getHp()==0) {
-			for (int i=0; i<inventaire.size();i++) {
-				if (inventaire.get(i) instanceof PlumeDePhoenix) {
-					this.setHp(this.getHpMax()/2);
-				}
-			}
-		}
-	}
-	
 }

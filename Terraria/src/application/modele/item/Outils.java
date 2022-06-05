@@ -2,6 +2,9 @@ package application.modele.item;
 
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.Exception.InventairePleinException;
+import application.modele.fonctionnalitees.Constante;
+import javafx.collections.ObservableList;
 
 public abstract class Outils extends Item {
 
@@ -18,8 +21,18 @@ public abstract class Outils extends Item {
 	public BlocItem Casse(int y, int x,Environnement env){
 		setQuantite(getQuantite()-1);
 		BlocItem item = new BlocItem(env.getBloc(y, x).getIdTuile());
-		env.setBlock(y, x, 0);
+		env.destructBlock(y, x);
 		return item;
 	}
-	public abstract BlocItem agit(int y, int x,Environnement env) ;
+	
+	public void agit(int y, int x,Environnement env){
+		if(peuxDetruire(y, x, env)) {
+			try {
+				env.getPerso().addInventaire(Casse(y, x, env));
+			} catch (InventairePleinException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public abstract boolean peuxDetruire(int y, int x,Environnement env) ;
 }

@@ -30,4 +30,9 @@ public class Arme extends Item {
 		}
 	}
 
+	@Override
+	public void agit(int y, int x, Environnement env) {
+		Attaque();
+	}
+
 }
