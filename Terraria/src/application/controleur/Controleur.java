@@ -184,18 +184,15 @@ public class Controleur implements Initializable {
 	@FXML
 	private void removeBloc(MouseEvent m) {
 		Perso perso = this.env.getPerso();
-		int xClic = (int) m.getX()/16 ;
-		int yClic = (int) m.getY()/16 ;
+		int xClic = (int) m.getX();
+		int yClic = (int) m.getY();
 		try {
 			switch(m.getButton()) {
 
 			case PRIMARY :
 				perso.useEquipe(yClic, xClic);
 				System.out.println(this.env.getPerso().getProjectile());
-				if(this.env.getPerso().getEquipe() instanceof BatonMagique) {
-					this.vueProjectile= new VueProjectile(this.env.getPerso().getProjectile(), pane);
-				}
-				vueMap.refresh(env.getBloc(yClic, xClic).getId(),env.getBloc(yClic, xClic).getIdTuile());
+				new VueProjectile(this.env.getPerso().getProjectile(), pane);
 				break;
 
 			case SECONDARY : 

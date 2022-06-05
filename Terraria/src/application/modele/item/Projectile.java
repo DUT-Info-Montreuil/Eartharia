@@ -2,34 +2,34 @@ package application.modele.item;
 
 import application.modele.Environnement;
 import application.modele.personnage.Perso;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Projectile extends Arme{
 
-	private IntegerProperty x;
-	private IntegerProperty y;
-	private int xDest;
-	private int yDest;
+	private DoubleProperty x;
+	private DoubleProperty y;
+	private double trajectoirX;
+	private double trajectoirY;
 	private Perso p;
 	
 	public Projectile(int id,  Environnement env, Perso p, int xDest, int yDest) {
 		super(id, 25, env);
 		this.p=p;
-		this.x= new SimpleIntegerProperty(this.p.getX()/*128*/);
-		this.y= new SimpleIntegerProperty(this.p.getY()/*128*/);
-		this.xDest=xDest;
-		this.yDest=yDest;
-		System.out.println(p.getX());
-		System.out.println(p.getY());
-
+		this.x= new SimpleDoubleProperty(this.p.getX()/*128*/);
+		this.y= new SimpleDoubleProperty(this.p.getY()/*128*/);
+		
+		this.trajectoirX=((xDest-x.get())/p.getEnv().getColonne());
+		this.trajectoirY=((yDest-y.get())/p.getEnv().getLigne());
 	}
 	
-	public int getX() {
+	public Double getX() {
 		return this.x.getValue();
 	}
 	
-	public IntegerProperty getXProperty() {
+	public DoubleProperty getXProperty() {
 		return x;
 	}
 	
@@ -37,11 +37,11 @@ public class Projectile extends Arme{
 		this.x.setValue(this.getX()+xPlus);
 	}
 	
-	public int getY() {
+	public Double getY() {
 		return this.y.getValue();
 	}
 	
-	public IntegerProperty getYProperty() {
+	public DoubleProperty getYProperty() {
 		return y;
 	}
 	
@@ -50,20 +50,11 @@ public class Projectile extends Arme{
 	}
 	
 	public void lancer() {
-		
-				//if (this.x.getValue()>this.xDest) {
-					this.setXProperty((this.xDest-this.getX())/this.p.getEnv().getColonne());
-				
-				/*else if (this.x.getValue()<this.xDest) {
-					this.setXProperty(2);
-				}*/
+		System.out.println(trajectoirX);
+		System.out.println(trajectoirY);
 
-				//if (this.y.getValue()>this.yDest) {
-					this.setYProperty((this.yDest-this.getY())/this.p.getEnv().getLigne());
-				
-				/*else if (this.y.getValue()<this.yDest) {
-					this.setYProperty(2);
-				}*/
+		x.set(x.get()+trajectoirX);
+		y.set(y.get()+trajectoirY);
 	}
 	
 }
