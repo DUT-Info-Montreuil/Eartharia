@@ -27,7 +27,7 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
-	ObservableList<Projectile> projectiles;
+	private ObservableList<Projectile> projectiles;
 	
 	public Environnement() {
 		initialisation();
@@ -100,12 +100,23 @@ public class Environnement {
 				projectiles.get(i).lancer();
 		}
 	}
+	
+	public boolean verifAutourProjectile(Projectile p) {
+		if (!this.getBloc(p.getX(), p.getY()).estSolide()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public ObservableList<Projectile> getListProjectiles() {
+		return this.projectiles;
+	}
 
 	public int getIdTuile(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}
-	public Bloc getBloc(int ligne, int colonne) {
-		return this.map.get(ligne*this.colonne+colonne);
+	public Bloc getBloc(int yClic, int xClic) {
+		return this.map.get((yClic*this.colonne+xClic));
 	}
 	public int getColonne() {
 		return colonne;
@@ -120,6 +131,8 @@ public class Environnement {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
 	}
+
+
 	public ObservableList<Acteur> getListActeur() {
 		return this.listActeur;
 	}

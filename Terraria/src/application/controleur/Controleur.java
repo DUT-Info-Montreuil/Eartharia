@@ -32,6 +32,7 @@ import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.fonctionnalitees.ObserveProjectile;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.CoeurDePhoenix;
@@ -75,6 +76,9 @@ public class Controleur implements Initializable {
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);		
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
+		
+		ListChangeListener<? super Projectile> observeProjectile = new ObserveProjectile(this.pane, this.env);		
+		this.env.getListProjectiles().addListener(observeProjectile);
 		
 	}
 	private void gameLauncher() {
@@ -191,8 +195,6 @@ public class Controleur implements Initializable {
 
 			case PRIMARY :
 				perso.useEquipe(yClic, xClic);
-				System.out.println(this.env.getPerso().getProjectile());
-				new VueProjectile(this.env.getPerso().getProjectile(), pane);
 				break;
 
 			case SECONDARY : 
