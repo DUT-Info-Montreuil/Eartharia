@@ -32,7 +32,9 @@ import application.modele.acteur.Perso;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
+import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
+import application.modele.monstre.volant;
 import application.vue.*;
 
 
@@ -70,13 +72,20 @@ public class Controleur implements Initializable {
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.vueMap = new vueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
-			for(Acteur a : this.env.getListeActeur()) {
+		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
+		//this.env.getActeurs().addListener(new ObservateurMonstre(pane));
+		
+		for(Acteur a : this.env.getListeActeur()) {
 				if(a instanceof Sol) {
 					new vueActeur((Sol) a, pane);
 				}
-			}//dans la vue et le modèle
-		
-
+				if(a instanceof volant) {
+					new vueActeur((volant) a, pane);
+				}//dans la vue et le modèle
+//				if(a instanceof Boss) {
+//					new vueActeur((Boss) a, pane);
+//				}
+			}
 		//this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		description.setVisible(false);
 	}

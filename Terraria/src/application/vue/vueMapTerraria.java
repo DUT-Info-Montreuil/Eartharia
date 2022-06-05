@@ -25,7 +25,7 @@ public class vueMapTerraria {
 	private void initTerrain() {
 		FileInputStream fichierTileSet = null;
 		try {
-			fichierTileSet = new FileInputStream("src/ressources/tuile_zelda.png");
+			fichierTileSet = new FileInputStream("src/ressources/TuileMap.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

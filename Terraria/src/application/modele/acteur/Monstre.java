@@ -12,6 +12,9 @@ public abstract class Monstre extends Acteur{
 		this.idMonstre = "M" + compteur;
 
 	}
+	public void recevoirDegat(int degat) {
+		 this.setHp(this.getHp() - degat); 
+	}
 	public abstract void agir();
 	
 	public String getId () {

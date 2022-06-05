@@ -11,10 +11,8 @@ public class Constante {
 	
 	private static ArrayList<Integer> BlocSolide(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(204);
-		listBloc.add(205);
-		listBloc.add(206);
-		listBloc.add(1);
+		listBloc.add(233);
+
 		return listBloc;
 	}
 	

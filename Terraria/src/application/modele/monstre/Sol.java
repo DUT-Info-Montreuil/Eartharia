@@ -28,14 +28,11 @@ public class Sol extends Monstre {
 
 	@Override
 	public void agir() {//se deplace et attaquer 
-		System.out.println(super.getVitesse());
-
 		try {
 			if(this.env.getTemp() % 4 == 0)
 			super.tombe(16);
 			
 		} catch (Exception e) {
-			System.out.println("COLLISION BAS");
 
 		}
 		try {
@@ -46,7 +43,7 @@ public class Sol extends Monstre {
 				this.gauche();
 			}
 		} catch (Exception e) {
-			System.out.println("COLLISION D ET G");
+			
 		}
 	}
 

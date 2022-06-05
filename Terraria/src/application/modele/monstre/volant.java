@@ -5,31 +5,30 @@ import application.modele.acteur.Monstre;
 
 public class volant  extends Monstre{
 
-	public volant(Environnement env, int x, int y, int hp, int atq) {
-		super(env, x, y,16, hp, atq,0,0);
+	public volant(Environnement env, int x, int y) {
+		super(env, x, y, 1, 20, 10, 16, 16);
 		// TODO Auto-generated constructor stub
 	}
 
 	
-	public void mouvementDroite () {
-		this.x.set(getX() + 2);	
-	}
-	public void mouvementGauche() {
-		this.x.set(getX() - 2);
-	}
-	public void mouvementHaut () {
-		this.y.set(getY() - 8);
-	}
-	public void mouvementBas () {
-		this.y.set(getY() + 8);
-	}
 	@Override
-	public void agir() {
-		if (this.env.getTemp()%4 == 0) {
-			this.mouvementDroite(); 
-		}
-		if (this.env.getTemp()%4 == 1){
-			this.mouvementGauche();
+	public void agir() {//se deplace et attaquer 
+//		try {
+//			if(this.env.getTemp() % 4 == 0)
+//			super.tombe(16);
+//			
+//		} catch (Exception e) {
+//
+//		}
+		try {
+			if (this.env.getTemp() % 20 == 0) {
+				super.droite();
+			}
+			if (this.env.getTemp() % 20 == 1) {
+				this.gauche();
+			}
+		} catch (Exception e) {
+			
 		}
 	}
 

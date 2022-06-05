@@ -1,8 +1,13 @@
 package application.vue;
 
+import java.util.ArrayList;
+
 import application.modele.Acteur;
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
+import application.modele.monstre.BossSol;
+import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
 import application.modele.monstre.volant;
 import javafx.scene.image.Image;
@@ -23,30 +28,45 @@ public class vueActeur {
 		this.pane = p;
 		this.img = new Image(selection(a));
 		this.imgV = new ImageView(img);
-		Rectangle r = new Rectangle(20, 20);
-		r.setFill(Color.BLACK);
-		this.a = a;
-		r.xProperty().bind(a.getxProperty());
-		r.yProperty().bind(a.getyProperty());
-		this.pane.getChildren().add(r);
+//		Rectangle r = new Rectangle(20, 20);
+//		r.setFill(Color.BLACK);
+//		this.a = a;
+//		r.xProperty().bind(a.getxProperty());
+//		r.yProperty().bind(a.getyProperty());
+//		this.pane.getChildren().add(r);
 		this.pane.getChildren().add(imgV);
 		bindPosition();
 	}
 	
 	
 	public String selection (Acteur a) {
-		String chemin = "ressources/fantome16pix.png";
-		if(a instanceof volant) {
-			System.out.println("volant");
-			chemin = "ressources/fantome16pix.png";
-		}
-		if (a instanceof Sol){
-			System.out.println("sol");
-		}
-//		if (a instanceof Perso){
-//			System.out.println("perso"); tableau de string et releve l'occurence ou il ya perso
-//			chemin = "ressources/perso16pix.png";
-//		}
+		ArrayList<String> chemins = new ArrayList<>();
+		chemins.add("ressources/fantome16pix.png");
+		chemins.add("ressources/monstre16pix.png");
+		chemins.add("ressources/boss16pix.png");
+		
+		String chemin = null;
+		//for (int i = 0; i < chemins.size(); i ++) {
+			if(a instanceof volant) {
+				System.out.println("volant");
+				chemin = chemins.get(0);
+			}
+			if (a instanceof Sol){
+				chemin = chemins.get(1);
+				System.out.println("sol");
+			}
+			if (a instanceof BossSol){
+				System.out.println("perso"); //tableau de string et releve l'occurence ou il ya perso
+				chemin = chemins.get(2);
+			}
+			if ( a instanceof BossVolant) {
+				
+			}
+			if ( a instanceof Pnj) {
+				
+			}
+				//tableau de string et releve l'occurence ou il ya perso
+
 		return chemin;
 	}
 	public void bindPosition() {

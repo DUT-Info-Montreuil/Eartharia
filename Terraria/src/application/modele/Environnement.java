@@ -14,7 +14,9 @@ import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
+import application.modele.monstre.volant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -30,13 +32,15 @@ public class Environnement {
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
+		perso = new Perso(this, 0, 0);
 		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
 				new Sol(this, 0, 10)
 				,new Sol(this, 15, 4),
-				new Sol(this, 5, 5),
-				new Sol(this,7, 10)
+				new volant(this, 0,6),
+				new BossSol(this, 9, 9, this.perso)
+
 				);
-		perso = new Perso(this, 0, 0);
+		
 	}
 
 	private void initialisation(){
@@ -89,7 +93,7 @@ public class Environnement {
 			a.agir();
 		}
 		
-		if (temps%5==0){
+		if (temps%8==0){
 			}
 			temps++;
 	}
