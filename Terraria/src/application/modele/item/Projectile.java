@@ -3,9 +3,7 @@ package application.modele.item;
 import application.modele.Environnement;
 import application.modele.personnage.Perso;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 public class Projectile extends Arme{
 
@@ -21,7 +19,7 @@ public class Projectile extends Arme{
 		this.x= new SimpleDoubleProperty(this.p.getX()/*128*/);
 		this.y= new SimpleDoubleProperty(this.p.getY()/*128*/);
 		
-		this.trajectoirX=((xDest-x.get())/p.getEnv().getColonne());
+		this.trajectoirX=((xDest-x.get())/p.getEnv().getColonne() );
 		this.trajectoirY=((yDest-y.get())/p.getEnv().getLigne());
 	}
 	
