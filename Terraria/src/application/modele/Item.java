@@ -34,6 +34,9 @@ public abstract class Item {
 	public void addQuantite(int nombre) {
 		setQuantite(quantite+nombre);
 	}
+	public void removeQuantite(int nombre) {
+		setQuantite(quantite-nombre);
+	}
 	public int getIdItem() {
 		return idItem;
 	}

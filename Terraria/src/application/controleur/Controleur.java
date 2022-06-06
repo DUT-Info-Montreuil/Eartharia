@@ -25,6 +25,7 @@ import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
+import application.modele.fonctionnalitees.ObserveCraft;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
 import application.modele.fonctionnalitees.ObserveProjectile;
@@ -37,6 +38,7 @@ import application.modele.personnage.Perso;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
 import application.vue.VueProjectile;
+import application.vue.vueCraft;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
  
@@ -49,6 +51,7 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
+	private vueCraft vueCraft;
 	
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -61,6 +64,8 @@ public class Controleur implements Initializable {
 	@FXML
 	private TilePane tPaneHp;
 	@FXML
+	private TilePane tPaneCraft;
+	@FXML
 	private Label description;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
@@ -71,12 +76,13 @@ public class Controleur implements Initializable {
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
 		ListChangeListener<? super Projectile> observeProjectile = new ObserveProjectile(this.pane, this.env);		
+		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
 		
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getListProjectiles().addListener(observeProjectile);
 		this.env.getMap().addListener(observeMap);
-
+		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -84,8 +90,9 @@ public class Controleur implements Initializable {
 		this.vueMap = new VueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
-		this.description.setVisible(false);
+		this.vueCraft = new vueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
+		this.description.setVisible(false);
 	}
 
 	private int cmpt = 50;
@@ -136,14 +143,20 @@ public class Controleur implements Initializable {
 			case P  :
 				perso.addInventaire(new Pioche(5));
 				break;
-			case B  :
+			case T  :
 				perso.addInventaire(new BlocItem(233,5));
+				break;
+			case W  :
+				perso.addInventaire(new BlocItem(208,1));
+				break;
+			case S  :
+				perso.addInventaire(new BlocItem(44,1));
 				break;
 			case H  :
 				perso.addInventaire(new Hache());
 				break;
 			case V :
-				perso.addInventaire(new BatonMagique(16, 25, this.env.getPerso()));
+				perso.addInventaire(new BatonMagique(this.env.getPerso()));
 			default:
 				break;
 			}
@@ -238,7 +251,29 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	public void mouseEnter() {
-
+	public void craftMouse(MouseEvent m) {
+		Perso perso = this.env.getPerso();
+		try {
+			switch(m.getButton()) {
+			case PRIMARY :
+				if (m.getTarget() instanceof ImageView) {
+					ImageView img =	(ImageView) m.getTarget();
+					perso.addInventaire(vueCraft.getItem(img));
+				}
+				break;
+			case SECONDARY :
+				
+				break;
+			default :
+				System.out.println("probleme");
+				break;
+			}
+		}
+		catch (ItemNonTrouverException e) {
+			e.printStackTrace();
+		} catch (InventairePleinException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

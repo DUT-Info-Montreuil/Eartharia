@@ -6,6 +6,7 @@ import application.modele.Acteur;
 import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import application.modele.fonctionnalitees.CraftMenu;
 import application.modele.fonctionnalitees.Saut;
 import application.modele.item.Arme;
 import application.modele.item.BatonMagique;
@@ -20,13 +21,17 @@ import application.modele.Exception.RienEquiperExeception;
 
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
-	private ObservableList<Item> craft;
 	private Item equipe;
+	private CraftMenu craft;
 
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
-		this.craft= FXCollections.observableArrayList();
+		craft=new CraftMenu(inventaire, this);
+	}
+
+	public CraftMenu getCraft() {
+		return craft;
 	}
 
 	public void saut() throws Exception{
@@ -66,8 +71,10 @@ public class Perso extends Acteur{
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
-		if(estPresent(i))
+		craft.refreshAdd(i);
+		if(estPresent(i)) {
 			this.inventaire.add(i);
+		}
 	}
 	public void delInventaire(Item item) {
 		for (int i=0; i<inventaire.size(); i++) {
@@ -83,7 +90,6 @@ public class Perso extends Acteur{
 	public boolean estPresent(Item i) {
 		for (Item item : inventaire) {
 			if(item.getIdItem()==i.getIdItem() && item.getQuantite()<item.getQuantiteMax()) {
-				System.out.println(item.getQuantiteMax());
 				item.addQuantite(i.getQuantite());
 				return false;
 			}
@@ -109,10 +115,12 @@ public class Perso extends Acteur{
 		else {
 			equipe.agit(y, x, getEnv());
 		}
+		craft.refreshRemove(equipe);
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
 		if(equipe.getQuantite()<=0) {
+			System.out.println("non utilisable");
 			inventaire.remove(equipe);
 			prendEnMain(null);
 		}
@@ -129,9 +137,6 @@ public class Perso extends Acteur{
 		prendEnMain(getItem(index));
 	}
 
-	public void refreshCraft(){
-		
-	}
 	public void augHpMax() {
 		for (int i=0; i <inventaire.size();i++) {
 			if (inventaire.get(i) instanceof CoeurDePhoenix) {
@@ -147,6 +152,9 @@ public class Perso extends Acteur{
 				}
 			}
 		}
+	}
+	public void craft(Item i) {
+		addInventaire();
 	}
 
 }
