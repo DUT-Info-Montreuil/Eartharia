@@ -41,9 +41,6 @@ public class VueMapTerraria {
 		idTuile=idTuile-1;
 		x = (int) (idTuile%(imgTileP.getWidth()/16));
 		y = (int) (idTuile/(imgTileP.getHeight()/16));
-
-		System.out.println(x);
-		System.out.println(y);
 		x = x*16;
 		y = y*16;
 		img.setViewport(new Rectangle2D(x,y, 16,16));
@@ -63,7 +60,6 @@ public class VueMapTerraria {
 	}
 	public void refresh(int idBlock,int idTuile) {
 		ImageView v =(ImageView) TileP.lookup("#"+idBlock);
-		System.out.println(TileP.lookup("#"+idBlock));
 		refreshTuile(v,idTuile,idBlock);
 	}
 }

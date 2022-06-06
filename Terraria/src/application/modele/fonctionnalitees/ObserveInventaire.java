@@ -3,18 +3,24 @@ package application.modele.fonctionnalitees;
 import java.util.List;
 
 import application.modele.Item;
+import application.modele.item.Arme;
+import application.modele.item.BlocItem;
+import application.modele.item.Outils;
 import application.vue.VueInventaire;
 import javafx.collections.ListChangeListener;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 
 public class ObserveInventaire implements ListChangeListener<Item >{
-	
-	private TilePane tilePane;
+
+	private GridPane PaneInventaire;
+	private GridPane PaneInventaireRapide;
 	private VueInventaire vueInventaire;
-	
-	public ObserveInventaire(TilePane tp,VueInventaire vueInventaire) {
-		tilePane = tp;
+
+	public ObserveInventaire(GridPane tileInventaire,GridPane tileInventaireRapide,VueInventaire vueInventaire) {
+		this.PaneInventaire = tileInventaire;
+		this.PaneInventaireRapide = tileInventaireRapide;
 		this.vueInventaire = vueInventaire;
 	}
 	@Override
@@ -27,14 +33,27 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 	}
 	private void ajout(List<? extends Item> addedSubList) {
 		for (Item item : addedSubList) {
-			vueInventaire.afficherItem(item.getId());
+			if (item instanceof Outils || item instanceof Arme) {
+				vueInventaire.afficherItemOutils(item.getIdItem(),item.getId());
+			}
+			if (item instanceof BlocItem) {
+				BlocItem bloc = (BlocItem) item;
+				vueInventaire.afficherItemBloc(bloc.getIdItem(),item.getId());
+			}
 		}
 		System.out.println("Ajout");
 	}
 	private void suppresion(List<? extends Item> getRemoved) {
 		for (Item item : getRemoved) {
-			ImageView imgV =(ImageView) tilePane.lookup("#"+item.getId());
-			this.tilePane.getChildren().remove(imgV);
+			Node n = this.PaneInventaire.lookup("#"+item.getId());
+			if(n!=null) {
+				this.PaneInventaire.getChildren().remove(n);
+
+			}
+			else{
+				n = this.PaneInventaireRapide.lookup("#"+item.getId());
+				this.PaneInventaireRapide.getChildren().remove(n);
+			}
 		}
 		System.out.println("Suppression");
 	}

@@ -7,14 +7,15 @@ import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
-import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
+import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
-
-
+import application.modele.Exception.RienEquiperExeception;
 
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
+	private Item equipe;
+
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 8,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
@@ -25,7 +26,7 @@ public class Perso extends Acteur{
 		if(surDuSol())
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
-			deplacement(0, -10);
+			deplacement(0, -8);
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
@@ -55,7 +56,7 @@ public class Perso extends Acteur{
 	}
 
 	public void addInventaire(Item i) throws InventairePleinException {
-		if(inventaire.size()>=12)
+		if(inventaire.size()>=16)
 			throw new InventairePleinException();
 		if(estPresent(i))
 			this.inventaire.add(i);
@@ -73,20 +74,46 @@ public class Perso extends Acteur{
 	}
 	public boolean estPresent(Item i) {
 		for (Item item : inventaire) {
-			if(item.getId()==i.getId()) {
+			if(item.getIdItem()==i.getIdItem()) {
 				item.addQuantite(i.getQuantite());
 				return false;
 			}
 		}
 		return true;
 	}
-	public Item getItem(int index) throws InventaireCaseVideException{
+	public Item getItem(int index) throws ItemNonTrouverException{
 		try {
 			return inventaire.get(index);
 		}catch(Exception e) {
-			throw new InventaireCaseVideException();
+			throw new ItemNonTrouverException();
 		}
 	}
 
 
+	public void useEquipe(int y,int x) throws Exception{
+		if(equipe== null)
+			throw new RienEquiperExeception();
+
+		if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+			equipe.agit(y, x, getEnv());
+
+		encoreUtilisable();
+	}
+	private void encoreUtilisable() {
+		if(equipe.getQuantite()<=0) {
+			inventaire.remove(equipe);
+			prendEnMain(null);
+		}
+	}
+
+	public Item getEquipe() {
+		return equipe;
+	}
+
+	public void prendEnMain(Item item) {
+		this.equipe = item;		
+	}
+	public void equiperItem(int index) throws ItemNonTrouverException{
+		prendEnMain(getItem(index));
+	}
 }

@@ -1,34 +1,42 @@
- package application.modele;
+package application.modele;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+public abstract class Item {
 
-public class Item {
-    
-	private int id;
-    private IntegerProperty quantite;
-    
-    public Item (int id) {
-    	this.id = id ;
-        this.quantite = new SimpleIntegerProperty(1);
-    }
-    public Item (int id,int quantite) {
-    	this.id = id ;
-        this.quantite = new SimpleIntegerProperty(quantite);
-    }
-    public IntegerProperty getQuantiteProperty() {
-    	return this.quantite;
-    }
-    public int getQuantite() {
-    	return this.quantite.get();
-    }
-    public boolean equals(Item item) {
-		return item.getId()==id;
+	private int idItem;
+	private int quantite;
+	public static int compteur=0;
+	private String id;
+
+	public Item (int idItem) {
+		this.idItem = idItem ;
+		this.quantite = 1;
+		this.id="I"+compteur;
+		compteur++;
+	}
+	public Item (int idItem,int quantite) {
+		this.idItem = idItem ;
+		this.quantite = quantite;
+		this.id="I"+compteur;
+		compteur++;
+	}
+	public int getQuantite() {
+		return this.quantite;
+	}
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
+	}
+	public boolean equals(Item item) {
+		return item.getIdItem()==idItem;
 	}
 	public void addQuantite(int nombre) {
-    	this.quantite.setValue(quantite.getValue()+nombre);
-    }
-	public int getId() {
+		setQuantite(quantite+nombre);
+	}
+	public int getIdItem() {
+		return idItem;
+	}
+	public String getId() {
 		return id;
 	}
+	public abstract void agit(int y, int x,Environnement env) ;
+
 }
