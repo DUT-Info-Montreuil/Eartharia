@@ -1,5 +1,6 @@
 package application.modele.monstre;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 
@@ -20,6 +21,7 @@ public class volant  extends Monstre{
 //		} catch (Exception e) {
 //
 //		}
+		//System.out.println("id" + this.getIdMonstre());
 		try {
 			if (this.env.getTemp() % 20 == 0) {
 				super.droite();
@@ -30,6 +32,13 @@ public class volant  extends Monstre{
 		} catch (Exception e) {
 			
 		}
+	}
+
+
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

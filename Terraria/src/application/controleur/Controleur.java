@@ -73,7 +73,7 @@ public class Controleur implements Initializable {
 		this.vueMap = new vueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
 		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-		//this.env.getActeurs().addListener(new ObservateurMonstre(pane));
+		this.env.getListeActeur().addListener(new ObservateurActeur(pane));
 		
 		for(Acteur a : this.env.getListeActeur()) {
 				if(a instanceof Sol) {
@@ -118,6 +118,10 @@ public class Controleur implements Initializable {
 				//TOUCHE POUR TEST
 				//perso.addInventaire(new Item(cmpt));
 				//cmpt++;
+				break;
+			case J : 
+				perso.attaque();
+				System.out.println("attaque");
 				break;
 			default:
 				break;

@@ -1,12 +1,13 @@
 package application.modele.monstre;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 
 public class Sol extends Monstre {
 
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y, 1, 20, 10, 16, 16);
+		super(env, x, y,1 , 20, 10, 16, 16);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,6 +29,7 @@ public class Sol extends Monstre {
 
 	@Override
 	public void agir() {//se deplace et attaquer 
+		System.out.println("HP : " + this.getHp());
 		try {
 			if(this.env.getTemp() % 4 == 0)
 			super.tombe(16);
@@ -45,6 +47,11 @@ public class Sol extends Monstre {
 		} catch (Exception e) {
 			
 		}
+	}
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -33,11 +33,11 @@ public class Environnement {
 		initialisation();
 		this.gravite = 2;
 		perso = new Perso(this, 0, 0);
-		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
+		listActeur= FXCollections.observableArrayList(//new Sol(this, 10, 10),
 				new Sol(this, 0, 10)
-				,new Sol(this, 15, 4),
-				new volant(this, 0,6),
-				new BossSol(this, 9, 9, this.perso)
+//				,new Sol(this, 15, 4),
+//				new volant(this, 0,6),
+//				new BossSol(this, 9, 9, this.perso)
 
 				);
 		
@@ -83,12 +83,12 @@ public class Environnement {
 	}
 	public void unTour() {
 		this.gravite();
-//		for(int i = this.listActeur.size() -1; i>= 0; i --) {
-//			Acteur monstre = listActeur.get(i);
-//			if(monstre.estMort()){
-//			this.listActeur.remove(i);
-//			}
-//		}
+		for(int i = this.listActeur.size() -1; i>= 0; i --) {
+			Acteur act = listActeur.get(i);
+			if(act.estMort()){
+			this.listActeur.remove(i);
+			}
+		}
 		for( Acteur a : listActeur ) {
 			a.agir();
 		}

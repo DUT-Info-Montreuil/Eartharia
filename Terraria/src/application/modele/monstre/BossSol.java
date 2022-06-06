@@ -1,10 +1,11 @@
 package application.modele.monstre;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
 
-public class BossSol extends Monstre{
+public class BossSol extends Monstre {
 	private Perso perso;
 
 	public BossSol(Environnement env, int x, int y, Perso p) {
@@ -15,48 +16,27 @@ public class BossSol extends Monstre{
 	@Override
 	public void agir() {
 		this.mouvement(this.perso);
-		
+
 	}
 
-	public void mouvement (Perso p) {
-		System.out.println("MOUVEMENT");
-		System.out.println(p);
-		if(this.caseY() > p.caseY()) {
-			System.out.println("Iffffffffffffff");
-			try {
+	public void mouvement(Perso p) {
+		try {
+			if (this.caseY() > p.caseY())
 				this.saut();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("ERREUR SAUT");
-			}
-		}
-		if(this.caseY() > p.caseY()|| this.caseY() < p.caseY() ) {
-			try {
+			if (this.caseY() > p.caseY() || this.caseY() < p.caseY())
 				this.tombe(2);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("ERREUR TOMBE");
-
-			}
-		}
-		if(this.caseX()+1 > p.caseX()) {
-			try {
+			if (this.caseX() + 1 > p.caseX())
 				this.gauche();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("ERREUR GAUCHE");
-
-			}
-		}
-		if(this.caseX() < p.caseX()) {
-			try {
+			if (this.caseX() < p.caseX())
 				this.droite();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out.println("ERREUR DROITE");
+		} catch (Exception e) {
 
-			}
 		}
+	}
+
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -8,6 +8,7 @@ import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.Saut;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
 
 public abstract class Acteur {
 
@@ -19,6 +20,8 @@ public abstract class Acteur {
 	protected int vitesse;
 	protected Box boxPlayer;
 	protected int attaque;
+	protected StringProperty id;
+	public static int compteur = 0;
 
 	public Acteur(Environnement env, int x, int y, int hp,int vitesse, int xBox, int yBox, int atq) {
 		this.x =new SimpleIntegerProperty(x*16) ;
@@ -48,7 +51,7 @@ public abstract class Acteur {
 		setY(getY()+y);
 	}
 	public void saut() throws Exception{
-		System.out.println("saut");
+		//System.out.println("saut");
 		if(surDuSol())
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
@@ -60,11 +63,11 @@ public abstract class Acteur {
 		//System.out.println("tombe");
 	}
 	public void droite() throws Exception{
-		System.out.println("droite");
+		//System.out.println("droite");
 		deplacement(getVitesse(), 0);
 	}
 	public void gauche() throws Exception{
-		System.out.println("gauche");
+		//System.out.println("gauche");
 		deplacement(-getVitesse(), 0);
 	}
 
@@ -95,11 +98,15 @@ public abstract class Acteur {
 	}
 	
 	/*
-	 * Partie pour la durabilité des acteurs 
+	 * Partie pour la vie des acteurs 
 	 */
 	public int getHp() {
 		return hp;
 	}
+	public int getDegatAttaque() {
+		return attaque;
+	}
+	
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
@@ -152,6 +159,24 @@ public abstract class Acteur {
 	}
 	
 	public abstract void agir();
-
 	
+	/*
+	 * Dégats sur les acteurs
+	 */
+	public void recevoirDegat(int degat) {
+		 this.setHp(this.getHp() - degat); 
+	}
+	public abstract void attaquer(Acteur a);
+	/*
+	 * ID
+	 */
+	public StringProperty getIdProperty() {
+		return id;
+	}
+	public String getId() {
+		return this.getIdProperty().getValue();
+	}
+	public void setId(StringProperty id) {
+		this.id = id;
+	}
 }

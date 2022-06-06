@@ -1,5 +1,6 @@
 package application.modele.monstre;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
@@ -57,6 +58,12 @@ public class BossVolant extends Monstre{
 
 			}
 		}
+		
+	}
+
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
 		
 	}
 }

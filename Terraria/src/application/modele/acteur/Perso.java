@@ -19,8 +19,32 @@ public class Perso extends Acteur{
 		super(env, x, y, 200,4,16,16, 0);
 		this.inventaire= FXCollections.observableArrayList();
 	}
+	/*
+	 * Intéraction monstre
+	 */
 
+	public void echangeDeCoup (Acteur a) {
+		if( Math.abs(a.getX() - this.getX()) <5&& Math.abs(a.getY() - this.getY()) < 5){			
+			a.attaquer(this);
+			this.recevoirDegat(a.getDegatAttaque());
+			this.attaquer(a);
+			a.recevoirDegat(this.getDegatAttaque());
+		}
+	}
+	public void attaque () {
+		for(Acteur m : env.getListeActeur()) {
+			this.echangeDeCoup(m);
+		}
+	}
 	
+	/*
+	 * Intéraction pnj
+	 */
+	
+	
+	/*
+	 * Inventaire
+	 */
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
@@ -58,6 +82,13 @@ public class Perso extends Acteur{
 
 	@Override
 	public void agir() {}
+
+
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

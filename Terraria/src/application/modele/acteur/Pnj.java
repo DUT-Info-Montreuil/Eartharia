@@ -18,4 +18,10 @@ public class Pnj extends Acteur {
 		
 	}
 
+	@Override
+	public void attaquer(Acteur a) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
