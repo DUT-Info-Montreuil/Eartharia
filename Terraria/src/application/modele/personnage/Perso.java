@@ -39,7 +39,7 @@ public class Perso extends Acteur{
 		if(surDuSol())
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
-			deplacement(0, -10);
+			deplacement(0, -8);
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
