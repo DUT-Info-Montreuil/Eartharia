@@ -7,6 +7,11 @@ import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.Saut;
+import application.modele.item.Arme;
+import application.modele.item.BatonMagique;
+import application.modele.item.CoeurDePhoenix;
+import application.modele.item.Outils;
+import application.modele.item.PlumeDePhoenix;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
@@ -17,7 +22,7 @@ public class Perso extends Acteur{
 	private Item equipe;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 8,4,16,16);
+		super(env, x, y, 200,4,16,16);
 		this.inventaire= FXCollections.observableArrayList();
 	}
 
@@ -93,10 +98,11 @@ public class Perso extends Acteur{
 	public void useEquipe(int y,int x) throws Exception{
 		if(equipe== null)
 			throw new RienEquiperExeception();
-
-		if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
-			equipe.agit(y, x, getEnv());
-
+		if (equipe instanceof Outils) {
+			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+				equipe.agit(y/16, x/16, getEnv());
+		}
+		equipe.agit(y, x, getEnv());
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
@@ -115,5 +121,22 @@ public class Perso extends Acteur{
 	}
 	public void equiperItem(int index) throws ItemNonTrouverException{
 		prendEnMain(getItem(index));
+	}
+	public void augHpMax() {
+		for (int i=0; i <inventaire.size();i++) {
+			if (inventaire.get(i) instanceof CoeurDePhoenix) {
+				this.setHpMax(50);
+			}
+		}
+	}
+	
+	public void ressusciter() {
+		if(this.getHp()==0) {
+			for (int i=0; i<inventaire.size();i++) {
+				if (inventaire.get(i) instanceof PlumeDePhoenix) {
+					this.setHp(this.getHpMax()/2);
+				}
+			}
+		}
 	}
 }

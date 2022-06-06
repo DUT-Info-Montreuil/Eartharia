@@ -17,7 +17,7 @@ public class VuePerso {
 	
 	public VuePerso (Pane pane, Perso perso) {
 		this.pane=pane;
-		this.img_perso = new Image("ressources/perso16pix.png");
+		this.img_perso = new Image("ressources/perso.png");
 		this.imgVP = new ImageView(img_perso);
 		Rectangle r = new Rectangle(16, 16);
 		r.setFill(Color.RED);

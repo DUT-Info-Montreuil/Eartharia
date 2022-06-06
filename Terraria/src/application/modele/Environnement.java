@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Constante;
-import application.modele.item.BlocItem;
+import application.modele.item.Projectile;
 import application.modele.personnage.Perso;
 import application.modele.personnage.Pnj;
 import javafx.collections.FXCollections;
@@ -26,11 +26,13 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
+	private ObservableList<Projectile> projectiles;
 
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
 		listActeur= FXCollections.observableArrayList();
+		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
 	}
 
@@ -87,7 +89,24 @@ public class Environnement {
 			e.printStackTrace();
 		};
 	}
-
+	public void addListProjectiles(Projectile p) {
+		projectiles.add(p);
+	}
+	public void lancerProjectiles() {
+		for (int i=0; i<projectiles.size(); i++) {
+				projectiles.get(i).lancer();
+		}
+	}
+	public boolean verifAutourProjectile(Projectile p) {
+		if (!this.getBloc(p.getX(), p.getY()).estSolide()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public ObservableList<Projectile> getListProjectiles() {
+		return this.projectiles;
+	}
 	public int getIdTuile(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}

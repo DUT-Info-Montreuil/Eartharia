@@ -27,12 +27,16 @@ import application.modele.Exception.RienEquiperExeception;
 import application.modele.Item;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
+import application.modele.fonctionnalitees.ObserveProjectile;
+import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
+import application.modele.item.Projectile;
 import application.modele.personnage.Perso;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
+import application.vue.VueProjectile;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
  
@@ -43,8 +47,9 @@ public class Controleur implements Initializable {
 	private VuePerso vueperso;
 	private vueHp vueHp;
 	private Timeline tour;
-
+	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
+	
 	@FXML
 	private GridPane tPaneInvRapide;
 	@FXML
@@ -65,7 +70,11 @@ public class Controleur implements Initializable {
 
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
+		ListChangeListener<? super Projectile> observeProjectile = new ObserveProjectile(this.pane, this.env);		
+		
+		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
+		this.env.getListProjectiles().addListener(observeProjectile);
 		this.env.getMap().addListener(observeMap);
 
 	}
@@ -133,6 +142,8 @@ public class Controleur implements Initializable {
 			case H  :
 				perso.addInventaire(new Hache());
 				break;
+			case V :
+				perso.addInventaire(new BatonMagique(16, 25, this.env.getPerso()));
 			default:
 				break;
 			}
@@ -171,7 +182,7 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					this.env.gravite();
-					this.vueHp.refresh();
+					this.env.lancerProjectiles();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
@@ -179,8 +190,8 @@ public class Controleur implements Initializable {
 	@FXML
 	private void removeBloc(MouseEvent m) {
 		Perso perso = this.env.getPerso();
-		int xClic = (int) m.getX()/16 ;
-		int yClic = (int) m.getY()/16 ;
+		int xClic = (int) m.getX();
+		int yClic = (int) m.getY();
 		try {
 			switch(m.getButton()) {
 

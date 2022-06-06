@@ -1,11 +1,10 @@
 package application.modele.item;
 
 import application.modele.Environnement;
-import application.modele.Item;
 
-public class Consommable extends Item{
-
-	public Consommable(int idItem) {
+public class CoeurDePhoenix extends Consommable{
+	
+	public CoeurDePhoenix(int idItem) {
 		super(idItem);
 	}
 
