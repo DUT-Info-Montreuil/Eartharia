@@ -4,18 +4,21 @@ public abstract class Item {
 
 	private int idItem;
 	private int quantite;
+	private int quantiteMax;
 	public static int compteur=0;
 	private String id;
 
-	public Item (int idItem) {
+	public Item (int idItem,int quantiteMax) {
 		this.idItem = idItem ;
 		this.quantite = 1;
+		this.quantiteMax = quantiteMax;
 		this.id="I"+compteur;
 		compteur++;
 	}
-	public Item (int idItem,int quantite) {
+	public Item (int idItem,int quantite,int quantiteMax) {
 		this.idItem = idItem ;
 		this.quantite = quantite;
+		this.quantiteMax = quantiteMax;
 		this.id="I"+compteur;
 		compteur++;
 	}
@@ -38,5 +41,9 @@ public abstract class Item {
 		return id;
 	}
 	public abstract void agit(int y, int x,Environnement env) ;
+	
+	public int getQuantiteMax() {
+		return this.quantiteMax;
+	}
 
 }

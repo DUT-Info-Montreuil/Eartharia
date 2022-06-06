@@ -9,12 +9,12 @@ import javafx.collections.ObservableList;
 public abstract class Outils extends Item {
 
 	public Outils(int id) {
-		super(id);
+		super(id, 1);
 		// TODO Auto-generated constructor stub
 	}
 
 	public Outils(int id, int quantite) {
-		super(id, quantite);
+		super(id, quantite, 1);
 		// TODO Auto-generated constructor stub
 	}
 

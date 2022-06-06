@@ -190,8 +190,8 @@ public class Controleur implements Initializable {
 	@FXML
 	private void removeBloc(MouseEvent m) {
 		Perso perso = this.env.getPerso();
-		int xClic = (int) m.getX();
-		int yClic = (int) m.getY();
+		int xClic = (int) m.getX()/16;
+		int yClic = (int) m.getY()/16;
 		try {
 			switch(m.getButton()) {
 

@@ -6,7 +6,7 @@ import application.modele.Item;
 public class Consommable extends Item{
 
 	public Consommable(int idItem) {
-		super(idItem);
+		super(idItem,5);
 	}
 
 	@Override
