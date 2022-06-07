@@ -69,7 +69,8 @@ public class Perso extends Acteur{
 			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
 				equipe.agit(y/16, x/16, getEnv());
 		}
-		equipe.agit(y, x, getEnv());
+		else
+			equipe.agit(y, x, getEnv());
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
