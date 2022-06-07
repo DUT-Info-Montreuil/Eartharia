@@ -40,13 +40,15 @@ public class vueCraft {
 			e.printStackTrace();
 		}
 	}
-	public void ouvFerInv() {
-		visibility=!visibility;
-		this.craftPane.setVisible(visibility);
-		if(visibility) 
-			this.craftPane.toFront();
-		else
-			this.craftPane.toBack();
+	public void ouvFerCraft(boolean peutCraft) {
+		if(peutCraft || visibility==true) {
+			visibility=!visibility;
+			this.craftPane.setVisible(visibility);
+			if(visibility) 
+				this.craftPane.toFront();
+			else
+				this.craftPane.toBack();
+		}
 	}
 
 	private void afficherItem(int idItem,String id,int dimention, ImageView img) {

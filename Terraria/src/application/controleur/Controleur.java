@@ -157,6 +157,8 @@ public class Controleur implements Initializable {
 				break;
 			case V :
 				perso.addInventaire(new BatonMagique(this.env.getPerso()));
+			case C :
+				vueCraft.ouvFerCraft(perso.craft());
 			default:
 				break;
 			}

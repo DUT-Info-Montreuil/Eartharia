@@ -125,6 +125,16 @@ public class Perso extends Acteur{
 			prendEnMain(null);
 		}
 	}
+	public boolean craft() {
+		for (int ligne = -2; ligne <= 2; ligne++) {
+			for (int colonne = -2; colonne<= 2; colonne++) {
+				if(!(caseX()+colonne<0 || caseY()+ligne<0 || caseX()+colonne>=getEnv().getColonne() || caseY()+ligne>=getEnv().getLigne()))
+					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190)
+						return true;
+			}
+		}
+		return false;
+	}
 
 	public Item getEquipe() {
 		return equipe;
@@ -152,9 +162,6 @@ public class Perso extends Acteur{
 				}
 			}
 		}
-	}
-	public void craft(Item i) {
-		addInventaire();
 	}
 
 }
