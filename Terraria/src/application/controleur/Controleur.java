@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Acteur;
 import application.modele.Bloc;
 import application.modele.Environnement;
 import application.modele.Exception.CollisionException;
@@ -24,6 +25,7 @@ import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
+import application.modele.acteur.Perso;
 import application.modele.Item;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
@@ -33,10 +35,12 @@ import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
 import application.modele.item.Projectile;
-import application.modele.personnage.Perso;
+import application.modele.monstre.Sol;
+import application.modele.monstre.volant;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
 import application.vue.VueProjectile;
+import application.vue.vueActeur;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
  
@@ -49,6 +53,7 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
+    private vueActeur vue_acteur;
 	
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -86,18 +91,29 @@ public class Controleur implements Initializable {
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		this.description.setVisible(false);
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
+		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
+        //this.env.getActeurs().addListener(new ObservateurMonstre(pane));
+        
+        for(Acteur a : this.env.getListeActeur()) {
+                        if(a instanceof Sol) {
+                                new vueActeur((Sol) a, pane);
+                        }
+                        if(a instanceof volant) {
+                                new vueActeur((volant) a, pane);
+                        }//dans la vue et le modèle
+//                        if(a instanceof Boss) {
+//                                new vueActeur((Boss) a, pane);
+//                        }
+                }
 	}
 
-	private int cmpt = 50;
 	@FXML
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
 		try {
 			//perso.addInventaire(new Item(cmpt));
-			cmpt++;
 			switch (k.getCode()) {
 			case UP    :
-				perso.addInventaire(new BlocItem(cmpt));
 				perso.saut();
 				break;
 			case DOWN  :
@@ -130,7 +146,7 @@ public class Controleur implements Initializable {
 				break;
 			//Code Cheat
 			case A :
-				this.env.getPerso().setHp(-1);
+				this.env.getPerso().setHpPlus(-1);
 				System.out.println(this.env.getPerso().getHp());
 				break;
 			case P  :
@@ -181,8 +197,7 @@ public class Controleur implements Initializable {
 		KeyFrame kf = new KeyFrame(
 				Duration.millis(25),
 				(ev -> {
-					this.env.gravite();
-					this.env.lancerProjectiles();
+                    this.env.unTour();
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    

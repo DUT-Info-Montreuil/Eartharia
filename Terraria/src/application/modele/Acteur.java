@@ -1,8 +1,11 @@
 package application.modele;
 
+import java.util.Timer;
+
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
+import application.modele.fonctionnalitees.Saut;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -16,8 +19,9 @@ public abstract class Acteur {
 	private Environnement env;
 	private int vitesse;
 	private Box boxPlayer;
+	protected int attaque;
 
-	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox) {
+	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox, int atq) {
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
 		this.env = env;
@@ -26,6 +30,7 @@ public abstract class Acteur {
 		this.vitesse = vitesse;
 		this.hpMax =new SimpleIntegerProperty(hpMax) ;
 		this.hp =new SimpleIntegerProperty(hpMax) ;
+		this.attaque = atq;
 	}
 	
 
@@ -36,7 +41,39 @@ public abstract class Acteur {
 		this.saut = b;
 	}
 	
-
+	public void saut() throws Exception{
+		System.out.println("saut");
+		if(surDuSol())
+			new Timer().schedule(new Saut(this), 1500);
+		if(getSaut())
+			deplacement(0, -8);
+	}
+	public void tombe(int gravite) throws Exception{
+		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
+		deplacement(0, viteseChute);
+		//System.out.println("tombe");
+	}
+	public void droite() throws Exception{
+		System.out.println("droite");
+		deplacement(getVitesse(), 0);
+	}
+	public void gauche() throws Exception{
+		System.out.println("gauche");
+		deplacement(-getVitesse(), 0);
+	}
+	public boolean surDuSol() throws LimiteMapException {
+		try {
+			boolean b = getEnv().getBloc(caseY()+1, caseX()).estSolide();
+			if(b) {
+				setSaut(true);
+				return true;
+			}else
+				return false;
+		}catch(Exception e) {
+			throw new LimiteMapException();
+		}
+	}
+	
 	public int getVitesse() {
 		return vitesse;
 	}
@@ -46,12 +83,14 @@ public abstract class Acteur {
 	public IntegerProperty getHpProperty() {
 		return hp;
 	}
-	
+	public void setHp(int hp) {
+		this.hp.set(hp);
+	}
 	public int getHp() {
 		return this.hp.getValue();
 	}
 	
-	public void setHp(int hpPlus) {
+	public void setHpPlus(int hpPlus) {
 		this.hp.setValue(this.hp.getValue()+hpPlus);
 		limiteHp();
 	}
@@ -125,4 +164,5 @@ public abstract class Acteur {
 		setX(getX()+x);
 		setY(getY()+y);
 	}
+	public abstract void agir();
 }

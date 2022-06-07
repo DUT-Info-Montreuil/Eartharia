@@ -12,10 +12,13 @@ import org.json.simple.parser.ParseException;
 
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
+import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
-import application.modele.personnage.Perso;
-import application.modele.personnage.Pnj;
+import application.modele.monstre.BossSol;
+import application.modele.monstre.Sol;
+import application.modele.monstre.volant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -26,6 +29,7 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
+	private int temps = 0;
 	private ObservableList<Projectile> projectiles;
 
 	public Environnement() {
@@ -34,6 +38,12 @@ public class Environnement {
 		listActeur= FXCollections.observableArrayList();
 		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
+		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
+				new Sol(this, 0, 10)
+				,new Sol(this, 15, 4),
+				new volant(this, 0,6),
+				new BossSol(this, 9, 9, this.perso)
+				);
 	}
 
 	private void initialisation(){
@@ -74,6 +84,31 @@ public class Environnement {
 		}
 	}
 	public void unTour() {
+		this.gravite();
+		this.lancerProjectiles();
+		//        for(int i = this.listActeur.size() -1; i>= 0; i --) {
+		//                Acteur monstre = listActeur.get(i);
+		//                if(monstre.estMort()){
+		//                this.listActeur.remove(i);
+		//                }
+		//        }
+		for( Acteur a : listActeur ) {
+			a.agir();
+		}
+
+		if (temps%8==0){
+		}
+		temps++;
+	}
+	public int getTemp() {
+		return temps;
+	}
+	public Acteur getActeurs () {
+		Acteur act = null;
+		for (Acteur a : this.listActeur){
+			act = a;
+		}
+		return act;
 
 	}
 	public void gravite() {
@@ -94,7 +129,7 @@ public class Environnement {
 	}
 	public void lancerProjectiles() {
 		for (int i=0; i<projectiles.size(); i++) {
-				projectiles.get(i).lancer();
+			projectiles.get(i).lancer();
 		}
 	}
 	public boolean verifAutourProjectile(Projectile p) {
@@ -103,7 +138,7 @@ public class Environnement {
 		}
 		return false;
 	}
-	
+
 	public ObservableList<Projectile> getListProjectiles() {
 		return this.projectiles;
 	}
@@ -125,10 +160,10 @@ public class Environnement {
 	public ObservableList<Bloc> getMap() {
 		return map;
 	}
-	public ObservableList<Acteur> getListActeur() {
+	public ObservableList <Acteur> getListeActeur(){
 		return this.listActeur;
 	}
-	
+
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));

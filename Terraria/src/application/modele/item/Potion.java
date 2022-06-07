@@ -1,7 +1,7 @@
 package application.modele.item;
 
 import application.modele.Environnement;
-import application.modele.personnage.Perso;
+import application.modele.acteur.Perso;
 
 public class Potion extends Consommable{
 
@@ -15,7 +15,7 @@ public class Potion extends Consommable{
 	}
 	
 	public void soigner() {
-		p.setHp(soin);
+		p.setHpPlus(soin);
 	}
 
 	@Override

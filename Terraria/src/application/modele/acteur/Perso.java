@@ -1,4 +1,4 @@
-package application.modele.personnage;
+package application.modele.acteur;
 
 import java.util.Timer;
 import application.modele.Item;
@@ -22,44 +22,11 @@ public class Perso extends Acteur{
 	private Item equipe;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 200,4,16,16);
+		super(env, x, y, 200,4,16,16,10);
 		this.inventaire= FXCollections.observableArrayList();
 	}
-
-	public void saut() throws Exception{
-		System.out.println("saut");
-		if(surDuSol())
-			new Timer().schedule(new Saut(this), 1500);
-		if(getSaut())
-			deplacement(0, -8);
-	}
-	public void tombe(int gravite) throws Exception{
-		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
-		deplacement(0, viteseChute);
-		//System.out.println("tombe");
-	}
-	public void droite() throws Exception{
-		System.out.println("droite");
-		deplacement(getVitesse(), 0);
-	}
-	public void gauche() throws Exception{
-		System.out.println("gauche");
-		super.deplacement(-getVitesse(), 0);
-	}
-
-	public boolean surDuSol() throws LimiteMapException {
-		try {
-			boolean b = getEnv().getBloc(caseY()+1, caseX()).estSolide();
-			if(b) {
-				setSaut(true);
-				return true;
-			}else
-				return false;
-		}catch(Exception e) {
-			throw new LimiteMapException();
-		}
-	}
-
+	@Override
+	public void agir() {}
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
@@ -134,7 +101,7 @@ public class Perso extends Acteur{
 		if(this.getHp()==0) {
 			for (int i=0; i<inventaire.size();i++) {
 				if (inventaire.get(i) instanceof PlumeDePhoenix) {
-					this.setHp(this.getHpMax()/2);
+					this.setHpPlus(this.getHpMax()/2);
 				}
 			}
 		}

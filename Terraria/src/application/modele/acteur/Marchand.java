@@ -1,4 +1,4 @@
-package application.modele.personnage;
+package application.modele.acteur;
 
 import application.modele.Environnement;
 
