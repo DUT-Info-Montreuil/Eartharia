@@ -2,10 +2,7 @@ package application.modele.item;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
-import application.modele.acteur.Perso;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Projectile extends Arme{
