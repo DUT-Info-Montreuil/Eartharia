@@ -34,9 +34,9 @@ public class Box {
 	}
 	public ArrayList<Integer[]> parcourBoxCase() {
 		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
-		for (int i = 0; i<height; i+=16) {
-			for(int j = 0; j<width; j+=16) {
-				Integer[] a = {(acteur.getX()+i)/16,(acteur.getY()+j)/16};
+		for (int i = 0; i<height; i+=1) {
+			for(int j = 0; j<width; j+=1) {
+				Integer[] a = {(acteur.caseX()+i),(acteur.caseY()+j)};
 				taille.add(a);
 			}
 		}

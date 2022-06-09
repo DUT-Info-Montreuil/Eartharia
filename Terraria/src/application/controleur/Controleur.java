@@ -176,7 +176,7 @@ public class Controleur implements Initializable {
 			case V :
 				perso.addInventaire(new BatonMagique(this.env.getPerso()));
 			case C :
-				vueCraft.ouvFerCraft(perso.craft());
+				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
 			default:
 				break;
 			}
@@ -215,7 +215,9 @@ public class Controleur implements Initializable {
 		KeyFrame kf = new KeyFrame(
 				Duration.millis(25),
 				(ev -> {
-                    this.env.unTour();
+					if (vueCraft.pause()) {
+	                    this.env.unTour();
+					}
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    

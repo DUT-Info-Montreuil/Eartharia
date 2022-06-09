@@ -4,6 +4,8 @@ import java.util.Timer;
 import application.modele.Item;
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
@@ -28,11 +30,8 @@ public class Perso extends Acteur{
 		super(env, x, y, 200,4,16,16,10);
 		this.inventaire= FXCollections.observableArrayList();
 		this.craft=new CraftMenu(inventaire,this);
+	}
 
-	}
-	public CraftMenu getCraft() {
-		return craft;
-	}
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
@@ -67,19 +66,21 @@ public class Perso extends Acteur{
 		}
 	}
 
-	public boolean craft() {
+	public boolean peutcraft() {
 		for (int ligne = -2; ligne <= 2; ligne++) {
 			for (int colonne = -2; colonne<= 2; colonne++) {
 				if(!(caseX()+colonne<0 || caseY()+ligne<0 || caseX()+colonne>=getEnv().getColonne() || caseY()+ligne>=getEnv().getLigne()))
 					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190) {
-						craft.refresh();
 						return true;
 					}
 			}
 		}
 		return false;
 	}
-	
+	public CraftMenu getCraft() {
+		return craft;
+	}
+
 	public void useEquipe(int y,int x) throws Exception{
 		if(equipe== null)
 			throw new RienEquiperExeception();
@@ -97,7 +98,6 @@ public class Perso extends Acteur{
 			prendEnMain(null);
 		}
 	}
-
 	public Item getEquipe() {
 		return equipe;
 	}
@@ -115,7 +115,6 @@ public class Perso extends Acteur{
 			}
 		}
 	}
-	
 	public void ressusciter() {
 		if(this.getHp()==0) {
 			for (int i=0; i<inventaire.size();i++) {

@@ -1,4 +1,4 @@
- package application.vue;
+package application.vue;
 
 import java.io.FileInputStream;
 import java.util.Iterator;
@@ -7,11 +7,18 @@ import application.modele.Item;
 import application.modele.Exception.ItemNonTrouverException;
 import application.modele.fonctionnalitees.ItemFonctionnalite;
 import application.modele.fonctionnalitees.Tableau;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -27,12 +34,11 @@ public class vueCraft {
 		this.craftPane=craftPane;
 		this.craft=craft;
 		paneSet();
-		craftPane.setLayoutX(100);
-		craftPane.setLayoutY(100);
+		background();
 		initItem();
 	}
 	private void paneSet() {
-		this.visibility = true;
+		this.visibility = false;
 		for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) {
 			this.craftPane.toBack();
 		}
@@ -48,8 +54,17 @@ public class vueCraft {
 			e.printStackTrace();
 		}
 	}
-	public void ouvFerCraft(boolean peutCraft) {
-		if(peutCraft || visibility==true) {
+	private void background() {
+		Image img = new Image("ressources/CraftMenu.png");
+		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
+		Background bGround = new Background(bImg);
+		craftPane.setBackground(bGround);	
+		Pane p = (Pane)craftPane.getParent();
+		craftPane.setLayoutX(p.getWidth()/2);
+		craftPane.setLayoutY(p.getHeight()/2);
+	}
+	public void ouvFerCraft(boolean peutCraft){
+		if(peutCraft) {
 			visibility=!visibility;
 			this.craftPane.setVisible(visibility);
 			if(visibility)
@@ -59,6 +74,9 @@ public class vueCraft {
 				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) 
 					this.craftPane.toBack();
 		}
+	}
+	public boolean pause() {
+		return visibility;
 	}
 
 	private void afficherItem(int idItem,String id,int dimention, ImageView img) {

@@ -44,21 +44,28 @@ public class CraftMenu {
 		arme();
 	}
 	private void outils() {
+		Item i ;
+
 		for (int b = materiaux[0]/3,p = materiaux[1]/3; b >0  && p > 0; b--,p--) {
-			if(estPresent(new Pioche()))
-				craft.add(new Pioche());
-			if(estPresent(new Hache()))
-				craft.add(new Hache());
+			i = new Pioche();
+			if(estPresent(i))
+				craft.add(i);
+			i = new Hache();
+			if(estPresent(i))
+				craft.add(i);
 		}
 	}
 	private void arme() {
+		Item i ;
 		for (int b = materiaux[0]/5,p = materiaux[1]/3; b >0  && p >0; b--,p--) {
-			if(estPresent(new BatonMagique(acteur,1)))
-				craft.add(new BatonMagique(acteur,1));
+			i = new BatonMagique(acteur,1);
+			if(estPresent(i))
+				craft.add(i);
 		}
 		for (int b = materiaux[0]/2,p = materiaux[1]/4; b >0  && p >0; b--,p--) {
-			if(estPresent(new Epee(acteur,1)))
-				craft.add(new Epee(acteur,1));
+			i = new Epee(acteur,1);
+			if(estPresent(i))
+				craft.add(i);
 		}
 	}
 	public boolean estPresent(Item i) {
