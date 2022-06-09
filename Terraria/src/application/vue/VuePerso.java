@@ -1,6 +1,6 @@
 package application.vue;
 
-import application.modele.Perso;
+import application.modele.acteur.Perso;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,7 +17,7 @@ public class VuePerso {
 	
 	public VuePerso (Pane pane, Perso perso) {
 		this.pane=pane;
-		this.img_perso = new Image("ressources/perso16pix.png");
+		this.img_perso = new Image("ressources/perso.png");
 		this.imgVP = new ImageView(img_perso);
 		Rectangle r = new Rectangle(16, 16);
 		r.setFill(Color.RED);

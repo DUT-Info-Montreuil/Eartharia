@@ -1,82 +1,52 @@
 package application.modele;
 
-import java.util.Objects;
+public abstract class Item {
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+	private int idItem;
+	private int quantite;
+	private int quantiteMax;
+	public static int compteur=0;
+	private String id;
 
-public class Item {
-    
-	private int id;
-    private IntegerProperty x;
-    private IntegerProperty y;
-    private IntegerProperty quantite;
-    private Environnement env;
-    private String descri;
-    
-    public Item (int x, int y, Environnement env, String descri) {
-        this.x =new SimpleIntegerProperty(x) ;
-        this.y =new SimpleIntegerProperty(y) ;
-        this.env=env;
-        this.descri=descri;
-        this.id = 1 ;
-        //this.quantite.setValue(1);
-    }
-    
-    public int getX() {
-        return this.x.getValue();
-    }
-    
-    public IntegerProperty getxProperty() {
-        return this.x;
-    }
-    
-    public int getY() {
-        return this.y.getValue();
-    }
-    
-    public IntegerProperty getyProperty() {
-        return this.y;
-    }
-    
-    public String getDescri() {
-        return this.descri;
-    }
-    
-    public IntegerProperty getQuantite() {
-    	return this.quantite;
-    }
-    
-    public void addQuantite() {
-    	this.quantite.setValue(quantite.getValue()+1);
-    }
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(descri);
+	public Item (int idItem,int quantiteMax) {
+		this.idItem = idItem ;
+		this.quantite = 1;
+		this.quantiteMax = quantiteMax;
+		this.id="I"+compteur;
+		compteur++;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Item other = (Item) obj;
-		return Objects.equals(descri, other.descri);
+	public Item (int idItem,int quantite,int quantiteMax) {
+		this.idItem = idItem ;
+		this.quantite = quantite;
+		this.quantiteMax = quantiteMax;
+		this.id="I"+compteur;
+		compteur++;
 	}
-
-	public int getId() {
+	public int getQuantite() {
+		return this.quantite;
+	}
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
+	}
+	public boolean equals(Item item) {
+		return item.getIdItem()==idItem;
+	}
+	public void addQuantite(int nombre) {
+		setQuantite(quantite+nombre);
+	}
+	public void removeQuantite(int nombre) {
+		setQuantite(quantite-nombre);
+	}
+	public int getIdItem() {
+		return idItem;
+	}
+	public String getId() {
 		return id;
 	}
-    
-/*    public int caseX() {
-        return this.x.get()/16;
-    }
-    public int caseY() {
-        return this.y.get()/16;
-    }*/
-    
+	public abstract void agit(int y, int x,Environnement env) ;
+	
+	public int getQuantiteMax() {
+		return this.quantiteMax;
+	}
+
 }

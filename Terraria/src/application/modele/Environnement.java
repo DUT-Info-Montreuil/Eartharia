@@ -10,23 +10,40 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import application.modele.fonctionnalitees.CollisionException;
+import application.modele.Exception.CollisionException;
+import application.modele.Exception.LimiteMapException;
+import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
-import application.modele.fonctionnalitees.LimiteMapException;
+import application.modele.item.Projectile;
+import application.modele.monstre.BossSol;
+import application.modele.monstre.Sol;
+import application.modele.monstre.volant;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Environnement {
 
 	private int colonne,ligne;
-	private ArrayList<Bloc> map ;
+	private ObservableList <Bloc> map ;
 	private Perso perso;
 	private int gravite;
-	private ArrayList<Acteur> listActeur;
-	
+	private ObservableList<Acteur> listActeur;
+	private int temps = 0;
+	private ObservableList<Projectile> projectiles;
+
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		listActeur= new ArrayList<>();
+		listActeur= FXCollections.observableArrayList();
+		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
+//		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
+//				new Sol(this, 0, 10)
+//				,new Sol(this, 15, 4),
+//				new volant(this, 0,6),
+//				new BossSol(this, 9, 9, this.perso)
+//				);
 	}
 
 	private void initialisation(){
@@ -39,14 +56,13 @@ public class Environnement {
 			JSONObject layers = (JSONObject) ((ArrayList) Jsonbject.get("layers")).get(0);
 			this.colonne  = ((Long) layers.get("width")).intValue();
 			this.ligne = ((Long) layers.get("height")).intValue();
-			this.map = new ArrayList<Bloc>();
+			this.map = FXCollections.<Bloc>observableArrayList();
 			JSONArray data = (JSONArray) layers.get("data");
 			int idBloc;
 			for (int i = 0; i < ligne*colonne; i++) {
-				idBloc = ((Long)data.get(i)).intValue();
-				map.add(new Bloc(idBloc,Constante.estUnBlocSolide(idBloc)));
+				idBloc = (((Long)data.get(i)).intValue());
+				map.add(new Bloc(i,idBloc));
 			}
-			//vueNombre();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -68,6 +84,31 @@ public class Environnement {
 		}
 	}
 	public void unTour() {
+		this.gravite();
+		this.lancerProjectiles();
+		//        for(int i = this.listActeur.size() -1; i>= 0; i --) {
+		//                Acteur monstre = listActeur.get(i);
+		//                if(monstre.estMort()){
+		//                this.listActeur.remove(i);
+		//                }
+		//        }
+		for( Acteur a : listActeur ) {
+			a.agir();
+		}
+
+		if (temps%8==0){
+		}
+		temps++;
+	}
+	public int getTemp() {
+		return temps;
+	}
+	public Acteur getActeurs () {
+		Acteur act = null;
+		for (Acteur a : this.listActeur){
+			act = a;
+		}
+		return act;
 
 	}
 	public void gravite() {
@@ -83,9 +124,26 @@ public class Environnement {
 			e.printStackTrace();
 		};
 	}
+	public void addListProjectiles(Projectile p) {
+		projectiles.add(p);
+	}
+	public void lancerProjectiles() {
+		for (int i=0; i<projectiles.size(); i++) {
+			projectiles.get(i).lancer();
+		}
+	}
+	public boolean verifAutourProjectile(Projectile p) {
+		if (!this.getBloc(p.getX(), p.getY()).estSolide()) {
+			return true;
+		}
+		return false;
+	}
 
-	public int getCase(int ligne, int colonne) {
-		return this.map.get(ligne*this.colonne+colonne).getId();
+	public ObservableList<Projectile> getListProjectiles() {
+		return this.projectiles;
+	}
+	public int getIdTuile(int ligne, int colonne) {
+		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}
 	public Bloc getBloc(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne);
@@ -98,5 +156,33 @@ public class Environnement {
 	}
 	public Perso getPerso () {
 		return this.perso;
+	}
+	public ObservableList<Bloc> getMap() {
+		return map;
+	}
+	public ObservableList <Acteur> getListeActeur(){
+		return this.listActeur;
+	}
+
+	public void setBlock(int yClic, int xClic,int idTuile) {
+		getBloc(yClic,xClic).setIdTuile(idTuile);
+		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
+	}
+	public void ajoutBloc(int ligne, int colonne,int idTuile) {
+		map.remove(getBloc(ligne,colonne));
+		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,idTuile));
+	}
+	public void destructBlock(int ligne, int colonne) {
+		map.remove(getBloc(ligne,colonne));
+		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,0));
+	}
+	public ArrayList<Acteur> ennemiPresent() {
+		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();
+		for (int i=0; i<listActeur.size(); i++) {
+			if ((listActeur.get(i).getX()<=this.perso.getX()+1 || listActeur.get(i).getX()>=this.perso.getX()-1 || listActeur.get(i).getY()>=this.perso.getY()-1 || (listActeur.get(i).getX()>=this.perso.getX()-1 && listActeur.get(i).getY()>=this.perso.getY()-1) || (listActeur.get(i).getX()<=this.perso.getX()+1 && listActeur.get(i).getY()>=this.perso.getY()-1)) && listActeur.get(i) instanceof Pnj ) {
+				ennemis.add(listActeur.get(i));
+			}
+		}
+		return ennemis; 
 	}
 }
