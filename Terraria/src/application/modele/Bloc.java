@@ -8,8 +8,7 @@ public class Bloc {
 		this.id = id;
 		this.collision = collision;
 	}
-	
-	public boolean bloquer() {
+	public boolean estSolide() {
 		return this.collision;
 	}
 	public int getId() {

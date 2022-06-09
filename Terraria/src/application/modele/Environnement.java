@@ -1,103 +1,102 @@
 package application.modele;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import application.modele.fonctionnalitees.CollisionException;
+import application.modele.fonctionnalitees.Constante;
+import application.modele.fonctionnalitees.LimiteMapException;
 
 public class Environnement {
-	
-	private int ligne,colonne;
-	private int [][] map ;
+
+	private int colonne,ligne;
+	private ArrayList<Bloc> map ;
 	private Perso perso;
 	private int gravite;
-
-	public Environnement(int x, int y) {
-		perso = new Perso(this, x*16/2, y*16/2);
-		this.ligne = x;
-		this.colonne = y;
-		this.map = new int [x][y];
-		this.gravite = 1;
-		this.gravite ++;
-	}
+	private ArrayList<Acteur> listActeur;
 	
-	public void readMap () throws IOException {
-		File file = new File("src/Terraria.csv");
-		BufferedReader bfr = null;
+	public Environnement() {
+		initialisation();
+		this.gravite = 2;
+		listActeur= new ArrayList<>();
+		perso = new Perso(this, 0, 0);
+	}
+
+	private void initialisation(){
+		Object ob;
 		try {
-			bfr = new BufferedReader(new FileReader(file));
+			ob = new JSONParser().parse(new FileReader("src/JSONFile.json"));
+			JSONObject Jsonbject = (JSONObject) ob;
+
+			@SuppressWarnings("rawtypes")
+			JSONObject layers = (JSONObject) ((ArrayList) Jsonbject.get("layers")).get(0);
+			this.colonne  = ((Long) layers.get("width")).intValue();
+			this.ligne = ((Long) layers.get("height")).intValue();
+			this.map = new ArrayList<Bloc>();
+			JSONArray data = (JSONArray) layers.get("data");
+			int idBloc;
+			for (int i = 0; i < ligne*colonne; i++) {
+				idBloc = ((Long)data.get(i)).intValue();
+				map.add(new Bloc(idBloc,Constante.estUnBlocSolide(idBloc)));
+			}
+			//vueNombre();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		String ligne;
-		String[] all_Line;
-		try {
-			int i = 0;
-			while ((ligne = bfr.readLine()) != null) {
-				all_Line = ligne.split(",");
-				for(int j =0 ; j< all_Line.length; j++) {	
-					this.map[i][j] = Integer.parseInt(all_Line[j].trim());
-				}
-				i++;
-				
-				//System.out.println(ligne);
-			}
-		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			bfr.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
-	
-	public void fall () {//mettre dans acteur pour l'appliquer à tous le monde
-        if(this.perso.getY() < (this.getColonne()*16)) {
-//            System.out.println("if");
-//            System.out.println("coordonnées perso " + this.perso.getY());
-//            System.out.println("coordonnées map " + this.getY()*16);
-            try {
-                this.perso.setY(this.perso.getY() + /*this.perso.getVitesseY()*/ this.gravite);
-                //this.perso.setVitesseY(this.perso.getVitesseY() + this.gravite);
-            } catch (Exception e) {
-                
-                System.out.println("fin limite map");
-            };
-            
-        }
-    }
+
+	public boolean boxCollisionBloc(int ligne, int colonne){
+		return this.map.get(ligne*this.colonne+colonne).estSolide();
+	}
+	public void vueNombre() {
+		for (int i = 0; i < ligne; i++) {
+			for (int j = 0; j <colonne; j++) {
+				System.out.print(this.map.get(i*ligne+j).getId()+"\t");
+			}
+			System.out.println();
+		}
+	}
+	public void unTour() {
+
+	}
+	public void gravite() {
+		//plus tard faire un for each pour la liste acteur
+		try {
+			if(!perso.surDuSol())
+				this.perso.tombe(gravite);
+		}catch (LimiteMapException e) {
+			System.out.println("fin limite map");
+		}catch (CollisionException e) {
+			System.out.println("Boite de collision touche un bloc");
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+	}
+
 	public int getCase(int ligne, int colonne) {
-		return this.map[ligne][colonne];
+		return this.map.get(ligne*this.colonne+colonne).getId();
 	}
-
-	public int getLigne() {
-		return ligne;
+	public Bloc getBloc(int ligne, int colonne) {
+		return this.map.get(ligne*this.colonne+colonne);
 	}
-
 	public int getColonne() {
 		return colonne;
 	}
-	
+	public int getLigne() {
+		return ligne;
+	}
 	public Perso getPerso () {
 		return this.perso;
 	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
