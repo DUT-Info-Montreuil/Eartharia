@@ -125,9 +125,4 @@ public class Perso extends Acteur{
 			}
 		}
 	}
-	@Override
-	public void agir() {
-		// TODO Auto-generated method stub
-		
-	}
 }

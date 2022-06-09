@@ -121,16 +121,16 @@ public class Controleur implements Initializable {
 			//perso.addInventaire(new Item(cmpt));
 			switch (k.getCode()) {
 			case UP    :
-				perso.saut();
+				perso.setDeplacement(0, true);
 				break;
 			case DOWN  :
-				perso.tombe(16); //va servir a traverser des bloc semi traversable ex : echafaudage plateforme... comme dans mario
+				perso.setDeplacement(1, true);
 				break;
 			case LEFT  :
-				perso.gauche();
+				perso.setDeplacement(2, true);
 				break;
 			case RIGHT :
-				perso.droite();
+				perso.setDeplacement(3, true);
 				break;
 			case DIGIT1  :
 			case NUMPAD1  :
@@ -180,16 +180,8 @@ public class Controleur implements Initializable {
 			default:
 				break;
 			}
-		}catch (LimiteMapException e) {
-			System.out.println("Limite map !");
-		}catch (CollisionException e) {
-			System.out.println("Collision Bloc map !");
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
-		}catch (RienEquiperExeception e) {
-			System.out.println("Le personnage n'a rien equiper");
-		}catch (InventaireCaseVideException e) {
-			System.out.println("Case Vide");		
 		}catch (ItemNonTrouverException e) {
 			System.out.println("Le personnage n'a rien equiper + Case Vide");		
 		}catch (Exception e) {
@@ -203,7 +195,16 @@ public class Controleur implements Initializable {
 		switch (k.getCode()) {
 		case UP    :
 			perso.setSaut(false);
+			perso.setDeplacement(0, false);
 			break;
+		case DOWN  :
+			perso.setDeplacement(1, false);
+			break;
+		case LEFT  :
+			perso.setDeplacement(2, false);
+			break;
+		case RIGHT :
+			perso.setDeplacement(3, false);
 		default:
 			break;
 		}

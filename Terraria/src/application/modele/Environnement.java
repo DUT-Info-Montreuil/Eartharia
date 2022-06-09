@@ -92,6 +92,7 @@ public class Environnement {
 		//                this.listActeur.remove(i);
 		//                }
 		//        }
+		this.perso.agir();
 		for( Acteur a : listActeur ) {
 			a.agir();
 		}
