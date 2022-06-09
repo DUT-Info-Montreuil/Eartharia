@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -108,7 +109,7 @@ public class Controleur implements Initializable {
 				perso.saut();
 				break;
 			case DOWN  :
-				perso.tombe(16); //va servir a traverser des bloc semi traversable ex : echafaudage plateforme... comme dans mario
+				perso.tombe(16);
 				break;
 			case LEFT  :
 				perso.gauche();
@@ -203,7 +204,7 @@ public class Controleur implements Initializable {
 		this.tour.play();    
 	}
 	@FXML
-	private void removeBloc(MouseEvent m) {
+	private void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
@@ -215,7 +216,7 @@ public class Controleur implements Initializable {
 				break;
 
 			case SECONDARY : 
-				perso.useEquipe(yClic, xClic);
+				
 				break;
 
 			default : System.out.println("probleme");
@@ -277,5 +278,5 @@ public class Controleur implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}	
 }

@@ -52,6 +52,9 @@ public class VueInventaire {
 	private void paneSet() {
 		this.tPaneInventaire.setPrefSize(128, 96);
 		this.tPaneInventaire.setVisible(false);
+		for (int iterator = 0;iterator<=((Pane) this.tPaneInventaire.getParent()).getChildren().size(); iterator++) {
+			this.tPaneInventaire.toBack();
+		}
 		this.tPaneInventaire.setId("inventaire");
 		this.tPaneInventaireRapide.setId("inventaireRapide");
 		this.tPaneInventaireRapide.setPrefSize(128, 32);
@@ -87,10 +90,13 @@ public class VueInventaire {
 	public void ouvFerInv() {
 		visibility=!visibility;
 		this.tPaneInventaire.setVisible(visibility);
-		if(visibility) 
-			this.tPaneInventaire.toFront();
+		if(visibility)
+			for (int iterator = 0;iterator<=((Pane) this.tPaneInventaire.getParent()).getChildren().size(); iterator++)
+				this.tPaneInventaire.toFront();
 		else
-			this.tPaneInventaire.toBack();
+			for (int iterator = 0;iterator<=((Pane) this.tPaneInventaire.getParent()).getChildren().size(); iterator++)
+				this.tPaneInventaire.toBack();
+			
 	}
 
 	private void afficherItem(int idItem,String id,int dimention, ImageView img) {

@@ -1,6 +1,7 @@
  package application.vue;
 
 import java.io.FileInputStream;
+import java.util.Iterator;
 
 import application.modele.Item;
 import application.modele.Exception.ItemNonTrouverException;
@@ -12,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
 public class vueCraft {
@@ -24,10 +26,16 @@ public class vueCraft {
 	public vueCraft(TilePane craftPane,ObservableList<Item> craft){
 		this.craftPane=craftPane;
 		this.craft=craft;
-		this.visibility = true;
+		paneSet();
 		craftPane.setLayoutX(100);
 		craftPane.setLayoutY(100);
 		initItem();
+	}
+	private void paneSet() {
+		this.visibility = true;
+		for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) {
+			this.craftPane.toBack();
+		}
 	}
 	private void initItem(){
 		try {
@@ -44,10 +52,12 @@ public class vueCraft {
 		if(peutCraft || visibility==true) {
 			visibility=!visibility;
 			this.craftPane.setVisible(visibility);
-			if(visibility) 
-				this.craftPane.toFront();
+			if(visibility)
+				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) 
+					this.craftPane.toFront();
 			else
-				this.craftPane.toBack();
+				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) 
+					this.craftPane.toBack();
 		}
 	}
 

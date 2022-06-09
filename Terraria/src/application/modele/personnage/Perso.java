@@ -4,6 +4,7 @@ import java.util.Timer;
 import application.modele.Item;
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
@@ -34,44 +35,9 @@ public class Perso extends Acteur{
 		return craft;
 	}
 
-	public void saut() throws Exception{
-		System.out.println("saut");
-		if(surDuSol())
-			new Timer().schedule(new Saut(this), 1500);
-		if(getSaut())
-			deplacement(0, -8);
-	}
-	public void tombe(int gravite) throws Exception{
-		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
-		deplacement(0, viteseChute);
-		//System.out.println("tombe");
-	}
-	public void droite() throws Exception{
-		System.out.println("droite");
-		deplacement(getVitesse(), 0);
-	}
-	public void gauche() throws Exception{
-		System.out.println("gauche");
-		super.deplacement(-getVitesse(), 0);
-	}
-
-	public boolean surDuSol() throws LimiteMapException {
-		try {
-			boolean b = getEnv().getBloc(caseY()+1, caseX()).estSolide();
-			if(b) {
-				setSaut(true);
-				return true;
-			}else
-				return false;
-		}catch(Exception e) {
-			throw new LimiteMapException();
-		}
-	}
-
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
-		craft.refreshAdd(i);
 		if(estPresent(i)) {
 			this.inventaire.add(i);
 		}
@@ -109,13 +75,14 @@ public class Perso extends Acteur{
 		if(equipe== null)
 			throw new RienEquiperExeception();
 		if (equipe instanceof Outils || equipe instanceof BlocItem) {
-			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
+			if((caseY()-5)<= y && (caseY()+5)>=y && (caseX()-5)<= x && (caseX()+5)>=x) {
+				System.out.println(equipe);
 				equipe.agit(y, x, getEnv());
+			}
 		}
 		else {
 			equipe.agit(y, x, getEnv());
 		}
-		craft.refreshRemove(equipe);
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
@@ -129,8 +96,10 @@ public class Perso extends Acteur{
 		for (int ligne = -2; ligne <= 2; ligne++) {
 			for (int colonne = -2; colonne<= 2; colonne++) {
 				if(!(caseX()+colonne<0 || caseY()+ligne<0 || caseX()+colonne>=getEnv().getColonne() || caseY()+ligne>=getEnv().getLigne()))
-					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190)
+					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190) {
+						craft.refresh();
 						return true;
+					}
 			}
 		}
 		return false;
@@ -163,5 +132,4 @@ public class Perso extends Acteur{
 			}
 		}
 	}
-
 }

@@ -1,8 +1,11 @@
 package application.modele;
 
+import java.util.Timer;
+
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
+import application.modele.fonctionnalitees.Saut;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -35,8 +38,6 @@ public abstract class Acteur {
 	public void setSaut(boolean b) {
 		this.saut = b;
 	}
-	
-
 	public int getVitesse() {
 		return vitesse;
 	}
@@ -46,27 +47,21 @@ public abstract class Acteur {
 	public IntegerProperty getHpProperty() {
 		return hp;
 	}
-	
 	public int getHp() {
 		return this.hp.getValue();
 	}
-	
 	public void setHp(int hpPlus) {
 		this.hp.setValue(this.hp.getValue()+hpPlus);
 		limiteHp();
 	}
-	
 	public IntegerProperty getHpMaxProperty() {
 		return this.hpMax;
 	}
-	
 	public int getHpMax() {
 		return this.hpMax.getValue();
 	}
-	
 	public void setHpMax(int hpPlus) {
 		this.hpMax.setValue(this.getHpMax()+hpPlus);
-		
 	}
 	public void limiteHp() {
 		if (this.hp.getValue()>=this.hpMax.getValue()) {
@@ -105,6 +100,40 @@ public abstract class Acteur {
 		return this.y.get()/16;
 	}
 	
+	
+	public void saut() throws Exception{
+		System.out.println("saut");
+		if(surDuSol())
+			new Timer().schedule(new Saut(this), 1500);
+		if(getSaut())
+			deplacement(0, -8);
+	}
+	public void tombe(int gravite) throws Exception{
+		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
+		deplacement(0, viteseChute);
+		//System.out.println("tombe");
+	}
+	public void droite() throws Exception{
+		System.out.println("droite");
+		deplacement(getVitesse(), 0);
+	}
+	public void gauche() throws Exception{
+		System.out.println("gauche");
+		deplacement(-getVitesse(), 0);
+	}
+	public boolean surDuSol() throws LimiteMapException {
+		try {
+			boolean b = getEnv().getBloc(caseY()+1, caseX()).estSolide();
+			if(b) {
+				setSaut(true);
+				return true;
+			}else
+				return false;
+		}catch(Exception e) {
+			throw new LimiteMapException();
+		}
+	}
+
 	private void limiteDeMap(int x, int y) throws LimiteMapException{
 		if((getX()+x)<0)
 			throw new LimiteMapException();

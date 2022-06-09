@@ -26,6 +26,7 @@ public abstract class Outils extends Item {
 	}
 	
 	public void agit(int y, int x,Environnement env){
+		System.out.println("test");
 		if(peuxDetruire(y, x, env)) {
 			try {
 				env.getPerso().addInventaire(Casse(y, x, env));
@@ -33,6 +34,8 @@ public abstract class Outils extends Item {
 				e.printStackTrace();
 			}
 		}
+		else
+			System.out.println("non");
 	}
 	public abstract boolean peuxDetruire(int y, int x,Environnement env) ;
 }

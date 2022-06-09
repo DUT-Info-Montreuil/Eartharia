@@ -41,7 +41,6 @@ public class ObserveCraft implements ListChangeListener<Item >{
 	}
 	private void suppresion(List<? extends Item> getRemoved) {
 		for (Item item : getRemoved) {
-			System.out.println("id "+item.getId());
 			Node n = this.paneCraft.lookup("#"+item.getId());
 			if(n!=null)
 				this.paneCraft.getChildren().remove(n);
