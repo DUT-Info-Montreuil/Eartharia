@@ -6,9 +6,11 @@ import application.modele.Acteur;
 import application.modele.Environnement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import application.modele.fonctionnalitees.CraftMenu;
 import application.modele.fonctionnalitees.Saut;
 import application.modele.item.Arme;
 import application.modele.item.BatonMagique;
+import application.modele.item.BlocItem;
 import application.modele.item.CoeurDePhoenix;
 import application.modele.item.Outils;
 import application.modele.item.PlumeDePhoenix;
@@ -20,13 +22,17 @@ import application.modele.Exception.RienEquiperExeception;
 public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
 	private Item equipe;
+	private CraftMenu craft;
 
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,16,10);
 		this.inventaire= FXCollections.observableArrayList();
+		this.craft=new CraftMenu(inventaire,this);
+
 	}
-	@Override
-	public void agir() {}
+	public CraftMenu getCraft() {
+		return craft;
+	}
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
@@ -61,16 +67,28 @@ public class Perso extends Acteur{
 		}
 	}
 
-
+	public boolean craft() {
+		for (int ligne = -2; ligne <= 2; ligne++) {
+			for (int colonne = -2; colonne<= 2; colonne++) {
+				if(!(caseX()+colonne<0 || caseY()+ligne<0 || caseX()+colonne>=getEnv().getColonne() || caseY()+ligne>=getEnv().getLigne()))
+					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190) {
+						craft.refresh();
+						return true;
+					}
+			}
+		}
+		return false;
+	}
+	
 	public void useEquipe(int y,int x) throws Exception{
 		if(equipe== null)
 			throw new RienEquiperExeception();
-		if (equipe instanceof Outils) {
+		if (equipe instanceof Outils || equipe instanceof BlocItem) {
 			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
-				equipe.agit(y/16, x/16, getEnv());
+				equipe.agit(y, x, getEnv());
 		}
 		else
-			equipe.agit(y, x, getEnv());
+			equipe.agit(y*16, x*16, getEnv());
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {
@@ -106,5 +124,10 @@ public class Perso extends Acteur{
 				}
 			}
 		}
+	}
+	@Override
+	public void agir() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -10,7 +10,7 @@ public abstract class Arme extends Item {
 	private Acteur utilisateur;
 
 	public Arme(int id, int degats, Acteur utilisateur) {
-		super(id);
+		super(id,1);
 		this.degats=degats;
 		this.utilisateur = utilisateur;
 	}

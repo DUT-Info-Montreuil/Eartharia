@@ -15,7 +15,7 @@ public class Potion extends Consommable{
 	}
 	
 	public void soigner() {
-		p.setHpPlus(soin);
+		p.setHp(soin);
 	}
 
 	@Override

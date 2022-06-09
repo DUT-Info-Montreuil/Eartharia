@@ -9,12 +9,12 @@ import javafx.collections.ObservableList;
 public abstract class Outils extends Item {
 
 	public Outils(int id) {
-		super(id);
+		super(id, 1);
 		// TODO Auto-generated constructor stub
 	}
 
 	public Outils(int id, int quantite) {
-		super(id, quantite);
+		super(id, quantite, 1);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,6 +26,7 @@ public abstract class Outils extends Item {
 	}
 	
 	public void agit(int y, int x,Environnement env){
+		System.out.println(env.getIdTuile(y, x));
 		if(peuxDetruire(y, x, env)) {
 			try {
 				env.getPerso().addInventaire(Casse(y, x, env));
@@ -33,6 +34,8 @@ public abstract class Outils extends Item {
 				e.printStackTrace();
 			}
 		}
+		else
+			System.out.println("non");
 	}
 	public abstract boolean peuxDetruire(int y, int x,Environnement env) ;
 }

@@ -6,12 +6,12 @@ import application.modele.Item;
 public class BlocItem extends Item {
 	
 	public BlocItem(int idTuile) {
-		super(idTuile);
+		super(idTuile,99);
 	}
 
 
 	public BlocItem(int idTuile, int quantite) {
-		super(idTuile, quantite);
+		super(idTuile, quantite,99);
 	}
 
 	public void agit(int y,int x,Environnement env) {

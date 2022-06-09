@@ -38,12 +38,12 @@ public class Environnement {
 		listActeur= FXCollections.observableArrayList();
 		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
-		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
-				new Sol(this, 0, 10)
-				,new Sol(this, 15, 4),
-				new volant(this, 0,6),
-				new BossSol(this, 9, 9, this.perso)
-				);
+//		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
+//				new Sol(this, 0, 10)
+//				,new Sol(this, 15, 4),
+//				new volant(this, 0,6),
+//				new BossSol(this, 9, 9, this.perso)
+//				);
 	}
 
 	private void initialisation(){
