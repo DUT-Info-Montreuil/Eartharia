@@ -38,7 +38,9 @@ public class vueCraft {
 		initItem();
 	}
 	private void paneSet() {
+		this.craftPane.setPrefSize(84, 148);
 		this.visibility = false;
+		craftPane.setVisible(visibility);
 		for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) {
 			this.craftPane.toBack();
 		}
@@ -60,8 +62,8 @@ public class vueCraft {
 		Background bGround = new Background(bImg);
 		craftPane.setBackground(bGround);	
 		Pane p = (Pane)craftPane.getParent();
-		craftPane.setLayoutX(p.getWidth()/2);
-		craftPane.setLayoutY(p.getHeight()/2);
+		craftPane.setLayoutX(p.getPrefWidth()-craftPane.getPrefWidth()*2);
+		craftPane.setLayoutY(p.getPrefHeight()/2-craftPane.getPrefHeight()/2);
 	}
 	public void ouvFerCraft(boolean peutCraft){
 		if(peutCraft) {

@@ -22,7 +22,6 @@ public class ObserveCraft implements ListChangeListener<Item >{
 	}
 	@Override
 	public void onChanged(Change<? extends Item> c) {
-		System.out.println("changement");
 		while (c.next()) {
 			ajout(c.getAddedSubList());
 			suppresion(c.getRemoved() );

@@ -215,18 +215,27 @@ public class Controleur implements Initializable {
 		KeyFrame kf = new KeyFrame(
 				Duration.millis(25),
 				(ev -> {
-					if (vueCraft.pause()) {
+					if (!pause()) {
 	                    this.env.unTour();
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
 	}
+	private boolean pause() {
+		boolean bool = false;
+		bool = bool || vueCraft.pause();
+		if(vueCraft.pause())
+			env.getPerso().getCraft().refresh();
+		return bool;
+	}
 	@FXML
 	private void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
+		System.out.println(m.getX()/16);
+		System.out.println(m.getY()/16);
 		try {
 			switch(m.getButton()) {
 
@@ -278,8 +287,9 @@ public class Controleur implements Initializable {
 			switch(m.getButton()) {
 			case PRIMARY :
 				if (m.getTarget() instanceof ImageView) {
-					ImageView img =	(ImageView) m.getTarget();
-					perso.addInventaire(vueCraft.getItem(img));
+					String id=	((ImageView) m.getTarget()).getId();
+					System.out.println(id);
+					perso.getCraft().craftObjet(id);
 				}
 				break;
 			case SECONDARY :
@@ -290,9 +300,7 @@ public class Controleur implements Initializable {
 				break;
 			}
 		}
-		catch (ItemNonTrouverException e) {
-			e.printStackTrace();
-		} catch (InventairePleinException e) {
+		catch (InventairePleinException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -26,10 +26,10 @@ public class Constante {
 	}
 	private static ArrayList<Integer> BlocBois(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(207); //Bois chene
-		listBloc.add(208); //Bois bouleau
-		listBloc.add(209); //Bois Sapin
-		listBloc.add(210); //Bois Palmier
+		listBloc.add(208); //Bois chene
+		listBloc.add(209); //Bois bouleau
+		listBloc.add(210); //Bois Sapin
+		listBloc.add(211); //Bois Palmier
 
 		return listBloc;
 	}

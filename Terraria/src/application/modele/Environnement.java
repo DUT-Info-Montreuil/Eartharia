@@ -61,7 +61,7 @@ public class Environnement {
 			int idBloc;
 			for (int i = 0; i < ligne*colonne; i++) {
 				idBloc = (((Long)data.get(i)).intValue());
-				map.add(new Bloc(i,idBloc));
+				map.add(new Bloc(idBloc));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -171,11 +171,11 @@ public class Environnement {
 	}
 	public void ajoutBloc(int ligne, int colonne,int idTuile) {
 		map.remove(getBloc(ligne,colonne));
-		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,idTuile));
+		map.add(ligne*this.colonne+colonne, new Bloc(idTuile));
 	}
 	public void destructBlock(int ligne, int colonne) {
 		map.remove(getBloc(ligne,colonne));
-		map.add(ligne*this.colonne+colonne, new Bloc(ligne*this.colonne+colonne,0));
+		map.add(ligne*this.colonne+colonne, new Bloc(0));
 	}
 	public ArrayList<Acteur> ennemiPresent() {
 		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();
