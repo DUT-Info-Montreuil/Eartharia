@@ -29,34 +29,23 @@ public class CraftMenu {
 	}
 
 	public void refresh() {
-		refreshMateriau();
-		craftPossible();
-	}
-	private void refreshMateriau() {
-		for (Item item : acteur.getInventaire()) {
-			if (Constante.estUnBlocBois(item.getIdItem()))
-				materiaux[0]=item.getQuantite()-materiaux[0];
-			if (Constante.estUnBlocPierre(item.getIdItem()))
-				materiaux[1]=item.getQuantite()-materiaux[1];
-		}
-	}
-	private void craftPossible() {
 		outils();
 		arme();
 	}
+
 	private void outils() {
-		if(!estPresent(0) && ConstantCraft.canCraft(0, acteur.getInventaire()))
+		if(!estPresent(0) && canCraft(0))
 			craft.add(new Hache());
-		if(!estPresent(19) && ConstantCraft.canCraft(19, acteur.getInventaire()))
+		if(!estPresent(19) && canCraft(19))
 			craft.add(new Pioche());
-		if(!estPresent(190) && ConstantCraft.canCraft(190, acteur.getInventaire()))
+		if(!estPresent(190) && canCraft(190))
 			craft.add(new BlocItem(190, 1));
 		
 	}
 	private void arme() {
-		if(!estPresent(16) && ConstantCraft.canCraft(16, acteur.getInventaire()))
+		if(!estPresent(16) && canCraft(16))
 			craft.add(new BatonMagique(acteur));
-		if(!estPresent(59) && ConstantCraft.canCraft(59, acteur.getInventaire()))
+		if(!estPresent(59) && canCraft(59))
 			craft.add(new Epee(acteur));
 	}
 	public boolean estPresent(int i) {
@@ -71,16 +60,60 @@ public class CraftMenu {
 			Item item = craft.get(i);
 			if (item.getId()==id) {
 				acteur.addInventaire(item);
-				ConstantCraft.craft(item.getIdItem(), acteur.getInventaire());
+				craft(item.getIdItem());
 				craft.remove(item);
 			}
+		}
+		for (Item item : craft) {
+			System.out.println(item.getId());
 		}
 	}
 	public ObservableList<Item> getListCraft() {
 		return craft;
 	}
-	private void materiau() {
-		System.out.println("bois "+materiaux[0]);
-		System.out.println("pierre "+materiaux[1]);
+	public boolean canCraft(int id) {
+		int[][] materiau = ConstantCraft.getCraft(id);
+		System.out.println(materiau.length);
+		System.out.println(materiau[0].length);
+		for (int i = 0; i < materiau.length; i++) {
+			for (int j = 0; j < materiau[0].length; j+=2) {
+				int nb = materiau[i][j];
+				int type = materiau[i][j+1];
+				for (Item item : acteur.getInventaire()) {
+					if (item.getIdItem()==type && item.getQuantite()>nb) {
+						nb=0;
+					}
+					else if (item.getIdItem()==type) {
+						nb-=item.getQuantite();
+					}
+				}
+				if(nb>0)
+					return false;
+			}
+		}
+		return true;
+	}
+	public void craft(int id) {
+		System.out.println("a");
+		int[][] materiau = ConstantCraft.getCraft(id);
+		for (int i = 0; i < materiau.length; i++) {
+			System.out.println("b");
+			for (int j = 0; j < materiau[0].length; j+=2) {
+				int nb = materiau[i][j];
+				int type = materiau[i][j+1];
+				for (int index=acteur.getInventaire().size()-1; index>=0 && nb >0; index--) {
+					Item item = acteur.getInventaire().get(index);
+					if (item.getIdItem()==type && item.getQuantite()>nb) {
+						item.removeQuantite(nb);
+						nb=0;
+					}
+					else if (item.getIdItem()==type) {
+						craft.clear();
+						acteur.delInventaire(item);
+						nb-=item.getQuantite();
+					}
+				}
+			}
+		}
 	}
 }

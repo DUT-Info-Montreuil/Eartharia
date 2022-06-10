@@ -58,7 +58,7 @@ public class VueMapTerraria {
 		y = y*16;
 		img.setViewport(new Rectangle2D(x,y, 16,16));
 		img.setId(String.valueOf(id));
-		this.TileP.getChildren().add(img);
+		this.TileP.getChildren().add(index,img);
 	}
 	public void refreshTuile(ImageView img, int idTuile,int id) {
 		int x;

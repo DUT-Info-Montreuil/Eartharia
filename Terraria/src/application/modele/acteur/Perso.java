@@ -39,12 +39,7 @@ public class Perso extends Acteur{
 			this.inventaire.add(i);
 	}
 	public void delInventaire(Item item) {
-		for (int i=0; i<inventaire.size(); i++) {
-			if (this.inventaire.get(i)==item) {
-				this.inventaire.remove(i);
-				break;
-			}
-		}
+		this.inventaire.remove(item);
 	}
 	public ObservableList<Item> getInventaire() {
 		return inventaire;

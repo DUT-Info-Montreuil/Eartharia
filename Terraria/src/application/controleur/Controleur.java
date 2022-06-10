@@ -225,8 +225,10 @@ public class Controleur implements Initializable {
 	private boolean pause() {
 		boolean bool = false;
 		bool = bool || vueCraft.pause();
-		if(vueCraft.pause())
+		if(vueCraft.pause()) {
 			env.getPerso().getCraft().refresh();
+			pane.setOnMouseClicked(null);
+		}
 		return bool;
 	}
 	@FXML

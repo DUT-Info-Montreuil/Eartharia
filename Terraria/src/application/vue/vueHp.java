@@ -26,35 +26,27 @@ public class vueHp {
 	}
 
 	public void refresh () {
-		System.out.println("refresh");
 		tPane.getChildren().clear();
 		coeurHp();
 	}
 	public void coeurHp() {
-		System.out.println("hp : " + perso.getHp());
-		System.out.println("hpMax : " + perso.getHpMax());
 		int decalage = 0;
 		if (this.perso.getHp()%2==1) 
 			decalage =1;
 		for (int i = (perso.getHp())/50; i <perso.getHpMax()/50 -decalage; i++) {
-			System.out.println("i : " + i);
 			imgVH = new ImageView(imgCoeurVide);
 			tPane.getChildren().add(imgVH);
-			System.out.println("+Coeur vide");
 		}
 
 		if (this.perso.getHp()%2==1) {
 			imgVH= new ImageView(imgDemiCoeur);
 			tPane.getChildren().add(imgVH);
-			System.out.println("+Coeur Moitié");
 
 		}
 
 		for (int j = 0; j < perso.getHp()/50; j++) {
 			imgVH = new ImageView(imgCoeurPlein);
 			tPane.getChildren().add(imgVH);
-			System.out.println("+Coeur plein");
-
 		}
 	}
 

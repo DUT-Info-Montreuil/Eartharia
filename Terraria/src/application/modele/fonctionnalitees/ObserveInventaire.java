@@ -41,20 +41,18 @@ public class ObserveInventaire implements ListChangeListener<Item >{
 				vueInventaire.afficherItemBloc(bloc.getIdItem(),item.getId());
 			}
 		}
-		System.out.println("Ajout");
 	}
 	private void suppresion(List<? extends Item> getRemoved) {
 		for (Item item : getRemoved) {
 			Node n = this.PaneInventaire.lookup("#"+item.getId());
 			if(n!=null) {
+				System.out.println(n);
 				this.PaneInventaire.getChildren().remove(n);
-
 			}
 			else{
 				n = this.PaneInventaireRapide.lookup("#"+item.getId());
 				this.PaneInventaireRapide.getChildren().remove(n);
 			}
 		}
-		System.out.println("Suppression");
 	}
 }

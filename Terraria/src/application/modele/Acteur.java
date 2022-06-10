@@ -50,7 +50,6 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-		System.out.println("saut");
 		if(surDuSol())
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
@@ -62,11 +61,9 @@ public abstract class Acteur {
 		//System.out.println("tombe");
 	}
 	public void droite() throws Exception{
-		System.out.println("droite");
 		deplacement(getVitesse(), 0);
 	}
 	public void gauche() throws Exception{
-		System.out.println("gauche");
 		deplacement(-getVitesse(), 0);
 	}
 	public boolean surDuSol() throws LimiteMapException {
@@ -168,6 +165,7 @@ public abstract class Acteur {
 				throw new LimiteMapException();
 			if(getEnv().boxCollisionBloc(ligne,colonne))
 				throw new CollisionException();
+
 		}
 		setX(getX()+x);
 		setY(getY()+y);
