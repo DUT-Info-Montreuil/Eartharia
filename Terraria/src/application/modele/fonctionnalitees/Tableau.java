@@ -9,8 +9,8 @@ public class Tableau {
 
 	public static boolean add(GridPane gridPane,Node node){
 		boolean ajout =false;
-		for (int ligne = 0; ligne < gridPane.impl_getRowCount() && !ajout; ligne++) {
-			for (int colonne = 0; colonne < gridPane.impl_getColumnCount() && !ajout; colonne++) {
+		for (int ligne = 0; ligne < gridPane.getRowCount() && !ajout; ligne++) {
+			for (int colonne = 0; colonne < gridPane.getColumnCount() && !ajout; colonne++) {
 				if (libre(gridPane, ligne,colonne)) {
 					gridPane.add(node, colonne, ligne);
 					return true;
