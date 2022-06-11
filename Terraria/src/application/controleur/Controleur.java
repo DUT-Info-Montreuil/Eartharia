@@ -99,19 +99,18 @@ public class Controleur implements Initializable {
 		this.description.setVisible(false);
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
 //		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-        //this.env.getActeurs().addListener(new ObservateurMonstre(pane));
-        
-//        for(Acteur a : this.env.getListeActeur()) {
-//                        if(a instanceof Sol) {
-//                                new vueActeur((Sol) a, pane);
-//                        }
-//                        if(a instanceof volant) {
-//                                new vueActeur((volant) a, pane);
-//                        }//dans la vue et le modèle
-////                        if(a instanceof Boss) {
-////                                new vueActeur((Boss) a, pane);
-////                        }
-//                }
+//      this.env.getActeurs().addListener(new ObservateurMonstre(pane));
+//      for(Acteur a : this.env.getListeActeur()) {
+//                      if(a instanceof Sol) {
+//                              new vueActeur((Sol) a, pane);
+//                      }
+//                      if(a instanceof volant) {
+//                               new vueActeur((volant) a, pane);
+//                      }//dans la vue et le modèle
+//                      if(a instanceof Boss) {
+//                               new vueActeur((Boss) a, pane);
+//                      }
+//              }
 	}
 
 	@FXML
@@ -236,8 +235,6 @@ public class Controleur implements Initializable {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
-		System.out.println(m.getX()/16);
-		System.out.println(m.getY()/16);
 		try {
 			switch(m.getButton()) {
 

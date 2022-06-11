@@ -112,7 +112,7 @@ public class Environnement {
 		return act;
 
 	}
-	public void gravite() {
+	private void gravite() {
 		//plus tard faire un for each pour la liste acteur
 		try {
 			if(!perso.surDuSol())
@@ -133,12 +133,12 @@ public class Environnement {
 			projectiles.get(i).lancer();
 		}
 	}
-	public boolean verifAutourProjectile(Projectile p) {
-		if (!this.getBloc(p.getX(), p.getY()).estSolide()) {
-			return true;
-		}
-		return false;
-	}
+//	public boolean verifAutourProjectile(Projectile p) {
+//		if (!this.getBloc((int)p.getX(), p.getY()).estSolide()) {
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public ObservableList<Projectile> getListProjectiles() {
 		return this.projectiles;

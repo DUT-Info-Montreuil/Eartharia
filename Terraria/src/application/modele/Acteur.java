@@ -6,7 +6,9 @@ import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.Saut;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Acteur {
@@ -19,7 +21,7 @@ public abstract class Acteur {
 	private Environnement env;
 	private int vitesse;
 	private Box boxPlayer;
-	private boolean deplacement[];
+	private BooleanProperty deplacement[];
 	protected int attaque;
 
 	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox, int atq) {
@@ -32,15 +34,21 @@ public abstract class Acteur {
 		this.hpMax =new SimpleIntegerProperty(hpMax) ;
 		this.hp =new SimpleIntegerProperty(hpMax) ;
 		this.attaque = atq;
-		this.deplacement = new boolean[4];
+		this.deplacement = new BooleanProperty[4];
+		this.deplacement[0] = new SimpleBooleanProperty(false);
+		this.deplacement[1] = new SimpleBooleanProperty(false);
+		this.deplacement[2] = new SimpleBooleanProperty(false);
+		this.deplacement[3] = new SimpleBooleanProperty(false);
 	}
 
-
-	public boolean[] getDeplacement() {
+	public BooleanProperty[] getDeplacement() {
 		return deplacement;
 	}
+	public BooleanProperty getDeplacement(int index) {
+		return deplacement[index];
+	}
 	public void setDeplacement(int index,boolean deplacement) {
-		this.deplacement[index] = deplacement;
+		this.deplacement[index].set(deplacement);
 	}
 	public boolean getSaut() {
 		return saut;
@@ -68,15 +76,18 @@ public abstract class Acteur {
 	}
 	public boolean surDuSol() throws LimiteMapException {
 		try {
-			boolean b = getEnv().getBloc(caseY()+1, caseX()).estSolide();
-			if(b) {
-				setSaut(true);
-				return true;
-			}else
-				return false;
+			for (Integer[] c : getBoxPlayer().limiteBoxBas()) {
+				int colonne=c[0];
+				int ligne=c[1];
+				if(getEnv().getBloc(ligne+1, colonne).estSolide()) {
+					setSaut(true);
+					return true;
+				}
+			}
 		}catch(Exception e) {
 			throw new LimiteMapException();
 		}
+		return false;
 	}
 
 	public int getVitesse() {
@@ -165,20 +176,19 @@ public abstract class Acteur {
 				throw new LimiteMapException();
 			if(getEnv().boxCollisionBloc(ligne,colonne))
 				throw new CollisionException();
-
 		}
 		setX(getX()+x);
 		setY(getY()+y);
 	}
 	public void agir() {
 		try {
-			if(deplacement[0])
+			if(deplacement[0].get())
 				saut();
-			if(deplacement[1])
+			if(deplacement[1].get())
 				tombe(getVitesse());
-			if(deplacement[2])
+			if(deplacement[2].get())
 				gauche();
-			if(deplacement[3])
+			if(deplacement[3].get())
 				droite();
 		}catch (LimiteMapException e) {
 			System.out.println("Limite map !");

@@ -27,7 +27,7 @@ public class Perso extends Acteur{
 	private CraftMenu craft;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 200,4,16,16,10);
+		super(env, x, y, 200,4,16,32,10);
 		this.inventaire= FXCollections.observableArrayList();
 		this.craft=new CraftMenu(inventaire,this);
 	}
