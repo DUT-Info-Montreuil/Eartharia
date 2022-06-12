@@ -226,8 +226,11 @@ public class Controleur implements Initializable {
 		bool = bool || vueCraft.pause();
 		if(vueCraft.pause()) {
 			env.getPerso().getCraft().refresh();
-			pane.setOnMouseClicked(null);
+			tileP.setDisable(false);
 		}
+		else
+			tileP.setDisable(false);
+
 		return bool;
 	}
 	@FXML

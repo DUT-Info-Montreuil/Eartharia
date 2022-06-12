@@ -20,12 +20,10 @@ public class CraftMenu {
 
 	private ObservableList<Item> craft;
 	private Perso acteur;
-	private int materiaux[];
 
 	public CraftMenu(ObservableList<Item> craft,Perso acteur) {
 		this.acteur=acteur;
 		this.craft= FXCollections.observableArrayList();
-		materiaux = new int[4];
 	}
 
 	public void refresh() {
@@ -64,17 +62,12 @@ public class CraftMenu {
 				craft.remove(item);
 			}
 		}
-		for (Item item : craft) {
-			System.out.println(item.getId());
-		}
 	}
 	public ObservableList<Item> getListCraft() {
 		return craft;
 	}
 	public boolean canCraft(int id) {
 		int[][] materiau = ConstantCraft.getCraft(id);
-		System.out.println(materiau.length);
-		System.out.println(materiau[0].length);
 		for (int i = 0; i < materiau.length; i++) {
 			for (int j = 0; j < materiau[0].length; j+=2) {
 				int nb = materiau[i][j];
@@ -94,10 +87,8 @@ public class CraftMenu {
 		return true;
 	}
 	public void craft(int id) {
-		System.out.println("a");
 		int[][] materiau = ConstantCraft.getCraft(id);
 		for (int i = 0; i < materiau.length; i++) {
-			System.out.println("b");
 			for (int j = 0; j < materiau[0].length; j+=2) {
 				int nb = materiau[i][j];
 				int type = materiau[i][j+1];
