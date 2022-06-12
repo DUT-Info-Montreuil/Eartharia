@@ -8,6 +8,7 @@ import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.Saut;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public abstract class Acteur {
@@ -20,7 +21,7 @@ public abstract class Acteur {
 	protected int vitesse;
 	protected Box boxPlayer;
 	protected int attaque;
-	protected StringProperty id;
+	protected String id;
 	public static int compteur = 0;
 
 	public Acteur(Environnement env, int x, int y, int hp,int vitesse, int xBox, int yBox, int atq) {
@@ -32,6 +33,9 @@ public abstract class Acteur {
 		this.vitesse = vitesse;
 		this.hp = hp;
 		this.attaque = atq;
+		//String idM =
+		this.id =  "A" + compteur;
+		compteur ++;
 	}
 	/*
 	 * Déplacement et box
@@ -46,6 +50,8 @@ public abstract class Acteur {
 				throw new LimiteMapException();
 			if(getEnv().boxCollisionBloc(ligne,colonne))
 				throw new CollisionException();
+			if(getEnv().boxCollisionActeur(ligne,colonne))
+                throw new CollisionException();
 		}
 		setX(getX()+x);
 		setY(getY()+y);
@@ -170,13 +176,11 @@ public abstract class Acteur {
 	/*
 	 * ID
 	 */
-	public StringProperty getIdProperty() {
+	public String getId() {
 		return id;
 	}
-	public String getId() {
-		return this.getIdProperty().getValue();
-	}
-	public void setId(StringProperty id) {
+	
+	public void setId(String id) {
 		this.id = id;
 	}
 }

@@ -20,7 +20,8 @@ public class ObservateurActeur  implements ListChangeListener <Acteur>{
 			for( Acteur a : change.getRemoved()) {
 				Node node = this.paneActeur.lookup("#" + a.getId());
 				boolean result = this.paneActeur.getChildren().remove(node);
-				
+				System.out.println("resultat : " + result);
+
 			}
 		}
 		

@@ -29,7 +29,10 @@ public class Sol extends Monstre {
 
 	@Override
 	public void agir() {//se deplace et attaquer 
-		System.out.println("HP : " + this.getHp());
+		//System.out.println("HP : " + this.getHp());
+		//System.out.println("ID : " + this.getId());
+		System.out.println("SOL : " + this.getId());
+
 		try {
 			if(this.env.getTemp() % 4 == 0)
 			super.tombe(16);

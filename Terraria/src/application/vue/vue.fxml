@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.shape.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
    <center>
       <Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#move" onKeyReleased="#moveRelease" prefHeight="320.0" prefWidth="320.0" BorderPane.alignment="CENTER">
          <children>
             <TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#removeBloc" prefHeight="320.0" prefWidth="320.0" style="-fx-background-color: grey;" />
             <!--  <TilePane fx:id="tPaneInvRapide"  onMouseClicked="#inventaireMouse" prefHeight="144.0" prefWidth="200.0" />
             <TilePane fx:id="tPaneInv" onMouseClicked="#inventaireMouse" opacity="0.75" prefColumns="4" prefHeight="44.0" prefRows="3" prefWidth="200.0" />-->
-            <Label fx:id="description" />
+            <Label fx:id="description" alignment="CENTER" prefHeight="114.0" prefWidth="132.0" style="-fx-background-color: yellow;" text="intéraction">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </center>

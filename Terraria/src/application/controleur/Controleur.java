@@ -17,10 +17,16 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
@@ -29,6 +35,7 @@ import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ObserveInventaire;
@@ -46,10 +53,11 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	private vueActeur vue_acteur;
 	private VueInventaire vueInventaire;
+	private vueInteraction vueInter;
 
 //	@FXML
 //	private TilePane tPaneInvRapide;
-//	@FXML
+//	@FXML 
 //	private TilePane tPaneInv;
 	@FXML
 	private Pane pane;
@@ -59,8 +67,17 @@ public class Controleur implements Initializable {
 	private Label description;
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {    
+	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.env = new Environnement();
+		Pnj p = null;
+		for(Acteur a : this.env.getListeActeur()) {
+			
+			if(a instanceof Pnj) {
+				p =(Pnj) a;		
+			}
+		}
+		this.description.textProperty().bind(p.interationText);
+	
 		gameLauncher();
 		gameLoop();
 		
@@ -72,9 +89,10 @@ public class Controleur implements Initializable {
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.vueMap = new vueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
-		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
+		//this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
 		this.env.getListeActeur().addListener(new ObservateurActeur(pane));
-		
+		this.description.setTranslateX(168);
+		//Pnj p = null;
 		for(Acteur a : this.env.getListeActeur()) {
 				if(a instanceof Sol) {
 					new vueActeur((Sol) a, pane);
@@ -82,10 +100,17 @@ public class Controleur implements Initializable {
 				if(a instanceof volant) {
 					new vueActeur((volant) a, pane);
 				}//dans la vue et le modèle
-//				if(a instanceof Boss) {
-//					new vueActeur((Boss) a, pane);
-//				}
+				if(a instanceof BossSol) {
+					new vueActeur((BossSol) a, pane);
+				}
+				if(a instanceof Pnj) {
+					// p = (Pnj) a; 
+					new vueActeur((Pnj) a, pane);
+				}
+				
 			}
+		//this.vueInter = new vueInteraction(this.pane, this.description, p);
+
 		//this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		description.setVisible(false);
 	}
@@ -95,6 +120,7 @@ public class Controleur implements Initializable {
 	public void move (KeyEvent k) {
 		this.env.getPerso();
 		Perso perso = this.env.getPerso();
+		
 		try {
 
 			switch (k.getCode()) {
@@ -115,13 +141,33 @@ public class Controleur implements Initializable {
 				vueInventaire.ouvFerInv();
 				break;
 			case SPACE  :
+				System.out.println("space");
+				if(perso.interaction()) {
+					System.out.println("interaction");
+				description.setVisible(true);
+				}else {
+					description.setVisible(false);
+				}
+
+				//this.vueInter.bindText();
+
 				//TOUCHE POUR TEST
 				//perso.addInventaire(new Item(cmpt));
 				//cmpt++;
 				break;
+//			case ALT : 
+//				description.setVisible(false);
+//
+//				break;
+			case ESCAPE :
+				System.out.println("BYE");
+                ((Stage) pane.getScene().getWindow()).close();
+                break;
 			case J : 
 				perso.attaque();
+				System.out.println("HP : " +perso.getHp());
 				System.out.println("attaque");
+				//System.out.println(this.env.getActeurs());
 				break;
 			default:
 				break;
@@ -133,7 +179,7 @@ public class Controleur implements Initializable {
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
 		}catch (Exception e) {
-			e.printStackTrace();
+			//System.out.println("touche");
 		}
 	}
 	@FXML
@@ -148,6 +194,39 @@ public class Controleur implements Initializable {
 			break;
 		}
 	}
+	private void menu (String choice) {
+		BufferedImage bf = null;
+		
+		try {
+			switch(choice){
+			case "start" : bf = ImageIO.read(new File ("start"));
+				break;
+			case "lose" :  bf = ImageIO.read(new File ("lose"));
+				break;
+			case "win":  bf = ImageIO.read(new File ("win"));
+				break;
+			}
+		}catch (Exception e) {
+			System.out.println("erreur menu");
+		}
+		
+	}
+	private void setupGame() {
+		 
+//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
+//        	if(nouv.intValue() <= 0) {
+//        		menu("gameover");
+//        		this.gameLoop.stop();
+//        	}
+//        });
+//        this.env.getListeActeur().getHpProperty().addListener((obs, old, nouv) -> {
+//        	System.out.println("boss hp changed");
+//        	if(nouv.intValue() <= 0){
+//        		menu("win");
+//        		this.gameLoop.stop();
+//        	}
+//        });
+	}
 	private void gameLoop (){
 		tour = new Timeline();
 		tour.setCycleCount(Timeline.INDEFINITE);           
@@ -155,6 +234,9 @@ public class Controleur implements Initializable {
 		KeyFrame kfAct = new KeyFrame(
 				Duration.seconds(0.05),
 				(ev -> {
+//					if(this.Menu.isVisible() && tour >= 1500 && this.Menu.isVisible() && tour < 1600) {
+//                    	this.Menu.setVisible(false);
+//                    }
 					this.env.unTour();
 				}));
 		this.tour.getKeyFrames().add(kfAct);

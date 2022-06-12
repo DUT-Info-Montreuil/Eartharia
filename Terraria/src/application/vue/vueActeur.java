@@ -34,8 +34,10 @@ public class vueActeur {
 //		r.xProperty().bind(a.getxProperty());
 //		r.yProperty().bind(a.getyProperty());
 //		this.pane.getChildren().add(r);
+		this.imgV.setId(a.getId());
 		this.pane.getChildren().add(imgV);
 		bindPosition();
+		
 	}
 	
 	
@@ -44,7 +46,7 @@ public class vueActeur {
 		chemins.add("ressources/fantome16pix.png");
 		chemins.add("ressources/monstre16pix.png");
 		chemins.add("ressources/boss16pix.png");
-		
+		chemins.add("ressources/link16pix.png");
 		String chemin = null;
 		//for (int i = 0; i < chemins.size(); i ++) {
 			if(a instanceof volant) {
@@ -56,15 +58,17 @@ public class vueActeur {
 				System.out.println("sol");
 			}
 			if (a instanceof BossSol){
-				System.out.println("perso"); //tableau de string et releve l'occurence ou il ya perso
+				System.out.println("Boss sol"); //tableau de string et releve l'occurence ou il ya perso
 				chemin = chemins.get(2);
+			}
+			if ( a instanceof Pnj) {
+				System.out.println("pnj");
+				chemin = chemins.get(3);
 			}
 			if ( a instanceof BossVolant) {
 				
 			}
-			if ( a instanceof Pnj) {
-				
-			}
+			
 				//tableau de string et releve l'occurence ou il ya perso
 
 		return chemin;
@@ -72,5 +76,8 @@ public class vueActeur {
 	public void bindPosition() {
 		this.imgV.xProperty().bind(a.getxProperty());
 		this.imgV.yProperty().bind(a.getyProperty());
+	}
+	public void removeImage() {
+		this.pane.getChildren().remove(imgV);
 	}
 }

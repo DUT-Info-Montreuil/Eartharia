@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
@@ -34,10 +35,11 @@ public class Environnement {
 		this.gravite = 2;
 		perso = new Perso(this, 0, 0);
 		listActeur= FXCollections.observableArrayList(//new Sol(this, 10, 10),
-				new Sol(this, 0, 10)
-//				,new Sol(this, 15, 4),
-//				new volant(this, 0,6),
-//				new BossSol(this, 9, 9, this.perso)
+				new Sol(this, 3, 10)
+				,new Sol(this, 15, 4),
+				new volant(this, 3,6),
+				//new BossSol(this, 9, 9, this.perso),
+				new Pnj(this, 10, 14, this.perso)
 
 				);
 		
@@ -56,7 +58,24 @@ public class Environnement {
 			this.map = FXCollections.<Bloc>observableArrayList();
 			JSONArray data = (JSONArray) layers.get("data");
 			int idBloc;
-			for (int i = 0; i < ligne*colonne; i++) {
+//			int v = 0;
+//			 int arriere=this.perso.caseX()-v
+//					 ,avant=this.perso.caseX()+v
+//					 ,haut=this.perso.caseY()-v
+//					 ,bas=this.perso.caseY()+v;
+//		        while (arriere<0){
+//		            arriere++;
+//		        }
+//		        while (avant>20){
+//		            avant--;
+//		        }
+//		        while (haut<0){
+//		            haut++;
+//		        }
+//		        while (bas>20){
+//		            bas--;
+//		        }
+			for (int i = 0; i < ligne*colonne ; i++) {
 				idBloc = (((Long)data.get(i)).intValue());
 				map.add(new Bloc(i,idBloc,Constante.estUnBlocSolide(idBloc)));
 			}
@@ -68,11 +87,19 @@ public class Environnement {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public boolean boxCollisionBloc(int ligne, int colonne){
 		return this.map.get(ligne*this.colonne+colonne).estSolide();
 	}
+	public boolean boxCollisionActeur(int ligne, int colonne){
+        for (Acteur acteur : listActeur) {
+            if(acteur.caseX()==colonne && acteur.caseY()==ligne)
+                return true;
+        }
+        return false;
+    }
 	public void vueNombre() {
 		for (int i = 0; i < ligne; i++) {
 			for (int j = 0; j <colonne; j++) {

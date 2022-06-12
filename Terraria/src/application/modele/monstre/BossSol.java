@@ -16,6 +16,8 @@ public class BossSol extends Monstre {
 	@Override
 	public void agir() {
 		this.mouvement(this.perso);
+		System.out.println("Boss : " + this.getId());
+
 
 	}
 
@@ -23,7 +25,7 @@ public class BossSol extends Monstre {
 		try {
 			if (this.caseY() > p.caseY())
 				this.saut();
-			if (this.caseY() > p.caseY() || this.caseY() < p.caseY())
+			if (/*this.caseY() > p.caseY() ||*/ this.caseY() < p.caseY())
 				this.tombe(2);
 			if (this.caseX() + 1 > p.caseX())
 				this.gauche();
