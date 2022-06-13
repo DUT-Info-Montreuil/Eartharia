@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -27,6 +28,7 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.acteur.Perso;
 import application.modele.Item;
+import application.modele.fonctionnalitees.Constante;
 import application.modele.fonctionnalitees.ObserveCraft;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
@@ -45,7 +47,7 @@ import application.vue.vueActeur;
 import application.vue.vueCraft;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
- 
+
 public class Controleur implements Initializable {
 
 	private Environnement env;
@@ -55,9 +57,9 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
-    private vueActeur vue_acteur;
+	private vueActeur vue_acteur;
 	private vueCraft vueCraft;
-	
+
 	@FXML
 	private GridPane tPaneInvRapide;
 	@FXML
@@ -72,6 +74,7 @@ public class Controleur implements Initializable {
 	private Label description;
 	@FXML
 	private TilePane tPaneCraft;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
@@ -98,86 +101,92 @@ public class Controleur implements Initializable {
 		this.vueCraft = new vueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.description.setVisible(false);
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
-//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-//      this.env.getActeurs().addListener(new ObservateurMonstre(pane));
-//      for(Acteur a : this.env.getListeActeur()) {
-//                      if(a instanceof Sol) {
-//                              new vueActeur((Sol) a, pane);
-//                      }
-//                      if(a instanceof volant) {
-//                               new vueActeur((volant) a, pane);
-//                      }//dans la vue et le modèle
-//                      if(a instanceof Boss) {
-//                               new vueActeur((Boss) a, pane);
-//                      }
-//              }
+		//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
+		//      this.env.getActeurs().addListener(new ObservateurMonstre(pane));
+		//      for(Acteur a : this.env.getListeActeur()) {
+		//                      if(a instanceof Sol) {
+		//                              new vueActeur((Sol) a, pane);
+		//                      }
+		//                      if(a instanceof volant) {
+		//                               new vueActeur((volant) a, pane);
+		//                      }//dans la vue et le modèle
+		//                      if(a instanceof Boss) {
+		//                               new vueActeur((Boss) a, pane);
+		//                      }
+		//              }
 	}
 
 	@FXML
-	public void move (KeyEvent k) {
+	void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
 		try {
 			//perso.addInventaire(new Item(cmpt));
-			switch (k.getCode()) {
-			case UP    :
-				perso.setDeplacement(0, true);
-				break;
-			case DOWN  :
-				perso.setDeplacement(1, true);
-				break;
-			case LEFT  :
-				perso.setDeplacement(2, true);
-				break;
-			case RIGHT :
-				perso.setDeplacement(3, true);
-				break;
-			case DIGIT1  :
-			case NUMPAD1  :
-				perso.prendEnMain(vueInventaire.getItem(0));
-				break;
-			case DIGIT2  :
-			case NUMPAD2  :
-				perso.prendEnMain(vueInventaire.getItem(1));
-				break;
-			case DIGIT3  :
-			case NUMPAD3  :
-				perso.prendEnMain(vueInventaire.getItem(2));
-				break;
-			case DIGIT4  :
-			case NUMPAD4  :
-				perso.prendEnMain(vueInventaire.getItem(3));
-				break;
-			case I  :
-				vueInventaire.ouvFerInv();
-				break;
-			//Code Cheat
-			case A :
-				this.env.getPerso().setHpPlus(-1);
-				System.out.println(this.env.getPerso().getHp());
-				break;
-			case P  :
-				perso.addInventaire(new Pioche());
-				break;
-			case B  :
-				perso.addInventaire(new BlocItem(233,5));
-			case T  :
-				perso.addInventaire(new BlocItem(233,5));
-				break;
-			case W  :
-				perso.addInventaire(new BlocItem(208,1));
-				break;
-			case S  :
-				perso.addInventaire(new BlocItem(44,1));
-				break;
-			case H  :
-				perso.addInventaire(new Hache());
-				break;
-			case V :
-				perso.addInventaire(new BatonMagique(this.env.getPerso()));
-			case C :
+			if(!pause())
+				switch (k.getCode()) {
+				case UP    :
+					perso.setDeplacement(0, true);
+					break;
+				case DOWN  :
+					perso.setDeplacement(1, true);
+					break;
+				case LEFT  :
+					perso.setDeplacement(2, true);
+					break;
+				case RIGHT :
+					perso.setDeplacement(3, true);
+					break;
+				case DIGIT1  :
+				case NUMPAD1  :
+					perso.prendEnMain(vueInventaire.getItem(0));
+					break;
+				case DIGIT2  :
+				case NUMPAD2  :
+					perso.prendEnMain(vueInventaire.getItem(1));
+					break;
+				case DIGIT3  :
+				case NUMPAD3  :
+					perso.prendEnMain(vueInventaire.getItem(2));
+					break;
+				case DIGIT4  :
+				case NUMPAD4  :
+					perso.prendEnMain(vueInventaire.getItem(3));
+					break;
+				case I  :
+					vueInventaire.ouvFerInv();
+					break;
+				case C :
+					vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+					break;
+					//Code Cheat
+				case A :
+					this.env.getPerso().setHpPlus(-1);
+					System.out.println(this.env.getPerso().getHp());
+					break;
+				case P  :
+					perso.addInventaire(new Pioche());
+					break;
+				case B  :
+					perso.addInventaire(new BlocItem(233,5));
+				case T  :
+					perso.addInventaire(new BlocItem(233,5));
+					break;
+				case W  :
+					perso.addInventaire(new BlocItem(208,1));
+					break;
+				case S  :
+					perso.addInventaire(new BlocItem(44,1));
+					break;
+				case H  :
+					perso.addInventaire(new Hache());
+					break;
+				case V :
+					perso.addInventaire(new BatonMagique(this.env.getPerso()));
+					break;
+				default:
+					break;
+				}
+			else if(k.getCode()== KeyCode.C) {
 				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
-			default:
-				break;
 			}
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
@@ -188,7 +197,7 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	public void moveRelease (KeyEvent k) {
+	void moveRelease (KeyEvent k) {
 		this.env.getPerso();
 		Perso perso = this.env.getPerso();
 		switch (k.getCode()) {
@@ -215,7 +224,10 @@ public class Controleur implements Initializable {
 				Duration.millis(25),
 				(ev -> {
 					if (!pause()) {
-	                    this.env.unTour();
+						this.env.unTour();
+	
+						this.tileP.setLayoutX(-env.getPerso().getX()+(Constante.view/2)*16);
+						this.tileP.setLayoutY(-env.getPerso().getY()+(Constante.view/2)*16);
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
@@ -234,24 +246,25 @@ public class Controleur implements Initializable {
 		return bool;
 	}
 	@FXML
-	private void clickEnvironement(MouseEvent m) {
+	void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
 		try {
-			switch(m.getButton()) {
+			if (!pause())
+				switch(m.getButton()) {
 
-			case PRIMARY :
-				perso.useEquipe(yClic, xClic);
+				case PRIMARY :
+					perso.useEquipe(yClic, xClic);
+					break;
+
+				case SECONDARY : 
+					break;
+
+				default : System.out.println("probleme");
 				break;
 
-			case SECONDARY : 
-				break;
-
-			default : System.out.println("probleme");
-			break;
-
-			}
+				}
 		}catch (RienEquiperExeception e) {
 			System.out.println("Le personnage n'a rien equiper");
 		}
@@ -260,7 +273,7 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	private void inventaireMouse(MouseEvent m) {
+	void inventaireMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		try {
 			switch(m.getButton()) {
@@ -271,7 +284,7 @@ public class Controleur implements Initializable {
 				}
 				break;
 			case SECONDARY :
-				
+
 				break;
 			default :
 				System.out.println("probleme");
@@ -283,7 +296,7 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	public void craftMouse(MouseEvent m) {
+	void craftMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		try {
 			switch(m.getButton()) {
@@ -295,7 +308,7 @@ public class Controleur implements Initializable {
 				}
 				break;
 			case SECONDARY :
-				
+
 				break;
 			default :
 				System.out.println("probleme");

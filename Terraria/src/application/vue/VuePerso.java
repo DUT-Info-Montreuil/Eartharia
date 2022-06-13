@@ -1,6 +1,7 @@
 package application.vue;
 
 import application.modele.acteur.Perso;
+import application.modele.fonctionnalitees.Constante;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -72,8 +73,8 @@ public class VuePerso {
 		this.pane.getChildren().add(imgVP);
 	}
 	public void bindPosition() {
-		this.imgVP.xProperty().bind(perso.getxProperty());
-		this.imgVP.yProperty().bind(perso.getyProperty());
+		this.imgVP.setLayoutX((Constante.view/2)*16);
+		this.imgVP.setLayoutY((Constante.view/2)*16);
 	}
 	
 	

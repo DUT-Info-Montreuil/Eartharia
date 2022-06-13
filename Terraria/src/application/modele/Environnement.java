@@ -167,7 +167,7 @@ public class Environnement {
 
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
-		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
+		getBloc(yClic,xClic).setCollision(Constante.estUnBlocTransparent(idTuile));
 	}
 	public void ajoutBloc(int ligne, int colonne,int idTuile) {
 		map.remove(getBloc(ligne,colonne));

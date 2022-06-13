@@ -38,7 +38,6 @@ public class CraftMenu {
 			craft.add(new Pioche());
 		if(!estPresent(190) && canCraft(190))
 			craft.add(new BlocItem(190, 1));
-		
 	}
 	private void arme() {
 		if(!estPresent(16) && canCraft(16))

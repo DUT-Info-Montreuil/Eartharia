@@ -4,9 +4,16 @@ import java.util.ArrayList;
 
 public class Constante {
 	public static ArrayList<Integer> BlocSolide = BlocSolide();
+	public static ArrayList<Integer> BlocTransparent = BlocTransparent();
+
 	public static ArrayList<Integer> BlocPierre = BlocPierre();
 	public static ArrayList<Integer> BlocBois = BlocBois();
 	
+	private static ArrayList<Integer> BlocTransparent(){
+		ArrayList<Integer> listBloc = new ArrayList<>();
+		listBloc.add(0);
+		return listBloc;
+	}
 	private static ArrayList<Integer> BlocSolide(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
 		listBloc.add(204);
@@ -33,9 +40,9 @@ public class Constante {
 
 		return listBloc;
 	}
-	
-	public static boolean estUnBlocSolide(int idBloc) {
-		return Constante.BlocSolide.contains(idBloc);
+	public static int view=40;
+	public static boolean estUnBlocTransparent(int idBloc) {
+		return !Constante.BlocTransparent.contains(idBloc);
 	}
 	public static boolean estUnBlocPierre(int idBloc) {
 		return Constante.BlocPierre.contains(idBloc);

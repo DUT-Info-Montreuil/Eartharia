@@ -174,8 +174,10 @@ public abstract class Acteur {
 			ligne=c[1];
 			if(colonne<0 || ligne<0 || colonne>=getEnv().getColonne() || ligne>=getEnv().getLigne())
 				throw new LimiteMapException();
-			if(getEnv().boxCollisionBloc(ligne,colonne))
+			if(getEnv().boxCollisionBloc(ligne,colonne)) {
+				System.out.println(getEnv().getIdTuile(ligne,colonne));
 				throw new CollisionException();
+			}
 		}
 		setX(getX()+x);
 		setY(getY()+y);
