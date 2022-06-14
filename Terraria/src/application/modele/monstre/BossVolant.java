@@ -9,7 +9,7 @@ public class BossVolant extends Monstre{
 	private Perso perso;
 
 	public BossVolant(Environnement env, int x, int y, Perso p) {
-		super(env, x, y, 1, 20, 10, 16, 16);
+		super(env, x, y, 1, 20, 10, 16, 16, p);
 		this.perso = p;
 	}
 
@@ -61,9 +61,4 @@ public class BossVolant extends Monstre{
 		
 	}
 
-	@Override
-	public void attaquer(Acteur a) {
-		// TODO Auto-generated method stub
-		
-	}
 }

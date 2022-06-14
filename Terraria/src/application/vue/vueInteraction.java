@@ -1,25 +1,35 @@
 package application.vue;
 
+import application.modele.Acteur;
+import application.modele.Environnement;
 import application.modele.acteur.Pnj;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
 
 public class vueInteraction {
-	private Pane pane;
 	private Label label;
-	private Pnj pnj;
+	private Environnement env;
 	
-	public vueInteraction(Pane pa, Label l, Pnj p) {
-		this.pane = pa;
+	public vueInteraction(Label l, Environnement e) {
 		this.label = l;
-		this.pnj = p;
-		//bindText();
+		this.env = e;
+		bindText();
 		
 	}
 	
 	public void bindText() {
-		this.label.textProperty().bind(this.pnj.iterationInteract(this.pnj.getItération()));
+		Pnj p = null;
+		for (Acteur a : env.getListeActeur()) {
+			if(a instanceof Pnj) {
+				p = (Pnj)a;
+				p.getItération();
+				this.label.setText(p.getInterationText());
+			}
+		}
+		
+		
+//		this.label.textProperty().bind(this.pnj.iterationInteract(this.pnj.getItération()));
 	}
 
 }

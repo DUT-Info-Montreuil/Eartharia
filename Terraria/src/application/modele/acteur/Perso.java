@@ -27,15 +27,16 @@ public class Perso extends Acteur{
 	public void echangeDeCoup (Acteur a) {
 //		System.out.println("Degat : " + this.getDegatAttaque());
 //		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());
-		if( Math.abs(a.getX() - this.getX()) <5){			
-			a.attaquer(this);
-			this.recevoirDegat(a.getDegatAttaque());
-			this.attaquer(a);
+		if( Math.abs(a.getX() - this.getX()) <=16 /*|| Math.abs(a.getX() + this.getX()) <=16*/ ){			
+//			a.attaquer(this);
+//			this.recevoirDegat(a.getDegatAttaque());
+			//this.attaquer(a);
 			a.recevoirDegat(this.getDegatAttaque());
 		}
 	}
 	public void attaque () {
 		for(Acteur m : env.getListeActeur()) {
+			if(m instanceof Monstre)
 			this.echangeDeCoup(m);
 		}
 	}
@@ -100,11 +101,11 @@ public class Perso extends Acteur{
 	public void agir() {}
 
 
-	@Override
-	public void attaquer(Acteur a) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void attaquer(Acteur a) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 
 }

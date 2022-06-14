@@ -16,10 +16,10 @@ public class Marchand extends Acteur {
 		
 	}
 
-	@Override
-	public void attaquer(Acteur a) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void attaquer(Acteur a) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

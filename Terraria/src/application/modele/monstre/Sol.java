@@ -1,60 +1,33 @@
 package application.modele.monstre;
 
+import java.util.Iterator;
+import java.util.Timer;
+
 import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
+import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
+import application.modele.fonctionnalitees.Tour;
 
 public class Sol extends Monstre {
 
-	public Sol(Environnement env, int x, int y) {
-		super(env, x, y,1 , 20, 10, 16, 16);
-		// TODO Auto-generated constructor stub
+	public Sol(Environnement env, int x, int y,Perso p) {
+		super(env, x, y,1 , 20, 10, 16, 16, p);
+
 	}
-
-//	public void mouvementDroite() {
-//		this.x.set(getX() + 8);
-//	}
-//
-//	public void mouvementGauche() {
-//		this.x.set(getX() - 8);
-//	}
-//
-//	public void mouvementHaut() {
-//		this.y.set(getY() - 8);
-//	}
-//
-//	public void mouvementBas() {
-//		this.y.set(getY() + 8);
-//	}
-
-	@Override
-	public void agir() {//se deplace et attaquer 
-		//System.out.println("HP : " + this.getHp());
-		//System.out.println("ID : " + this.getId());
-		System.out.println("SOL : " + this.getId());
-
+	
+	public void mouvementSol (Perso p) throws Exception {
 		try {
-			if(this.env.getTemp() % 4 == 0)
 			super.tombe(16);
-			
-		} catch (Exception e) {
-
-		}
-		try {
-			if (this.env.getTemp() % 20 == 0) {
-				super.droite();
-			}
-			if (this.env.getTemp() % 20 == 1) {
-				this.gauche();
-			}
-		} catch (Exception e) {
-			
-		}
-	}
+		} catch (Exception e) {}
+		super.mouvement(p);
+	}	
 	@Override
-	public void attaquer(Acteur a) {
-		// TODO Auto-generated method stub
-		
+	public void agir() {
+		try {
+			mouvementSol(getPerso());
+		} catch (Exception e) {}
+		attaquer(getPerso());
 	}
-
 }

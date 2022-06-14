@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,6 +16,8 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
 import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.fonctionnalitees.Saut;
+import application.modele.fonctionnalitees.Tour;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
 import application.modele.monstre.volant;
@@ -35,11 +38,12 @@ public class Environnement {
 		this.gravite = 2;
 		perso = new Perso(this, 0, 0);
 		listActeur= FXCollections.observableArrayList(//new Sol(this, 10, 10),
-				new Sol(this, 3, 10)
-				,new Sol(this, 15, 4),
-				new volant(this, 3,6),
-				//new BossSol(this, 9, 9, this.perso),
-				new Pnj(this, 10, 14, this.perso)
+				//new Sol(this, 3, 10)
+				new Sol(this, 15, 4, this.perso),
+//				new volant(this, 3,6),
+				new BossSol(this, 16, 2, this.perso),
+				new Pnj(this, 10, 14, this.perso),
+				new Pnj(this, 4, 14, this.perso)
 
 				);
 		

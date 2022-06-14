@@ -170,9 +170,10 @@ public abstract class Acteur {
 	 * Dégats sur les acteurs
 	 */
 	public void recevoirDegat(int degat) {
+		System.out.println("Degat" + degat);
 		 this.setHp(this.getHp() - degat); 
 	}
-	public abstract void attaquer(Acteur a);
+//	public abstract void attaquer(Acteur a);
 	/*
 	 * ID
 	 */
