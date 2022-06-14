@@ -9,7 +9,7 @@ import application.modele.acteur.Pnj;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
-import application.modele.monstre.volant;
+import application.modele.monstre.Volant;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -49,7 +49,7 @@ public class vueActeur {
 		chemins.add("ressources/link16pix.png");
 		String chemin = null;
 		//for (int i = 0; i < chemins.size(); i ++) {
-			if(a instanceof volant) {
+			if(a instanceof Volant) {
 				System.out.println("volant");
 				chemin = chemins.get(0);
 			}

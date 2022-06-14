@@ -46,7 +46,7 @@ import application.modele.item.Pioche;
 import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
-import application.modele.monstre.volant;
+import application.modele.monstre.Volant;
 import application.vue.VueInventaire;
 import application.vue.VuePerso;
 import application.vue.VueProjectile;
@@ -124,8 +124,8 @@ public class Controleur implements Initializable {
 			if(a instanceof Sol) {
 				new vueActeur((Sol) a, pane);
 			}
-			if(a instanceof volant) {
-				new vueActeur((volant) a, pane);
+			if(a instanceof Volant) {
+				new vueActeur((Volant) a, pane);
 			}//dans la vue et le modèle
 			if(a instanceof BossSol) {
 				new vueActeur((BossSol) a, pane);

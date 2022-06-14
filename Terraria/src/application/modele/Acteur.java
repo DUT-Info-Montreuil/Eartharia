@@ -26,6 +26,8 @@ public abstract class Acteur {
 	private int attaque;
 	private String id;
 	public static int compteur = 0; 
+	private boolean peutAttaquer; //cooldown pour pas que le monstre puisse attaquer beaucoup de fois a suite
+	private boolean peutTomber;
 
 	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox, int atq) {
 		this.x =new SimpleIntegerProperty(x*16) ;
@@ -44,7 +46,17 @@ public abstract class Acteur {
 		this.deplacement[3] = new SimpleBooleanProperty(false);
 		this.id =  "A" + compteur;
 		this.deplacement[1] = new SimpleBooleanProperty(false);
-		compteur ++; 
+		Acteur.compteur ++; 
+		this.peutAttaquer=true;
+		peutTomber=true;
+	}
+
+	public boolean isPeutTomber() {
+		return peutTomber;
+	}
+
+	public void setPeutTomber(boolean peutTomber) {
+		this.peutTomber = peutTomber;
 	}
 
 	public BooleanProperty[] getDeplacement() {
@@ -80,7 +92,7 @@ public abstract class Acteur {
 	public void gauche() throws Exception{
 		deplacement(-getVitesse(), 0);
 	}
-	public boolean surDuSol() throws LimiteMapException {
+	public boolean surDuSol(){
 		try {
 			for (Integer[] c : getBoxPlayer().limiteBoxBas()) {
 				int colonne=c[0];
@@ -90,9 +102,7 @@ public abstract class Acteur {
 					return true;
 				}
 			}
-		}catch(Exception e) {
-			throw new LimiteMapException();
-		}
+		}catch(Exception e) {}
 		return false;
 	}
 
@@ -165,7 +175,9 @@ public abstract class Acteur {
 	public int caseY() {
 		return this.y.get()/16;
 	}
-
+	public void setAttaque(boolean attaque) {
+		this.setPeutAttaquer(attaque);
+	}
 	private void limiteDeMap(int x, int y) throws LimiteMapException{
 		if((getX()+x)<0)
 			throw new LimiteMapException();
@@ -218,4 +230,14 @@ public abstract class Acteur {
     public String getId() {
     	return id;
     }
+    public boolean peutTomber() {
+		return peutTomber;
+	}
+	public boolean peutAttaquer() {
+		return peutAttaquer;
+	}
+
+	public void setPeutAttaquer(boolean peutAttaquer) {
+		this.peutAttaquer = peutAttaquer;
+	}
 }
