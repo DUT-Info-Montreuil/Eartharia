@@ -6,6 +6,7 @@ public class Constante {
 	public static ArrayList<Integer> BlocSolide = BlocSolide();
 	public static ArrayList<Integer> BlocPierre = BlocPierre();
 	public static ArrayList<Integer> BlocBois = BlocBois();
+	public static ArrayList<Integer> BlocTerre = BlocTerre();
 	
 	private static ArrayList<Integer> BlocSolide(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
@@ -33,12 +34,22 @@ public class Constante {
 
 		return listBloc;
 	}
+	private static ArrayList<Integer> BlocTerre(){
+		ArrayList<Integer> listBloc = new ArrayList<>();
+		for (int i = 233; i < 237; i++) {
+			listBloc.add(i); //Bloc terre			
+		}
+		return listBloc;
+	}
 	
 	public static boolean estUnBlocSolide(int idBloc) {
 		return Constante.BlocSolide.contains(idBloc);
 	}
 	public static boolean estUnBlocPierre(int idBloc) {
 		return Constante.BlocPierre.contains(idBloc);
+	}
+	public static boolean estUnBlocTerre(int idBloc) {
+		return Constante.BlocTerre.contains(idBloc);
 	}
 	public static boolean estUnBlocBois(int idBloc) {
 		return Constante.BlocBois.contains(idBloc);

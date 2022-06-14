@@ -27,11 +27,26 @@ public class Perso extends Acteur{
 	private CraftMenu craft;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 200,4,16,16,10);
+		super(env, x, y, 200,4,16,32,10);
 		this.inventaire= FXCollections.observableArrayList();
 		this.craft=new CraftMenu(inventaire,this);
 	}
-
+	public void attaque () {
+		for(Acteur m : getEnv().getListeActeur()) {
+			if(m instanceof Monstre)
+			this.echangeDeCoup(m);
+		}
+	}
+	public void echangeDeCoup (Acteur a) {
+//		System.out.println("Degat : " + this.getDegatAttaque());
+//		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());
+		if( Math.abs(a.getX() - this.getX()) <=16 /*|| Math.abs(a.getX() + this.getX()) <=16*/ ){			
+//			a.attaquer(this);
+//			this.recevoirDegat(a.getDegatAttaque());
+			//this.attaquer(a);
+			a.dommage(this.getDegatAttaque());
+		}
+	}
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();

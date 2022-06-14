@@ -35,15 +35,15 @@ public class Environnement {
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		listActeur= FXCollections.observableArrayList();
 		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
-//		listActeur= FXCollections.observableArrayList(new Sol(this, 10, 10),
-//				new Sol(this, 0, 10)
-//				,new Sol(this, 15, 4),
-//				new volant(this, 0,6),
-//				new BossSol(this, 9, 9, this.perso)
-//				);
+		listActeur= FXCollections.observableArrayList(
+				new Sol(this, 3, 10, this.perso),
+				new Sol(this, 10, 10, this.perso),
+				new Sol(this, 15, 4, this.perso),
+//				new volant(this, 3,6),
+				new BossSol(this, 16, 2, this.perso)
+				);
 	}
 
 	private void initialisation(){
@@ -71,6 +71,13 @@ public class Environnement {
 			e.printStackTrace();
 		}
 	}
+	public boolean boxCollisionActeur(int ligne, int colonne){
+        for (Acteur acteur : listActeur) {
+            if(acteur.caseX()==colonne && acteur.caseY()==ligne)
+                return true;
+        }
+        return false;
+    }
 
 	public boolean boxCollisionBloc(int ligne, int colonne){
 		return this.map.get(ligne*this.colonne+colonne).estSolide();
@@ -86,13 +93,16 @@ public class Environnement {
 	public void unTour() {
 		this.gravite();
 		this.lancerProjectiles();
-		//        for(int i = this.listActeur.size() -1; i>= 0; i --) {
-		//                Acteur monstre = listActeur.get(i);
-		//                if(monstre.estMort()){
-		//                this.listActeur.remove(i);
-		//                }
-		//        }
 		this.perso.agir();
+		for(int i = this.listActeur.size() -1; i>= 0; i --) {
+			Acteur act = listActeur.get(i);
+			if(act.estMort()){
+				this.listActeur.remove(act);
+			}
+			else {
+				act.agir();
+			}
+		}
 		for( Acteur a : listActeur ) {
 			a.agir();
 		}
@@ -104,15 +114,15 @@ public class Environnement {
 	public int getTemp() {
 		return temps;
 	}
-	public Acteur getActeurs () {
-		Acteur act = null;
+	public Acteur getActeurs (String id) {
 		for (Acteur a : this.listActeur){
-			act = a;
+			if(a.getId().equals(id))
+				return a;
 		}
-		return act;
+		return null;
 
 	}
-	public void gravite() {
+	private void gravite() {
 		//plus tard faire un for each pour la liste acteur
 		try {
 			if(!perso.surDuSol())
@@ -133,12 +143,12 @@ public class Environnement {
 			projectiles.get(i).lancer();
 		}
 	}
-	public boolean verifAutourProjectile(Projectile p) {
-		if (!this.getBloc(p.getX(), p.getY()).estSolide()) {
-			return true;
-		}
-		return false;
-	}
+//	public boolean verifAutourProjectile(Projectile p) {
+//		if (!this.getBloc((int)p.getX(), p.getY()).estSolide()) {
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public ObservableList<Projectile> getListProjectiles() {
 		return this.projectiles;

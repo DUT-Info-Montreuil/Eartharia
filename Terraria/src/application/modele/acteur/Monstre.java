@@ -2,24 +2,42 @@ package application.modele.acteur;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public abstract class Monstre extends Acteur{
-	private String idMonstre;
-	public static int compteur = 0;
-
-	public Monstre(Environnement env, int x, int y,int vitesse, int hp, int atq, int xBox, int yBox) {
-		super(env, x, y,vitesse, hp, atq, xBox, yBox);
-		this.idMonstre = "M" + compteur;
-
-	}
-	public void recevoirDegat(int degat) {
-		 this.setHp(this.getHp() - degat); 
+	private Perso perso;
+	public Monstre(Environnement env, int x, int y,int vitesse, int hp, int atq, int xBox, int yBox, Perso p) {
+		super(env, x, y,hp,vitesse, atq, xBox, yBox);
+		this.perso = p;
 	}
 	public abstract void agir();
 	
-	public String getId () {
-		return this.idMonstre;
+	public boolean proximiteMouvement (Perso p) { 
+		return Math.abs(this.getX() - p.getX()) <=16;
 	}
-	
-
+	public boolean proximiteAttaque (Perso p) { 
+		return Math.abs(this.getX() - p.getX()) <=16;		
+	}
+	public void mouvement (Perso p) throws Exception {
+		if(!proximiteMouvement(p) ) {
+			try {
+				if (this.getEnv().getTemp() % 30 == 0)
+					this.droite();
+				if (this.getEnv().getTemp() % 30 == 3) 
+					this.gauche();
+			} catch (Exception e) {}
+		}else 
+			throw new Exception() ;
+	}
+	public void attaquer(Perso p) {
+		if(this.getEnv().getTemp() %40 == 0) {
+			if(proximiteAttaque(p)) {
+			p.dommage(this.getDegatAttaque());
+			}
+		}
+	}
+	public Perso getPerso() {
+		return this.perso;
+	}
 }

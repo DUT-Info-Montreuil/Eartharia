@@ -28,7 +28,6 @@ public class ObserveProjectile implements ListChangeListener<Projectile >{
 	
 	@Override
 	public void onChanged(Change<? extends Projectile> c) {
-		System.out.println("changement");
 		while (c.next()) {
 			ajout(c.getAddedSubList());
 			suppresion(c.getRemoved() );
@@ -39,18 +38,13 @@ public class ObserveProjectile implements ListChangeListener<Projectile >{
 		for (Projectile projectiles : addedSubList) {
 			this.vueProjectile= new VueProjectile(projectiles, p);
 		}
-		System.out.println("Ajout");
 	}
 	
 	private void suppresion(List<? extends Projectile> getRemoved) {
 		for (Projectile projectiles : getRemoved) {
-			if(this.env.verifAutourProjectile(projectiles)) {
-				this.p.getChildren().remove(projectiles);
-			}
+//			if(this.env.verifAutourProjectile(projectiles)) {
+//				this.p.getChildren().remove(projectiles);
+//			}
 		}
-		System.out.println("Suppression");
 	}
-
-
-
 }
