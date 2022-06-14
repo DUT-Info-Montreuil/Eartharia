@@ -115,7 +115,7 @@ public class Environnement {
 	private void gravite() {
 		//plus tard faire un for each pour la liste acteur
 		try {
-			if(!perso.surDuSol())
+			if(!perso.peutTomber())
 				this.perso.tombe(gravite);
 		}catch (LimiteMapException e) {
 			System.out.println("fin limite map");

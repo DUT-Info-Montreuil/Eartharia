@@ -34,9 +34,9 @@ public class Box {
 	}
 	public ArrayList<Integer[]> parcourBoxCase() {
 		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
-		for (int i = 0; i<height; i+=1) {
-			for(int j = 0; j<width; j+=1) {
-				Integer[] a = {(acteur.caseX()+i),(acteur.caseY()+j)};
+		for (int i = 0; i<height/16; i+=1) {
+			for(int j = 0; j<width/16; j+=1) {
+				Integer[] a = {(acteur.caseX()+j),(acteur.caseY()+i)};
 				taille.add(a);
 			}
 		}
@@ -44,10 +44,10 @@ public class Box {
 	}
 	public ArrayList<Integer[]> deplacementBoxCase(int deplacementX,int deplacementY) {
 		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
-		for (int i = 0; i<height; i+=acteur.getVitesse()) {
-			for(int j = 0; j<width; j+=acteur.getVitesse()) {
-				int futurposX =(acteur.getX()+deplacementX+j)/16; //future position d'une case de la box en X
-				int futurposY =(acteur.getY()+deplacementY+i)/16; //future position d'une case de la box en Y
+		for (int ligne = 0; ligne<height; ligne+=acteur.getVitesse()) {
+			for(int colonne = 0; colonne<width; colonne+=acteur.getVitesse()) {
+				int futurposX =(acteur.getX()+deplacementX+colonne)/16; //future position d'une case de la box en X
+				int futurposY =(acteur.getY()+deplacementY+ligne)/16; //future position d'une case de la box en Y
 				Integer[] futurPos = {futurposX,futurposY};
 				taille.add(futurPos);
 			}

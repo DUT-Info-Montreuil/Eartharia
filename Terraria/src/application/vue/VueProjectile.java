@@ -27,7 +27,7 @@ public class VueProjectile {
 	}
 	
 	public void bindPosition() {
-		this.imgVPro.xProperty().bind(projectile.getXProperty());
+		this.imgVPro.xProperty().bind(projectile.getXProperty().add(0));
 		this.imgVPro.yProperty().bind(projectile.getYProperty());
 	}
 }

@@ -58,7 +58,7 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-		if(surDuSol())
+		if(peutTomber())
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
 			deplacement(0, -8);
@@ -74,14 +74,22 @@ public abstract class Acteur {
 	public void gauche() throws Exception{
 		deplacement(-getVitesse(), 0);
 	}
-	public boolean surDuSol() throws LimiteMapException {
+	public boolean peutTomber() throws LimiteMapException {
 		try {
-			for (Integer[] c : getBoxPlayer().limiteBoxBas()) {
-				int colonne=c[0];
-				int ligne=c[1];
+			for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
+				int colonne=cell[0];
+				int ligne=cell[1];
 				if(getEnv().getBloc(ligne+1, colonne).estSolide()) {
 					setSaut(true);
 					return true;
+				}
+			}
+			for (Integer[] cell : getBoxPlayer().parcourBoxCase()) {
+				int colonne=cell[0];
+				int ligne=cell[1];
+				if(getEnv().getIdTuile(ligne, colonne)==34) {
+					setSaut(true);
+					return false;
 				}
 			}
 		}catch(Exception e) {

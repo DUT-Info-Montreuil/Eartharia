@@ -11,9 +11,10 @@ import javafx.scene.shape.Rectangle;
 public class VuePerso {
 	
 	private Perso perso;
-	protected Image img_perso;
-	protected ImageView imgVP;
-	protected Pane pane;
+	private Image img_perso;
+	private ImageView imgVP;
+	private Pane pane;
+	private String chemin;
 	
 	
 	public VuePerso (Pane pane, Perso perso) {
@@ -21,12 +22,13 @@ public class VuePerso {
 		this.img_perso = new Image("ressources/perso/perso_idle_right.png");
 		this.imgVP = new ImageView(img_perso);
 		this.perso = perso;
+		this.chemin = Constante.chemin(perso);
 		animation();
-//		Rectangle r = new Rectangle(16, 16);
-//		r.setFill(Color.RED);
-//		r.xProperty().bind(perso.getxProperty());
-//		r.yProperty().bind(perso.getyProperty());
-//		this.pane.getChildren().add(r);
+		Rectangle r = new Rectangle(perso.getBoxPlayer().getX(), perso.getBoxPlayer().getY());
+		r.setFill(Color.RED);
+		r.setLayoutX((Constante.view/2)*16);
+		r.setLayoutY((Constante.view/2)*16);
+		this.pane.getChildren().add(r);
 		Affichage();
 		bindPosition();
 	}
@@ -35,47 +37,47 @@ public class VuePerso {
 		return this.imgVP;
 	}
 	private void animation() {
-		this.perso.getDeplacement(0).addListener((obs, old, nouv)-> {
-			this.pane.getChildren().remove(imgVP);
-			if(nouv && perso.getDeplacement()[2].get())
-				imgVP=new ImageView(new Image("ressources/perso/perso_jump_left.png"));
-			else if(nouv && perso.getDeplacement()[3].get())
-				imgVP=new ImageView(new Image("ressources/perso/perso_jump_right.png"));
-			else if(nouv)
-				imgVP=new ImageView(new Image("ressources/perso/perso_jump_right.png"));
-			else
-				imgVP=new ImageView(new Image("ressources/perso/perso_jump.png"));
-			this.pane.getChildren().add(imgVP);
-			bindPosition();
+		this.perso.getDeplacement(0).addListener((obs, old, nouv)-> {//haut
+			if(nouv) {
+				double a= imgVP.getScaleX();
+				imgVP.setImage(new Image("ressources/"+chemin+"/jump.png"));
+				imgVP.setScaleX(a);
+			}
+			idle();
 		});
 		
 		this.perso.getDeplacement(2).addListener((obs, old, nouv)-> {
-			this.pane.getChildren().remove(imgVP);
-			if(nouv)
-				imgVP=new ImageView(new Image("ressources/perso/perso_run_left.gif"));
-			else
-				imgVP=new ImageView(new Image("ressources/perso/perso_idle_left.png"));
-			this.pane.getChildren().add(imgVP);
-			bindPosition();
+			if(nouv) {
+				imgVP.setImage(new Image("ressources/"+chemin+"/walk.gif"));
+				imgVP.setScaleX(1);
+			}
+			idle();
 		});
 		this.perso.getDeplacement(3).addListener((obs, old, nouv)-> {
-			this.pane.getChildren().remove(imgVP);
-			if(nouv)
-				imgVP=new ImageView(new Image("ressources/perso/perso_run_right.gif"));
-			else
-				imgVP=new ImageView(new Image("ressources/perso/perso_idle_right.png"));
-			this.pane.getChildren().add(imgVP);
-			bindPosition();
+			if(nouv) {
+				imgVP.setImage(new Image("ressources/"+chemin+"/walk.gif"));
+				imgVP.setScaleX(-1);
+			}
+			idle();
 		});
-		
+	}
+	public void idle() {
+		if (!(perso.getDeplacement()[0].get() ||perso.getDeplacement()[1].get() ||perso.getDeplacement()[2].get() ||perso.getDeplacement()[3].get()) ) {
+			double a= imgVP.getScaleX();
+			try {
+				imgVP.setImage(new Image("ressources/"+chemin+"/idle.png"));
+			}catch (Exception e) {
+				imgVP.setImage(new Image("ressources/"+chemin+"/idle.gif"));
+			}
+			imgVP.setScaleX(a);
+		}
 	}
 	public void Affichage () {
 		this.pane.getChildren().add(imgVP);
 	}
 	public void bindPosition() {
-		this.imgVP.setLayoutX((Constante.view/2)*16);
-		this.imgVP.setLayoutY((Constante.view/2)*16);
+		this.imgVP.xProperty().bind(perso.getxProperty().add((Constante.view/2)*16));
+		this.imgVP.yProperty().bind(perso.getyProperty().add((Constante.view/2)*16));
 	}
-	
-	
+
 }

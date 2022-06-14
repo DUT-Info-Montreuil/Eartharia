@@ -2,8 +2,11 @@ package application.modele.fonctionnalitees;
 
 import java.util.ArrayList;
 
+import application.modele.Acteur;
+import application.modele.acteur.*;
+import application.modele.monstre.*;
+
 public class Constante {
-	public static ArrayList<Integer> BlocSolide = BlocSolide();
 	public static ArrayList<Integer> BlocTransparent = BlocTransparent();
 
 	public static ArrayList<Integer> BlocPierre = BlocPierre();
@@ -11,16 +14,17 @@ public class Constante {
 	
 	private static ArrayList<Integer> BlocTransparent(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
+		//Bloc transparent avec image comme bloc '0'
 		listBloc.add(0);
-		return listBloc;
-	}
-	private static ArrayList<Integer> BlocSolide(){
-		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(204);
-		listBloc.add(205);
-		listBloc.add(206);
-		listBloc.add(233);//terre
-		listBloc.add(1);
+		listBloc.add(89);
+		listBloc.add(90);
+		for (int i = 276; i <= 289; i++)
+			listBloc.add(i);
+		for (int i = 119; i <= 272; i+=17) 
+			listBloc.add(i);
+		//Bloc transparent avec image comme bloc '0'
+		listBloc.add(34);//Bloc eau
+
 		return listBloc;
 	}
 	private static ArrayList<Integer> BlocPierre(){
@@ -41,6 +45,20 @@ public class Constante {
 		return listBloc;
 	}
 	public static int view=40;
+	
+	public static String chemin(Acteur a) {
+		if(a instanceof Perso)
+			return "perso";
+		else if(a instanceof Sol)
+			return "sol";
+		else if(a instanceof volant)
+			return "ghost";
+		else if(a instanceof BossVolant)
+			return "boss";
+		else if(a instanceof BossSol)
+			return "boss";
+		return"";
+	} 
 	public static boolean estUnBlocTransparent(int idBloc) {
 		return !Constante.BlocTransparent.contains(idBloc);
 	}
