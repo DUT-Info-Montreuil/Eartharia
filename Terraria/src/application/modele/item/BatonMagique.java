@@ -15,7 +15,7 @@ public class BatonMagique extends Arme{
 
 	@Override
 	public void agit(int y, int x, Environnement env) {
-		Projectile p = new Projectile(11, x, y,getUtilisateur());
+		Projectile p = new Projectile(11, (double)x, (double)y,getUtilisateur());
 		this.getUtilisateur().getEnv().addListProjectiles(p);
 	}
 	

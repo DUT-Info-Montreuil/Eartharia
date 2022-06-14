@@ -4,6 +4,8 @@ import java.util.Timer;
 import application.modele.Item;
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
@@ -25,13 +27,25 @@ public class Perso extends Acteur{
 	private CraftMenu craft;
 
 	public Perso(Environnement env, int x, int y) {
-		super(env, x, y, 200,4,16,16,10);
+		super(env, x, y, 200,4,16,32,10);
 		this.inventaire= FXCollections.observableArrayList();
 		this.craft=new CraftMenu(inventaire,this);
-
 	}
-	public CraftMenu getCraft() {
-		return craft;
+	public void attaque () {
+		for(Acteur m : getEnv().getListeActeur()) {
+			if(m instanceof Monstre)
+			this.echangeDeCoup(m);
+		}
+	}
+	public void echangeDeCoup (Acteur a) {
+//		System.out.println("Degat : " + this.getDegatAttaque());
+//		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());
+		if( Math.abs(a.getX() - this.getX()) <=16 /*|| Math.abs(a.getX() + this.getX()) <=16*/ ){			
+//			a.attaquer(this);
+//			this.recevoirDegat(a.getDegatAttaque());
+			//this.attaquer(a);
+			a.dommage(this.getDegatAttaque());
+		}
 	}
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
@@ -40,12 +54,7 @@ public class Perso extends Acteur{
 			this.inventaire.add(i);
 	}
 	public void delInventaire(Item item) {
-		for (int i=0; i<inventaire.size(); i++) {
-			if (this.inventaire.get(i)==item) {
-				this.inventaire.remove(i);
-				break;
-			}
-		}
+		this.inventaire.remove(item);
 	}
 	public ObservableList<Item> getInventaire() {
 		return inventaire;
@@ -67,19 +76,21 @@ public class Perso extends Acteur{
 		}
 	}
 
-	public boolean craft() {
+	public boolean peutcraft() {
 		for (int ligne = -2; ligne <= 2; ligne++) {
 			for (int colonne = -2; colonne<= 2; colonne++) {
 				if(!(caseX()+colonne<0 || caseY()+ligne<0 || caseX()+colonne>=getEnv().getColonne() || caseY()+ligne>=getEnv().getLigne()))
 					if(getEnv().getIdTuile(caseY()+ligne, caseX()+colonne)==190) {
-						craft.refresh();
 						return true;
 					}
 			}
 		}
 		return false;
 	}
-	
+	public CraftMenu getCraft() {
+		return craft;
+	}
+
 	public void useEquipe(int y,int x) throws Exception{
 		if(equipe== null)
 			throw new RienEquiperExeception();
@@ -97,7 +108,6 @@ public class Perso extends Acteur{
 			prendEnMain(null);
 		}
 	}
-
 	public Item getEquipe() {
 		return equipe;
 	}
@@ -115,7 +125,6 @@ public class Perso extends Acteur{
 			}
 		}
 	}
-	
 	public void ressusciter() {
 		if(this.getHp()==0) {
 			for (int i=0; i<inventaire.size();i++) {
@@ -124,10 +133,5 @@ public class Perso extends Acteur{
 				}
 			}
 		}
-	}
-	@Override
-	public void agir() {
-		// TODO Auto-generated method stub
-		
 	}
 }

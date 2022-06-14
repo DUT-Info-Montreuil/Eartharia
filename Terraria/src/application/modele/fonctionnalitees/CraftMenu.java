@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import application.modele.Acteur;
+import application.modele.Bloc;
 import application.modele.Item;
+import application.modele.Exception.InventairePleinException;
 import application.modele.acteur.Perso;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
@@ -18,61 +20,91 @@ public class CraftMenu {
 
 	private ObservableList<Item> craft;
 	private Perso acteur;
-	private int materiaux[];
 
 	public CraftMenu(ObservableList<Item> craft,Perso acteur) {
 		this.acteur=acteur;
 		this.craft= FXCollections.observableArrayList();
-		materiaux = new int[4];
 	}
 
 	public void refresh() {
-		refreshMateriau();
-		craftPossible();
-	}
-	private void refreshMateriau() {
-		for (Item item : acteur.getInventaire()) {
-			if (Constante.estUnBlocBois(item.getIdItem()))
-				materiaux[0]=item.getQuantite()-materiaux[0];
-			if (Constante.estUnBlocPierre(item.getIdItem()))
-				materiaux[1]=item.getQuantite()-materiaux[1];
-		}
-	}
-	private void craftPossible() {
-		craft.clear();
 		outils();
 		arme();
 	}
+
 	private void outils() {
-		for (int b = materiaux[0]/3,p = materiaux[1]/3; b >0  && p > 0; b--,p--) {
-			if(estPresent(new Pioche()))
-				craft.add(new Pioche());
-			if(estPresent(new Hache()))
-				craft.add(new Hache());
-		}
+		if(!estPresent(0) && canCraft(0))
+			craft.add(new Hache());
+		if(!estPresent(19) && canCraft(19))
+			craft.add(new Pioche());
+		if(!estPresent(190) && canCraft(190))
+			craft.add(new BlocItem(190, 1));
+		
 	}
 	private void arme() {
-		for (int b = materiaux[0]/5,p = materiaux[1]/3; b >0  && p >0; b--,p--) {
-			if(estPresent(new BatonMagique(acteur,1)))
-				craft.add(new BatonMagique(acteur,1));
-		}
-		for (int b = materiaux[0]/2,p = materiaux[1]/4; b >0  && p >0; b--,p--) {
-			if(estPresent(new Epee(acteur,1)))
-				craft.add(new Epee(acteur,1));
-		}
+		if(!estPresent(16) && canCraft(16))
+			craft.add(new BatonMagique(acteur));
+		if(!estPresent(59) && canCraft(59))
+			craft.add(new Epee(acteur));
 	}
-	public boolean estPresent(Item i) {
+	public boolean estPresent(int i) {
 		for (Item item : craft) 
-			if(item.getIdItem()==i.getIdItem()) 
-				return false;
-		return true;
+			if(item.getIdItem()==i) 
+				return true;
+		return false;
 	}
 
+	public void craftObjet(String id) throws InventairePleinException { 
+		for (int i=craft.size()-1; i>=0; i--) {
+			Item item = craft.get(i);
+			if (item.getId()==id) {
+				acteur.addInventaire(item);
+				craft(item.getIdItem());
+				craft.remove(item);
+			}
+		}
+	}
 	public ObservableList<Item> getListCraft() {
 		return craft;
 	}
-	private void materiau() {
-		System.out.println("bois "+materiaux[0]);
-		System.out.println("pierre "+materiaux[1]);
+	public boolean canCraft(int id) {
+		int[][] materiau = ConstantCraft.getCraft(id);
+		for (int i = 0; i < materiau.length; i++) {
+			for (int j = 0; j < materiau[0].length; j+=2) {
+				int nb = materiau[i][j];
+				int type = materiau[i][j+1];
+				for (Item item : acteur.getInventaire()) {
+					if (item.getIdItem()==type && item.getQuantite()>nb) {
+						nb=0;
+					}
+					else if (item.getIdItem()==type) {
+						nb-=item.getQuantite();
+					}
+				}
+				if(nb>0)
+					return false;
+			}
+		}
+		return true;
+	}
+	public void craft(int id) {
+		int[][] materiau = ConstantCraft.getCraft(id);
+		for (int i = 0; i < materiau.length; i++) {
+			for (int j = 0; j < materiau[0].length; j+=2) {
+				int nb = materiau[i][j];
+				int type = materiau[i][j+1];
+				for (int index=acteur.getInventaire().size()-1; index>=0 && nb >0; index--) {
+					Item item = acteur.getInventaire().get(index);
+					if (item.getIdItem()==type && item.getQuantite()>nb) {
+						item.removeQuantite(nb);
+						nb=0;
+					}
+					else if (item.getIdItem()==type) {
+						craft.clear();
+						acteur.delInventaire(item);
+						nb-=item.getQuantite();
+					}
+				}
+			}
+		}
 	}
 }

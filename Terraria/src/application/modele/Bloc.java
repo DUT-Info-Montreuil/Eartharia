@@ -6,11 +6,13 @@ public class Bloc {
 	private int id;
 	private int idTuile;
 	private boolean collision;
+	private static int count=0;
 	
-	public Bloc (int id,int idTuile) {
-		this.id=id;
+	public Bloc (int idTuile) {
+		this.id=count;
 		this.idTuile = idTuile;
 		this.collision = Constante.estUnBlocSolide(idTuile);
+		count++;
 	}
 	public boolean estSolide() {
 		return this.collision;

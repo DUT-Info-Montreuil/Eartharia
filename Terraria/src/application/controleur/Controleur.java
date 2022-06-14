@@ -13,8 +13,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import application.modele.Acteur;
 import application.modele.Bloc;
@@ -26,7 +30,10 @@ import application.modele.Exception.ItemNonTrouverException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.Item;
+import application.modele.fonctionnalitees.ObservateurActeur;
+import application.modele.fonctionnalitees.ObservateurMonstre;
 import application.modele.fonctionnalitees.ObserveCraft;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
@@ -34,8 +41,10 @@ import application.modele.fonctionnalitees.ObserveProjectile;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
+import application.modele.item.Pelle;
 import application.modele.item.Pioche;
 import application.modele.item.Projectile;
+import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
 import application.modele.monstre.volant;
 import application.vue.VueInventaire;
@@ -45,7 +54,7 @@ import application.vue.vueActeur;
 import application.vue.vueCraft;
 import application.vue.vueHp;
 import application.vue.VueMapTerraria;
- 
+
 public class Controleur implements Initializable {
 
 	private Environnement env;
@@ -55,9 +64,9 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
-    private vueActeur vue_acteur;
+	private vueActeur vue_acteur;
 	private vueCraft vueCraft;
-	
+
 	@FXML
 	private GridPane tPaneInvRapide;
 	@FXML
@@ -98,20 +107,35 @@ public class Controleur implements Initializable {
 		this.vueCraft = new vueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.description.setVisible(false);
 		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
-//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-        //this.env.getActeurs().addListener(new ObservateurMonstre(pane));
-        
-//        for(Acteur a : this.env.getListeActeur()) {
-//                        if(a instanceof Sol) {
-//                                new vueActeur((Sol) a, pane);
-//                        }
-//                        if(a instanceof volant) {
-//                                new vueActeur((volant) a, pane);
-//                        }//dans la vue et le modèle
-////                        if(a instanceof Boss) {
-////                                new vueActeur((Boss) a, pane);
-////                        }
-//                }
+		//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
+		this.env.getListeActeur().addListener(new ObservateurActeur(pane));
+		//      for(Acteur a : this.env.getListeActeur()) {
+		//                      if(a instanceof Sol) {
+		//                              new vueActeur((Sol) a, pane);
+		//                      }
+		//                      if(a instanceof volant) {
+		//                               new vueActeur((volant) a, pane);
+		//                      }//dans la vue et le modèle
+		//                      if(a instanceof Boss) {
+		//                               new vueActeur((Boss) a, pane);
+		//                      }
+		//              }
+		for(Acteur a : this.env.getListeActeur()) {
+			if(a instanceof Sol) {
+				new vueActeur((Sol) a, pane);
+			}
+			if(a instanceof volant) {
+				new vueActeur((volant) a, pane);
+			}//dans la vue et le modèle
+			if(a instanceof BossSol) {
+				new vueActeur((BossSol) a, pane);
+			}
+			if(a instanceof Pnj) {
+				// p = (Pnj) a; 
+				new vueActeur((Pnj) a, pane);
+			}
+
+		}
 	}
 
 	@FXML
@@ -121,16 +145,16 @@ public class Controleur implements Initializable {
 			//perso.addInventaire(new Item(cmpt));
 			switch (k.getCode()) {
 			case UP    :
-				perso.saut();
+				perso.setDeplacement(0, true);
 				break;
 			case DOWN  :
-				perso.tombe(16); //va servir a traverser des bloc semi traversable ex : echafaudage plateforme... comme dans mario
+				perso.setDeplacement(1, true);
 				break;
 			case LEFT  :
-				perso.gauche();
+				perso.setDeplacement(2, true);
 				break;
 			case RIGHT :
-				perso.droite();
+				perso.setDeplacement(3, true);
 				break;
 			case DIGIT1  :
 			case NUMPAD1  :
@@ -151,13 +175,22 @@ public class Controleur implements Initializable {
 			case I  :
 				vueInventaire.ouvFerInv();
 				break;
-			//Code Cheat
+			case J : 
+				perso.attaque();
+				System.out.println("HP : " +perso.getHp());
+				System.out.println("attaque");
+				//System.out.println(this.env.getActeurs());
+				break;
+				//Code Cheat
 			case A :
 				this.env.getPerso().setHpPlus(-1);
 				System.out.println(this.env.getPerso().getHp());
 				break;
 			case P  :
 				perso.addInventaire(new Pioche());
+				break;
+			case O  :
+				perso.addInventaire(new Pelle());
 				break;
 			case B  :
 				perso.addInventaire(new BlocItem(233,5));
@@ -176,26 +209,19 @@ public class Controleur implements Initializable {
 			case V :
 				perso.addInventaire(new BatonMagique(this.env.getPerso()));
 			case C :
-				vueCraft.ouvFerCraft(perso.craft());
+				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
 			default:
 				break;
 			}
-		}catch (LimiteMapException e) {
-			System.out.println("Limite map !");
-		}catch (CollisionException e) {
-			System.out.println("Collision Bloc map !");
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
-		}catch (RienEquiperExeception e) {
-			System.out.println("Le personnage n'a rien equiper");
-		}catch (InventaireCaseVideException e) {
-			System.out.println("Case Vide");		
 		}catch (ItemNonTrouverException e) {
 			System.out.println("Le personnage n'a rien equiper + Case Vide");		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	@FXML
 	public void moveRelease (KeyEvent k) {
 		this.env.getPerso();
@@ -203,7 +229,16 @@ public class Controleur implements Initializable {
 		switch (k.getCode()) {
 		case UP    :
 			perso.setSaut(false);
+			perso.setDeplacement(0, false);
 			break;
+		case DOWN  :
+			perso.setDeplacement(1, false);
+			break;
+		case LEFT  :
+			perso.setDeplacement(2, false);
+			break;
+		case RIGHT :
+			perso.setDeplacement(3, false);
 		default:
 			break;
 		}
@@ -214,10 +249,58 @@ public class Controleur implements Initializable {
 		KeyFrame kf = new KeyFrame(
 				Duration.millis(25),
 				(ev -> {
-                    this.env.unTour();
+					if (!pause()) {
+						this.env.unTour();
+					}
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
+	}
+	private boolean pause() {
+		boolean bool = false;
+		bool = bool || vueCraft.pause();
+		if(vueCraft.pause()) {
+			env.getPerso().getCraft().refresh();
+			tileP.setDisable(false);
+		}
+		else
+			tileP.setDisable(false);
+
+		return bool;
+	}
+
+	private void menu (String choice) {
+		BufferedImage bf = null;
+
+		try {
+			switch(choice){
+			case "start" : bf = ImageIO.read(new File ("start"));
+			break;
+			case "lose" :  bf = ImageIO.read(new File ("lose"));
+			break;
+			case "win":  bf = ImageIO.read(new File ("win"));
+			break;
+			}
+		}catch (Exception e) {
+			System.out.println("erreur menu");
+		}
+
+	}
+	private void setupGame() {
+
+		//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
+		//        	if(nouv.intValue() <= 0) {
+		//        		menu("gameover");
+		//        		this.gameLoop.stop();
+		//        	}
+		//        });
+		//        this.env.getListeActeur().getHpProperty().addListener((obs, old, nouv) -> {
+		//        	System.out.println("boss hp changed");
+		//        	if(nouv.intValue() <= 0){
+		//        		menu("win");
+		//        		this.gameLoop.stop();
+		//        	}
+		//        });
 	}
 	@FXML
 	private void clickEnvironement(MouseEvent m) {
@@ -257,7 +340,7 @@ public class Controleur implements Initializable {
 				}
 				break;
 			case SECONDARY :
-				
+
 				break;
 			default :
 				System.out.println("probleme");
@@ -275,21 +358,20 @@ public class Controleur implements Initializable {
 			switch(m.getButton()) {
 			case PRIMARY :
 				if (m.getTarget() instanceof ImageView) {
-					ImageView img =	(ImageView) m.getTarget();
-					perso.addInventaire(vueCraft.getItem(img));
+					String id=	((ImageView) m.getTarget()).getId();
+					System.out.println(id);
+					perso.getCraft().craftObjet(id);
 				}
 				break;
 			case SECONDARY :
-				
+
 				break;
 			default :
 				System.out.println("probleme");
 				break;
 			}
 		}
-		catch (ItemNonTrouverException e) {
-			e.printStackTrace();
-		} catch (InventairePleinException e) {
+		catch (InventairePleinException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -6,63 +6,37 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<HBox xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="application.controleur.Controleur">
+<HBox xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
 	<children>
-		<Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity"
-			maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-			onKeyPressed="#move" onKeyReleased="#moveRelease" prefHeight="320.0"
-			prefWidth="320.0">
+		<Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#move" onKeyReleased="#moveRelease" prefHeight="320.0" prefWidth="320.0">
 			<children>
-				<TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT"
-					maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-					minWidth="-Infinity" onMouseClicked="#clickEnvironement"
-					prefHeight="320.0" prefWidth="320.0" />
-				<TilePane fx:id="tPaneCraft" onMouseClicked="#craftMouse"
-					prefHeight="200.0" prefWidth="40.0" />
+				<TilePane id="S" fx:id="tileP" alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clickEnvironement" prefHeight="320.0" prefWidth="320.0" />
+				<TilePane fx:id="tPaneCraft" onMouseClicked="#craftMouse" prefHeight="200.0" prefWidth="40.0" style="-fx-padding: 10;" />
 
-				<GridPane fx:id="tPaneInvRapide"
-					onMouseClicked="#inventaireMouse" prefHeight="30.0"
-					prefWidth="174.0">
+				<GridPane fx:id="tPaneInvRapide" onMouseClicked="#inventaireMouse" prefHeight="30.0" prefWidth="174.0">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 					</columnConstraints>
 					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0"
-							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 				</GridPane>
-				<TilePane fx:id="tPaneHp" alignment="TOP_RIGHT"
-					layoutX="175.0" prefHeight="37.0" prefWidth="145.0" />
+				<TilePane fx:id="tPaneHp" alignment="TOP_RIGHT" layoutX="175.0" prefHeight="37.0" prefWidth="145.0" />
 				<Label fx:id="description" />
-				<GridPane fx:id="tPaneInv" layoutX="9.0" layoutY="16.0"
-					onMouseClicked="#inventaireMouse" prefHeight="125.0"
-					prefWidth="192.0">
+				<GridPane fx:id="tPaneInv" layoutX="9.0" layoutY="16.0" onMouseClicked="#inventaireMouse" prefHeight="125.0" prefWidth="192.0">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 					</columnConstraints>
 					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0"
-							vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0"
-							vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0"
-							vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 				</GridPane>
 			</children>

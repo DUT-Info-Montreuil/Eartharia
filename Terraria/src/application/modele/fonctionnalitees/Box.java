@@ -34,9 +34,9 @@ public class Box {
 	}
 	public ArrayList<Integer[]> parcourBoxCase() {
 		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
-		for (int i = 0; i<height; i+=16) {
-			for(int j = 0; j<width; j+=16) {
-				Integer[] a = {(acteur.getX()+i)/16,(acteur.getY()+j)/16};
+		for (int i = 0; i<height; i+=1) {
+			for(int j = 0; j<width; j+=1) {
+				Integer[] a = {(acteur.caseX()+i),(acteur.caseY()+j)};
 				taille.add(a);
 			}
 		}
@@ -52,6 +52,16 @@ public class Box {
 				taille.add(futurPos);
 			}
 		}		
+		return taille;
+	}
+	public ArrayList<Integer[]> limiteBoxBas() {
+		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
+		for(int j = 0; j<width; j+=acteur.getVitesse()) {
+			int futurposX =(acteur.getX()+j)/16; //future position d'une case de la box en X
+			int futurposY =(acteur.getY()+height-16)/16; //future position d'une case de la box en Y
+			Integer[] futurPos = {futurposX,futurposY};
+			taille.add(futurPos);
+		}
 		return taille;
 	}
 }

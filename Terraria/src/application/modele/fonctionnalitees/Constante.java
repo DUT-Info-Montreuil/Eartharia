@@ -6,6 +6,7 @@ public class Constante {
 	public static ArrayList<Integer> BlocSolide = BlocSolide();
 	public static ArrayList<Integer> BlocPierre = BlocPierre();
 	public static ArrayList<Integer> BlocBois = BlocBois();
+	public static ArrayList<Integer> BlocTerre = BlocTerre();
 	
 	private static ArrayList<Integer> BlocSolide(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
@@ -26,11 +27,18 @@ public class Constante {
 	}
 	private static ArrayList<Integer> BlocBois(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(207); //Bois chene
-		listBloc.add(208); //Bois bouleau
-		listBloc.add(209); //Bois Sapin
-		listBloc.add(210); //Bois Palmier
+		listBloc.add(208); //Bois chene
+		listBloc.add(209); //Bois bouleau
+		listBloc.add(210); //Bois Sapin
+		listBloc.add(211); //Bois Palmier
 
+		return listBloc;
+	}
+	private static ArrayList<Integer> BlocTerre(){
+		ArrayList<Integer> listBloc = new ArrayList<>();
+		for (int i = 233; i < 237; i++) {
+			listBloc.add(i); //Bloc terre			
+		}
 		return listBloc;
 	}
 	
@@ -39,6 +47,9 @@ public class Constante {
 	}
 	public static boolean estUnBlocPierre(int idBloc) {
 		return Constante.BlocPierre.contains(idBloc);
+	}
+	public static boolean estUnBlocTerre(int idBloc) {
+		return Constante.BlocTerre.contains(idBloc);
 	}
 	public static boolean estUnBlocBois(int idBloc) {
 		return Constante.BlocBois.contains(idBloc);

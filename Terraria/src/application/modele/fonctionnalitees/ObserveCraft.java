@@ -22,7 +22,6 @@ public class ObserveCraft implements ListChangeListener<Item >{
 	}
 	@Override
 	public void onChanged(Change<? extends Item> c) {
-		System.out.println("changement");
 		while (c.next()) {
 			ajout(c.getAddedSubList());
 			suppresion(c.getRemoved() );
@@ -37,6 +36,7 @@ public class ObserveCraft implements ListChangeListener<Item >{
 				BlocItem bloc = (BlocItem) item;
 				vueCraft.afficherItemBloc(bloc.getIdItem(),item.getId());
 			}
+			System.out.println("ajout");
 		}
 	}
 	private void suppresion(List<? extends Item> getRemoved) {

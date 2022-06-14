@@ -1,5 +1,6 @@
 package application.modele.monstre;
 
+import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
@@ -8,7 +9,7 @@ public class BossVolant extends Monstre{
 	private Perso perso;
 
 	public BossVolant(Environnement env, int x, int y, Perso p) {
-		super(env, x, y, 1, 20, 10, 16, 16);
+		super(env, x, y, 1, 20, 10, 16, 16, p);
 		this.perso = p;
 	}
 
@@ -59,4 +60,5 @@ public class BossVolant extends Monstre{
 		}
 		
 	}
+
 }
