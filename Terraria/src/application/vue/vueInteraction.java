@@ -22,8 +22,8 @@ public class vueInteraction {
 		Pnj p = null;
 		for (Acteur a : env.getListeActeur()) {
 			if(a instanceof Pnj) {
-				p = (Pnj)a;
-				p.getItération();
+ 				p = (Pnj)a;
+				//p.getItération();
 				this.label.setText(p.getInterationText());
 			}
 		}

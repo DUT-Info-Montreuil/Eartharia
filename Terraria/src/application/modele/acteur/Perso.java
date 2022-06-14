@@ -49,7 +49,7 @@ public class Perso extends Acteur{
 		for (Acteur a: this.env.getListeActeur()) {
 			if(a instanceof Pnj) {
 				p = (Pnj)a;
-				
+				System.out.println(p.interactionPnj(this));
 				if(p.interactionPnj(this))
 				interaction = true;
 				//System.out.println("pnj");

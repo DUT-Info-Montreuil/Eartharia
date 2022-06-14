@@ -42,8 +42,8 @@ public class Environnement {
 				new Sol(this, 15, 4, this.perso),
 //				new volant(this, 3,6),
 				new BossSol(this, 16, 2, this.perso),
-				new Pnj(this, 10, 14, this.perso),
-				new Pnj(this, 4, 14, this.perso)
+				new Pnj(this, 10, 14, this.perso,Constante.getMessage(1)),
+				new Pnj(this, 4, 14, this.perso, Constante.getMessage (2))
 
 				);
 		

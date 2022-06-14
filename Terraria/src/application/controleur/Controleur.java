@@ -76,7 +76,7 @@ public class Controleur implements Initializable {
 				p =(Pnj) a;		
 			}
 		}
-		//this.description.textProperty().setValue(p.getInterationText());
+		this.description.textProperty().bind(p.getInterationTextPorp());
 	
 		gameLauncher();
 		gameLoop();
@@ -89,7 +89,7 @@ public class Controleur implements Initializable {
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.vueMap = new vueMapTerraria(env, tileP);
 		this.vueperso =  new VuePerso(pane, this.env.getPerso());
-		this.vueInter = new vueInteraction(description, env);
+		//this.vueInter = new vueInteraction(description, env);
 		//this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
 		this.env.getListeActeur().addListener(new ObservateurActeur(pane));
 		this.description.setTranslateX(148);
