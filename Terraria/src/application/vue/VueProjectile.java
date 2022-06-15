@@ -1,5 +1,6 @@
 package application.vue;
 
+import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,24 +11,20 @@ public class VueProjectile {
 
 	private Projectile projectile;
 	private Image img_projectile;
-	private ImageView imgVPro;
+	private ImageView img;
 	private Pane pane;
 	
 	public VueProjectile(Projectile projectile, Pane p) {
 		this.projectile=projectile;
 		this.pane=p;
 		img_projectile= new Image ("ressources/bouledefeu.png", 16, 16, true, true);
-		imgVPro= new ImageView(img_projectile);
-		Affichage();
+		img= new ImageView(img_projectile);
+		this.pane.getChildren().add(img);
 		bindPosition();
 	}
 	
-	public void Affichage () {
-		this.pane.getChildren().add(imgVPro);
-	}
-	
 	public void bindPosition() {
-		this.imgVPro.xProperty().bind(projectile.getXProperty().add(0));
-		this.imgVPro.yProperty().bind(projectile.getYProperty());
+		img.layoutXProperty().bind(projectile.getXProperty().multiply(-1).add((Constante.view/2)*16));
+		img.layoutYProperty().bind(projectile.getXProperty().multiply(-1).add((Constante.view/2)*16));
 	}
 }

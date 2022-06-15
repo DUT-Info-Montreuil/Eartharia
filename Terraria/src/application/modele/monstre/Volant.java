@@ -3,9 +3,9 @@ package application.modele.monstre;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
 
-public class volant  extends Monstre{
+public class Volant  extends Monstre{
 
-	public volant(Environnement env, int x, int y) {
+	public Volant(Environnement env, int x, int y) {
 		super(env, x, y, 1, 20, 10, 16, 16);
 		// TODO Auto-generated constructor stub
 	}

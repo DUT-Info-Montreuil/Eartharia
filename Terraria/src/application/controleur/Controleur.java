@@ -39,26 +39,25 @@ import application.modele.item.Hache;
 import application.modele.item.Pioche;
 import application.modele.item.Projectile;
 import application.modele.monstre.Sol;
-import application.modele.monstre.volant;
+import application.modele.monstre.Volant;
+import application.vue.VueActeur;
 import application.vue.VueInventaire;
-import application.vue.VuePerso;
 import application.vue.VueProjectile;
-import application.vue.vueActeur;
-import application.vue.vueCraft;
-import application.vue.vueHp;
+import application.vue.VueCraft;
+import application.vue.VueHp;
 import application.vue.VueMapTerraria;
 
 public class Controleur implements Initializable {
 
 	private Environnement env;
 	private VueMapTerraria vueMap;
-	private VuePerso vueperso;
-	private vueHp vueHp;
+	private VueActeur vueperso;
+	private VueHp vueHp;
 	private Timeline tour;
 	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
-	private vueActeur vue_acteur;
-	private vueCraft vueCraft;
+	private VueActeur vue_acteur;
+	private VueCraft vueCraft;
 
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -96,24 +95,11 @@ public class Controleur implements Initializable {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.vueMap = new VueMapTerraria(env, tileP);
-		this.vueperso =  new VuePerso(pane, this.env.getPerso());
+		this.vueperso =  new VueActeur(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
-		this.vueCraft = new vueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
+		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.description.setVisible(false);
-		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
-		//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-		//      this.env.getActeurs().addListener(new ObservateurMonstre(pane));
-		//      for(Acteur a : this.env.getListeActeur()) {
-		//                      if(a instanceof Sol) {
-		//                              new vueActeur((Sol) a, pane);
-		//                      }
-		//                      if(a instanceof volant) {
-		//                               new vueActeur((volant) a, pane);
-		//                      }//dans la vue et le modèle
-		//                      if(a instanceof Boss) {
-		//                               new vueActeur((Boss) a, pane);
-		//                      }
-		//              }
+		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
 	}
 
 	@FXML
@@ -225,9 +211,6 @@ public class Controleur implements Initializable {
 				(ev -> {
 					if (!pause()) {
 						this.env.unTour();
-	
-						this.tileP.setLayoutX(-env.getPerso().getX()+(Constante.view/2)*16);
-						this.tileP.setLayoutY(-env.getPerso().getY()+(Constante.view/2)*16);
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);

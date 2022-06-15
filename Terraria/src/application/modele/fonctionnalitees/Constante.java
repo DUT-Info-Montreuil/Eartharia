@@ -8,7 +8,6 @@ import application.modele.monstre.*;
 
 public class Constante {
 	public static ArrayList<Integer> BlocTransparent = BlocTransparent();
-
 	public static ArrayList<Integer> BlocPierre = BlocPierre();
 	public static ArrayList<Integer> BlocBois = BlocBois();
 	
@@ -44,6 +43,7 @@ public class Constante {
 
 		return listBloc;
 	}
+	
 	public static int view=40;
 	
 	public static String chemin(Acteur a) {
@@ -51,10 +51,10 @@ public class Constante {
 			return "perso";
 		else if(a instanceof Sol)
 			return "sol";
-		else if(a instanceof volant)
+		else if(a instanceof Volant)
 			return "ghost";
 		else if(a instanceof BossVolant)
-			return "boss";
+			return "bossVolant";
 		else if(a instanceof BossSol)
 			return "boss";
 		return"";

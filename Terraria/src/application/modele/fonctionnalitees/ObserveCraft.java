@@ -6,7 +6,7 @@ import application.modele.Item;
 import application.modele.item.Arme;
 import application.modele.item.BlocItem;
 import application.modele.item.Outils;
-import application.vue.vueCraft;
+import application.vue.VueCraft;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.TilePane;
@@ -14,9 +14,9 @@ import javafx.scene.layout.TilePane;
 public class ObserveCraft implements ListChangeListener<Item >{
 
 	private TilePane paneCraft;
-	private vueCraft vueCraft;
+	private VueCraft vueCraft;
 
-	public ObserveCraft(TilePane tileInventaire,vueCraft vueInventaire) {
+	public ObserveCraft(TilePane tileInventaire,VueCraft vueInventaire) {
 		this.paneCraft = tileInventaire;
 		this.vueCraft = vueInventaire;
 	}

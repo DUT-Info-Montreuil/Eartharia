@@ -18,7 +18,7 @@ import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.Sol;
-import application.modele.monstre.volant;
+import application.modele.monstre.Volant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

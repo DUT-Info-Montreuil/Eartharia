@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
-public class vueHp {
+public class VueHp {
 
 	private Perso perso;
 	private Image imgCoeurPlein;
@@ -15,7 +15,7 @@ public class vueHp {
 	private ImageView imgVH;
 	private TilePane tPane;
 
-	public vueHp(Perso perso, TilePane tPane) {
+	public VueHp(Perso perso, TilePane tPane) {
 		this.perso=perso;
 		this.tPane=tPane;
 		imgCoeurPlein= new Image("ressources/coeur.png", 16, 16, true, true);

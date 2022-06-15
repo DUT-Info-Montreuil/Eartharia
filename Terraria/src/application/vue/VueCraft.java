@@ -23,14 +23,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
-public class vueCraft {
+public class VueCraft {
 	private ObservableList<Item> craft;
 	private TilePane craftPane;
 	private Image img_item;
 	private Image img_bloc;
 	private boolean visibility;
 
-	public vueCraft(TilePane craftPane,ObservableList<Item> craft){
+	public VueCraft(TilePane craftPane,ObservableList<Item> craft){
 		this.craftPane=craftPane;
 		this.craft=craft;
 		paneSet();
