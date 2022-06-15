@@ -120,12 +120,6 @@ public class Environnement {
 			projectiles.get(i).lancer();
 		}
 	}
-	//	public boolean verifAutourProjectile(Projectile p) {
-	//		if (!this.getBloc((int)p.getX(), p.getY()).estSolide()) {
-	//			return true;
-	//		}
-	//		return false;
-	//	}
 
 	public ObservableList<Projectile> getListProjectiles() {
 		return this.projectiles;
@@ -205,13 +199,5 @@ public class Environnement {
 		return null;
 
 	}
-	public ArrayList<Acteur> ennemiPresent() {
-		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();
-		for (int i=0; i<listActeur.size(); i++) {
-			if ((listActeur.get(i).getX()<=this.perso.getX()+1 || listActeur.get(i).getX()>=this.perso.getX()-1 || listActeur.get(i).getY()>=this.perso.getY()-1 || (listActeur.get(i).getX()>=this.perso.getX()-1 && listActeur.get(i).getY()>=this.perso.getY()-1) || (listActeur.get(i).getX()<=this.perso.getX()+1 && listActeur.get(i).getY()>=this.perso.getY()-1)) && listActeur.get(i) instanceof Pnj ) {
-				ennemis.add(listActeur.get(i));
-			}
-		}
-		return ennemis; 
-	}
+
 }
