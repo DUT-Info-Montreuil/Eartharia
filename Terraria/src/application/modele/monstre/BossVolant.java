@@ -3,7 +3,6 @@ package application.modele.monstre;
 import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.acteur.Monstre;
-import application.modele.acteur.Perso;
 import application.modele.item.Projectile;
 
 public class BossVolant extends Volant{
@@ -12,16 +11,26 @@ public class BossVolant extends Volant{
 	}
 	@Override
 	public void methodeAttaque(Acteur cible) {
-		boolean gardeDistance = Math.abs(this.caseX()-cible.caseX())==15;
 		if(!(cible instanceof Monstre)) {
-			if (gardeDistance) {
-				boolean direction = Math.signum(this.caseX()-cible.caseX())<0;
-				this.setDeplacement(2, !direction);
-				this.setDeplacement(3, direction);
-				direction = Math.signum(this.caseY()-cible.caseY())<0;
-				this.setDeplacement(0, !direction);
-				this.setDeplacement(1, direction);
+			int proximiteX = (int) Math.abs(caseX()-cible.caseX());
+			int proximiteY = (int) Math.abs(caseY()-cible.caseY());
+			System.out.println(proximiteX);
+			System.out.println(proximiteY);
+			if(proximiteX>5 && proximiteY>5) {
+				super.methodeAttaque(cible);
 			}
+			else if(proximiteX<5 && proximiteY<5) {
+				this.setDeplacement(2, Math.signum(this.caseX()-cible.caseX())<0);
+				this.setDeplacement(3, !(Math.signum(this.caseX()-cible.caseX())<0));
+				this.setDeplacement(0, Math.signum(this.caseY()-cible.caseY())<0);
+				this.setDeplacement(1, !(Math.signum(this.caseY()-cible.caseY())<0));
+			}else {
+				this.setDeplacement(0, false);
+				this.setDeplacement(1, false);
+				this.setDeplacement(2, false);
+				this.setDeplacement(3, false);
+			}
+
 		}
 		else {
 			this.setDeplacement(0, false);

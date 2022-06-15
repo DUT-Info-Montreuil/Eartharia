@@ -15,7 +15,7 @@ import application.modele.fonctionnalitees.Tour;
 
 public class Sol extends Monstre {
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y,20 , 3, 10, 16, 16,8);
+		super(env, x, y,20 , 1, 10, 16, 16,8);
 	}
 	protected Sol(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox,int vision) {
 		super(env, x, y,20 , vitesse, atq, xBox, yBox,vision);

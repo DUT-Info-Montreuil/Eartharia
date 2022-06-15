@@ -30,25 +30,27 @@ public abstract class Acteur {
 	private boolean peutTomber;
 
 	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox, int atq) {
+		this.id =  "A" + compteur;
+		this.env = env;
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
-		this.env = env;
-		this.saut = false;
 		this.boxPlayer = new Box(xBox, yBox,this);
+		
+		this.saut = false;
 		this.vitesse = vitesse;
+		this.attaque = atq;
+		this.peutAttaquer=true;
+		this.peutTomber=true;
+
 		this.hpMax =new SimpleIntegerProperty(hpMax) ;
 		this.hp =new SimpleIntegerProperty(hpMax) ;
-		this.attaque = atq;
 		this.deplacement = new BooleanProperty[4];
 		this.deplacement[0] = new SimpleBooleanProperty(false);
 		this.deplacement[1] = new SimpleBooleanProperty(false);
 		this.deplacement[2] = new SimpleBooleanProperty(false);
 		this.deplacement[3] = new SimpleBooleanProperty(false);
-		this.id =  "A" + compteur;
-		this.deplacement[1] = new SimpleBooleanProperty(false);
+		
 		Acteur.compteur ++; 
-		this.peutAttaquer=true;
-		peutTomber=true;
 	}
 
 	public boolean isPeutTomber() {
@@ -76,10 +78,10 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-		if(surDuSol())
+		if(surDuSol() && peutTomber)
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
-			deplacement(0, -8);
+			deplacement(0, -getVitesse());
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
@@ -217,11 +219,11 @@ public abstract class Acteur {
 			if(deplacement[3].get())
 				droite();
 		}catch (LimiteMapException e) {
-			System.out.println("Limite map !");
+//			System.out.println("Limite map !");
 		}catch (CollisionException e) {
-			System.out.println("Collision Bloc map !");
+//			System.out.println("Collision Bloc map !");
 		}catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	public void dommage(int damage) {

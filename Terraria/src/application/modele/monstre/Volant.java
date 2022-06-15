@@ -12,32 +12,22 @@ import application.modele.acteur.Perso;
 public class Volant  extends Monstre{
 
 	public Volant(Environnement env, int x, int y) {
-		super(env, x, y,20 , 5, 8, 16, 16,9);
+		super(env, x, y,20 , 3, 8, 16, 16,4);
 		super.setPeutTomber(false);
+		super.setSaut(true);
 	}
 	protected Volant(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox,int vision) {
 		super(env, x, y,20 , vitesse, atq, xBox, yBox,vision);
 		super.setPeutTomber(false);
+		super.setSaut(true);
 	}
 	@Override
 	public void methodeAttaque(Acteur cible) {
 		if(!(cible instanceof Monstre)) {
-			if(Math.signum(this.caseX()-cible.caseX())<0) {
-				this.setDeplacement(2, false);
-				this.setDeplacement(3, true);
-			}
-			else {
-				this.setDeplacement(3, false);
-				this.setDeplacement(2, true);
-			}
-			if(Math.signum(this.caseY()-cible.caseY())<0) {
-				this.setDeplacement(0, false);
-				this.setDeplacement(1, true);
-			}
-			else {
-				this.setDeplacement(1, false);
-				this.setDeplacement(0, true);
-			}
+				this.setDeplacement(2, !(Math.signum(this.caseX()-cible.caseX())<0));
+				this.setDeplacement(3, Math.signum(this.caseX()-cible.caseX())<0);
+				this.setDeplacement(0, !(Math.signum(this.caseY()-cible.caseY())<0));
+				this.setDeplacement(1, Math.signum(this.caseY()-cible.caseY())<0);
 		}
 		else {
 			this.setDeplacement(0, false);

@@ -17,6 +17,7 @@ import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
+import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
 import application.modele.monstre.Volant;
 import javafx.collections.FXCollections;
@@ -38,11 +39,12 @@ public class Environnement {
 		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
 		listActeur= FXCollections.observableArrayList(
-				//			new Sol(this, 3, 10)
-				//				new Sol(this, 10, 10),
-				//				new Sol(this, 15, 4),
-								new Volant(this, 3,6)
+				//new Sol(this, 3, 10)
+				//new Sol(this, 10, 10),
+				//new Sol(this, 15, 4),
+				//new Volant(this, 3,6)
 				//new BossSol(this, 16, 2)
+				new BossVolant(this, 16, 2)
 				);
 	}
 
@@ -99,8 +101,8 @@ public class Environnement {
 				this.listActeur.remove(act);
 			}
 			else {
-				if(!(act instanceof Volant)&& !act.surDuSol() && perso.peutTomber())
-					try {act.tombe(gravite);} catch (Exception e) {}
+				if(act.peutTomber() && !act.surDuSol())
+					try {System.out.println(act.peutTomber() + "tombe");;act.tombe(gravite);} catch (Exception e) {}
 				act.agir();
 			}
 		}
