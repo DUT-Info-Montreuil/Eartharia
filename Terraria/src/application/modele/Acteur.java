@@ -2,6 +2,7 @@ package application.modele;
 
 import java.util.Timer;
 
+import application.modele.Exception.CollisionActeurException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
@@ -22,23 +23,42 @@ public abstract class Acteur {
 	private int vitesse;
 	private Box boxPlayer;
 	private BooleanProperty deplacement[];
-	protected int attaque;
+	private int attaque;
+	private String id;
+	public static int compteur = 0; 
+	private boolean peutAttaquer; //cooldown pour pas que le monstre puisse attaquer beaucoup de fois a suite
+	private boolean peutTomber;
 
 	public Acteur(Environnement env, int x, int y, int hpMax,int vitesse, int xBox, int yBox, int atq) {
+		this.id =  "A" + compteur;
+		this.env = env;
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
-		this.env = env;
-		this.saut = false;
 		this.boxPlayer = new Box(xBox, yBox,this);
+		
+		this.saut = false;
 		this.vitesse = vitesse;
+		this.attaque = atq;
+		this.peutAttaquer=true;
+		this.peutTomber=true;
+
 		this.hpMax =new SimpleIntegerProperty(hpMax) ;
 		this.hp =new SimpleIntegerProperty(hpMax) ;
-		this.attaque = atq;
 		this.deplacement = new BooleanProperty[4];
 		this.deplacement[0] = new SimpleBooleanProperty(false);
 		this.deplacement[1] = new SimpleBooleanProperty(false);
 		this.deplacement[2] = new SimpleBooleanProperty(false);
 		this.deplacement[3] = new SimpleBooleanProperty(false);
+		
+		Acteur.compteur ++; 
+	}
+
+	public boolean isPeutTomber() {
+		return peutTomber;
+	}
+
+	public void setPeutTomber(boolean peutTomber) {
+		this.peutTomber = peutTomber;
 	}
 
 	public BooleanProperty[] getDeplacement() {
@@ -58,10 +78,10 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-		if(peutTomber())
+		if(surDuSol() && peutTomber)
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut())
-			deplacement(0, -8);
+			deplacement(0, -getVitesse());
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
@@ -74,7 +94,7 @@ public abstract class Acteur {
 	public void gauche() throws Exception{
 		deplacement(-getVitesse(), 0);
 	}
-	public boolean peutTomber() throws LimiteMapException {
+	public boolean surDuSol(){
 		try {
 			for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
 				int colonne=cell[0];
@@ -92,9 +112,7 @@ public abstract class Acteur {
 					return false;
 				}
 			}
-		}catch(Exception e) {
-			throw new LimiteMapException();
-		}
+		}catch(Exception e) {}
 		return false;
 	}
 
@@ -167,7 +185,9 @@ public abstract class Acteur {
 	public int caseY() {
 		return this.y.get()/16;
 	}
-
+	public void setAttaque(boolean attaque) {
+		this.setPeutAttaquer(attaque);
+	}
 	private void limiteDeMap(int x, int y) throws LimiteMapException{
 		if((getX()+x)<0)
 			throw new LimiteMapException();
@@ -182,14 +202,20 @@ public abstract class Acteur {
 			ligne=c[1];
 			if(colonne<0 || ligne<0 || colonne>=getEnv().getColonne() || ligne>=getEnv().getLigne())
 				throw new LimiteMapException();
-			if(getEnv().boxCollisionBloc(ligne,colonne)) {
-				System.out.println(getEnv().getIdTuile(ligne,colonne));
+			if(getEnv().boxCollisionBloc(ligne,colonne))
 				throw new CollisionException();
-			}
+//			if(getEnv().boxCollisionActeur(ligne,colonne))
+//				throw new CollisionActeurException(); 
 		}
 		setX(getX()+x);
 		setY(getY()+y);
 	}
+	public int getDegatAttaque() {
+		return attaque;
+	}
+	public boolean estMort () {
+		return this.hp.get() <= 0;
+	} 
 	public void agir() {
 		try {
 			if(deplacement[0].get())
@@ -201,11 +227,27 @@ public abstract class Acteur {
 			if(deplacement[3].get())
 				droite();
 		}catch (LimiteMapException e) {
-			System.out.println("Limite map !");
+//			System.out.println("Limite map !");
 		}catch (CollisionException e) {
-			System.out.println("Collision Bloc map !");
+//			System.out.println("Collision Bloc map !");
 		}catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
+	}
+	public void dommage(int damage) {
+		this.setHp(this.getHp() - damage);
+	}
+    public String getId() {
+    	return id;
+    }
+    public boolean peutTomber() {
+		return peutTomber;
+	}
+	public boolean peutAttaquer() {
+		return peutAttaquer;
+	}
+
+	public void setPeutAttaquer(boolean peutAttaquer) {
+		this.peutAttaquer = peutAttaquer;
 	}
 }

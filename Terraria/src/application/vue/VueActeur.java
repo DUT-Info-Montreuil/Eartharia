@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 
 public class VueActeur{
 
-	private Acteur perso;
+	private Acteur acteur;
 	private Image img_perso;
 	private ImageView img;
 	private Pane pane;
@@ -21,26 +21,30 @@ public class VueActeur{
 	public VueActeur (Pane pane, Acteur perso) {
 		this.pane=pane;
 		this.chemin = Constante.chemin(perso);
-		this.img_perso = new Image("ressources/"+chemin+"/idle.png");
-		this.img = new ImageView(img_perso);
-		this.perso = perso;
+		this.acteur = perso;
 		animation();
+		this.img = new ImageView(img_perso);
 		this.pane.getChildren().add(img);
 		difference();
+		hitBox();
 	}
 	private void difference() {
-		if (perso instanceof Perso) {
+		if (acteur instanceof Perso) {
 			img.setLayoutX((Constante.view/2)*16);
 			img.setLayoutY((Constante.view/2)*16);
 		}
 		else {
-			img.layoutXProperty().bind(perso.getxProperty().multiply(-1).add((Constante.view/2)*16));
-			img.layoutYProperty().bind(perso.getyProperty().multiply(-1).add((Constante.view/2)*16));
+			img.layoutXProperty().bind(acteur.getxProperty().add(-(Constante.view)*16));
+			img.layoutYProperty().bind(acteur.getyProperty().add(-(Constante.view)*16));
 		}
-
 	}
 	public void animation() {
-		this.perso.getDeplacement(0).addListener((obs, old, nouv)-> {//haut
+		try {
+			this.img_perso = new Image("ressources/"+chemin+"/idle.png");
+		}catch (Exception e) {
+			this.img_perso = new Image("ressources/"+chemin+"/idle.gif");
+		}
+		this.acteur.getDeplacement(0).addListener((obs, old, nouv)-> {//haut
 			if(nouv) {
 				double direction= img.getScaleX();
 				try {
@@ -53,7 +57,7 @@ public class VueActeur{
 			idle();
 		});
 
-		this.perso.getDeplacement(2).addListener((obs, old, nouv)-> {
+		this.acteur.getDeplacement(2).addListener((obs, old, nouv)-> {
 			if(nouv) {
 				try {
 					img.setImage(new Image("ressources/"+chemin+"/walk.gif"));
@@ -64,7 +68,7 @@ public class VueActeur{
 			}
 			idle();
 		});
-		this.perso.getDeplacement(3).addListener((obs, old, nouv)-> {
+		this.acteur.getDeplacement(3).addListener((obs, old, nouv)-> {
 			if(nouv) {
 				try {
 					img.setImage(new Image("ressources/"+chemin+"/walk.gif"));
@@ -77,7 +81,7 @@ public class VueActeur{
 		});
 	}
 	public void idle() {
-		if (!(perso.getDeplacement()[0].get() ||perso.getDeplacement()[1].get() ||perso.getDeplacement()[2].get() ||perso.getDeplacement()[3].get()) ) {
+		if (!(acteur.getDeplacement()[0].get() ||acteur.getDeplacement()[1].get() ||acteur.getDeplacement()[2].get() ||acteur.getDeplacement()[3].get()) ) {
 			double a= img.getScaleX();
 			try {
 				img.setImage(new Image("ressources/"+chemin+"/idle.png"));
@@ -88,11 +92,12 @@ public class VueActeur{
 		}
 	}
 	public void hitBox() {
-		Rectangle r = new Rectangle(perso.getBoxPlayer().getX(), perso.getBoxPlayer().getY());
+		Rectangle r = new Rectangle(acteur.getBoxPlayer().getX(), acteur.getBoxPlayer().getY());
 		r.setFill(Color.RED);
-		r.setLayoutX((Constante.view/2)*16);
-		r.setLayoutY((Constante.view/2)*16);
+		r.translateXProperty().bind(acteur.getxProperty().add(acteur.getEnv().getPerso().getX()));
+		r.translateYProperty().bind(acteur.getyProperty().add(acteur.getEnv().getPerso().getY()));
 		this.pane.getChildren().add(r);
 	}
 
 }
+  

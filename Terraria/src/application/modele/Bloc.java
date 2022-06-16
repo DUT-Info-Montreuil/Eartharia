@@ -11,7 +11,7 @@ public class Bloc {
 	public Bloc (int idTuile) {
 		this.id=count;
 		this.idTuile = idTuile;
-		this.collision = Constante.estUnBlocTransparent(idTuile);
+		this.collision = Constante.estUnBlocSolide(idTuile);
 		count++;
 	}
 	public boolean estSolide() {

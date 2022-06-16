@@ -1,50 +1,60 @@
 package application.modele.monstre;
 
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Timer;
+
+import application.modele.Acteur;
 import application.modele.Environnement;
+import application.modele.Exception.CollisionException;
+import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Monstre;
+import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
+import application.modele.fonctionnalitees.Tour;
 
 public class Sol extends Monstre {
-
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y, 1, 20, 10, 16, 16);
-		// TODO Auto-generated constructor stub
+		super(env, x, y,20 , 1, 10, 16, 16,8);
 	}
-
-//	public void mouvementDroite() {
-//		this.x.set(getX() + 8);
-//	}
-//
-//	public void mouvementGauche() {
-//		this.x.set(getX() - 8);
-//	}
-//
-//	public void mouvementHaut() {
-//		this.y.set(getY() - 8);
-//	}
-//
-//	public void mouvementBas() {
-//		this.y.set(getY() + 8);
-//	}
-
+	protected Sol(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox,int vision) {
+		super(env, x, y,20 , vitesse, atq, xBox, yBox,vision);
+	}
+	public void methodeAttaque(Acteur cible) {
+		if(!(cible instanceof Monstre)) {
+			boolean direction = Math.signum(this.caseX()-cible.caseX())<0;
+			this.setDeplacement(2, !direction);
+			this.setDeplacement(3, direction);
+		}
+		else {
+			this.setDeplacement(2, false);
+			this.setDeplacement(3, false);
+		}
+	}
+	public void attaque(Acteur cible) {
+		cible.dommage(getDegatAttaque()/2);
+		for (Acteur acteur : getEnv().aProximiter(this, 1)) {
+			if(!(acteur instanceof Monstre)) {
+				acteur.dommage(getDegatAttaque()/2);
+			}
+		}
+	}
 	@Override
-	public void agir() {//se deplace et attaquer 
-		try {
-			if(this.getEnv().getTemp() % 4 == 0)
-			super.tombe(16);
-			
-		} catch (Exception e) {
-
-		}
-		try {
-			if (this.getEnv().getTemp() % 20 == 0) {
-				super.droite();
+	public void mouvement() {
+		if(new Random().nextInt(100)<10) {
+			int trajectoire = (int) super.choixDeplacement();
+			if (trajectoire == 0) {
+				this.setDeplacement(2, false);
+				this.setDeplacement(3, false);
 			}
-			if (this.getEnv().getTemp() % 20 == 1) {
-				this.gauche();
+			else if (trajectoire == 1) {
+				this.setDeplacement(2, false);
+				this.setDeplacement(3, true);
 			}
-		} catch (Exception e) {
-			
+			else {
+				this.setDeplacement(3, false);
+				this.setDeplacement(2, true);
+			}
 		}
 	}
-
 }
