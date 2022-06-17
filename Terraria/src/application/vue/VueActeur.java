@@ -17,6 +17,7 @@ public class VueActeur{
 	private ImageView img;
 	private Pane pane;
 	private String chemin;
+	private pvBarMonstre pvBar;
 
 	public VueActeur (Pane pane, Acteur perso) {
 		this.pane=pane;
@@ -24,6 +25,7 @@ public class VueActeur{
 		this.acteur = perso;
 		visuel();
 		img.setId(perso.getId());
+		this.pvBar= new pvBarMonstre(perso, pane);
 		this.pane.getChildren().add(img);
 		difference();
 		//hitBox();

@@ -34,10 +34,15 @@ public class ObservateurActeur  implements ListChangeListener <Acteur>{
 	}
 	private void suppresion(List<? extends Acteur> getRemoved) {
 		for (Acteur acteur : getRemoved) {
+			
 			Node n = this.pane.lookup("#"+acteur.getId());
+			Node nPvBar= this.pane.lookup("#" +acteur.getId() +"PB");
 			System.out.println(n);
-			if(n!=null)
+			if(n!=null) {
 				this.pane.getChildren().remove(n);
+				this.pane.getChildren().remove(nPvBar);
+
+			}
 		}
 	}
 

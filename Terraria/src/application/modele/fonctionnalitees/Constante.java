@@ -1,14 +1,28 @@
 package application.modele.fonctionnalitees;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
+import application.modele.item.BatonMagique;
+import application.modele.item.Epee;
+import application.modele.item.Hache;
+import application.modele.item.Pioche;
 import application.modele.item.Projectile;
+import application.modele.item.arc;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
 import application.modele.monstre.Volant;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Constante {
 	private static ArrayList<Integer> BlocPierre = BlocPierre();
@@ -20,6 +34,7 @@ public class Constante {
 		ArrayList<Integer> listBloc = new ArrayList<>();
 		//Bloc transparent avec image comme bloc '0'
 		listBloc.add(0);
+		listBloc.add(17);
 		listBloc.add(89);
 		listBloc.add(90);
 		for (int i = 276; i <= 289; i++)
@@ -28,6 +43,31 @@ public class Constante {
 			listBloc.add(i);
 		//Bloc transparent avec image comme bloc '0'
 		listBloc.add(34);//Bloc eau
+		for (int i=239; i<=254; i++)
+			listBloc.add(i);
+		
+		listBloc.add(110);
+		listBloc.add(127);
+		listBloc.add(111);
+		listBloc.add(128);
+		listBloc.add(104);
+		listBloc.add(105);
+		listBloc.add(150);
+		
+		for (int i=174; i<=178; i++)
+			listBloc.add(i);
+		
+		for (int i=182; i<=186; i++)
+			listBloc.add(i);
+		
+		for (int i=165; i<=169; i++)
+			listBloc.add(i);
+
+		for (int i=256; i<=271; i++)
+			listBloc.add(i);
+		
+		for (int i : BlocBois())
+			listBloc.add(i);
 
 		return listBloc;
 	}
@@ -41,10 +81,12 @@ public class Constante {
 	}
 	private static ArrayList<Integer> BlocBois(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(208); //Bois chene
-		listBloc.add(209); //Bois bouleau
-		listBloc.add(210); //Bois Sapin
-		listBloc.add(211); //Bois Palmier
+		listBloc.add(209); //Bois chene
+		listBloc.add(210); //Bois bouleau
+		listBloc.add(211); //Bois Sapin
+		listBloc.add(212); //Bois Palmier
+		for (int i=191; i<=194; i++)
+			listBloc.add(i);
 
 		return listBloc;
 	}
@@ -85,6 +127,50 @@ public class Constante {
 		else if(a instanceof Projectile)
 			return ((Projectile)a).getType();
 		return"";
-	} 
+	}
+	public static Background backgroundJeu(Perso p) {
+		if (p.getX()<96*16) 
+			return new Background(new BackgroundImage(new Image("ressources/caverneOcean.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16)
+			return new Background(new BackgroundImage(new Image("ressources/lave.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+		else if (p.getX()>=296*16 && p.getY()<26*16)
+			return new Background(new BackgroundImage(new Image("ressources/desert.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+		else if (p.getX()>=296*16 && p.getY()>=26*16)
+			return new Background(new BackgroundImage(new Image("ressources/lave.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+	return new Background(new BackgroundImage(new Image("ressources/foret.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+
+}
+public static String cheminSons(Perso p) {
+	if (p.getEquipe() instanceof Epee)
+		return "src/ressources/bruitEpee.mp3";
+	if (p.getEquipe() instanceof BatonMagique)
+		return "src/ressources/bruitBDF.mp3";
+	if (p.getEquipe() instanceof arc)
+		return "src/ressources/bruitFleche.mp3";
+	if (p.getEquipe() instanceof Pioche)
+		return "src/ressources/bruitPioche.mp3";
+	if (p.getEquipe() instanceof Hache)
+		return "src/ressources/bruitHache.mp3";
+return null;
+}
+public static MediaPlayer setMusics(Perso p) {
+		if (p.getX()<96) 
+			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicOcean.mp3").toUri().toString()));
+		else if (p.getX()>=96 && p.getX()<296 && p.getY()>=39)
+			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+		else if (p.getX()>=296 && p.getY()<26)
+			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicDesert.mp3").toUri().toString()));
+		else if (p.getX()>=296 && p.getY()>=26)
+			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+
+	return new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.wav").toUri().toString()));
+}
+public static int setTailleBarPV(Acteur a) {
+	if (a instanceof Sol)
+		return 32;
+	if(a instanceof Volant)
+		return 20;
+return 0;	
+}
 
 }

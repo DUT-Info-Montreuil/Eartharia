@@ -5,7 +5,9 @@ import application.modele.Item;
 import application.modele.Acteur;
 import application.modele.Environnement;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
@@ -25,11 +27,13 @@ public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
 	private Item equipe;
 	private CraftMenu craft;
+	private IntegerProperty oxygene;
 
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,32,10);
 		this.inventaire= FXCollections.observableArrayList();
 		this.craft=new CraftMenu(inventaire,this);
+		this.oxygene= new SimpleIntegerProperty(30);
 	}
 	public void attaque () {
 		for(Acteur m : getEnv().getListeActeur()) {
@@ -112,6 +116,12 @@ public class Perso extends Acteur{
 		return equipe;
 	}
 
+	public IntegerProperty getOxyProperty() {
+		return this.oxygene;
+	}
+	public int getOxygene() {
+		return this.oxygene.getValue();
+	}
 	public void prendEnMain(Item item) {
 		this.equipe = item;		
 	}
@@ -134,4 +144,5 @@ public class Perso extends Acteur{
 			}
 		}
 	}
+
 }

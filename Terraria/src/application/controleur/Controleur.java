@@ -55,7 +55,8 @@ public class Controleur implements Initializable {
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueCraft vueCraft;
-
+	private application.vue.vueOxygene vueOxygene;
+	
 	@FXML
 	private GridPane tPaneInvRapide;
 	@FXML
@@ -72,6 +73,8 @@ public class Controleur implements Initializable {
 	private Label description;
 	@FXML
 	private TilePane tPaneCraft;
+	@FXML
+	private TilePane tPOxy;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
@@ -83,6 +86,7 @@ public class Controleur implements Initializable {
 		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
 
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
+		this.env.getPerso().getOxyProperty().addListener((obs, old, nouv)-> vueOxygene.refreshOxy());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
@@ -102,6 +106,7 @@ public class Controleur implements Initializable {
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
+		this.vueOxygene= new application.vue.vueOxygene(this.env.getPerso(), tPOxy);
 		
 		this.description.setVisible(false);
 	}
@@ -225,6 +230,7 @@ public class Controleur implements Initializable {
 				(ev -> {
 					if (!pause()) {
 						this.env.unTour();
+						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
