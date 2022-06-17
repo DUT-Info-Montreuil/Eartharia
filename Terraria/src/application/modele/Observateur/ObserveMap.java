@@ -1,4 +1,4 @@
-package application.modele.fonctionnalitees;
+package application.modele.Observateur;
 
 import java.util.List;
 

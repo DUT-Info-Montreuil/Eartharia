@@ -13,21 +13,20 @@ import javafx.scene.shape.Rectangle;
 public class VueActeur{
 
 	private Acteur acteur;
-	private Image img_perso;
+	private Image img_acteur;
 	private ImageView img;
 	private Pane pane;
 	private String chemin;
-
 
 	public VueActeur (Pane pane, Acteur perso) {
 		this.pane=pane;
 		this.chemin = Constante.chemin(perso);
 		this.acteur = perso;
 		visuel();
-		this.img = new ImageView(img_perso);
+		img.setId(perso.getId());
 		this.pane.getChildren().add(img);
 		difference();
-		hitBox();
+		//hitBox();
 	}
 	private void difference() {
 		if (acteur instanceof Perso) {
@@ -35,8 +34,8 @@ public class VueActeur{
 			img.setLayoutY((Constante.view/2)*16);
 		}
 		else {
-			img.translateXProperty().bind(acteur.getxProperty());
-			img.translateYProperty().bind(acteur.getyProperty());
+			img.layoutXProperty().bind(acteur.getxProperty());
+			img.layoutYProperty().bind(acteur.getyProperty());
 		}
 	}
 	private void visuel() {
@@ -45,19 +44,21 @@ public class VueActeur{
 		}else {
 			animationActeur();
 		}
+		this.img = new ImageView(img_acteur);
+
 	}	
 	public void animationProjectile() {
 		try {
-			this.img_perso = new Image("ressources/projectile/"+chemin+".png");
+			this.img_acteur = new Image("ressources/projectile/"+chemin+".png");
 		}catch (Exception e) {
-			this.img_perso = new Image("ressources/projectile/"+chemin+".gif");
+			this.img_acteur = new Image("ressources/projectile/"+chemin+".gif");
 		}
 	}
 	public void animationActeur() {
 		try {
-			this.img_perso = new Image("ressources/"+chemin+"/idle.png");
+			this.img_acteur = new Image("ressources/"+chemin+"/idle.png");
 		}catch (Exception e) {
-			this.img_perso = new Image("ressources/"+chemin+"/idle.gif");
+			this.img_acteur = new Image("ressources/"+chemin+"/idle.gif");
 		}
 		this.acteur.getDeplacement(0).addListener((obs, old, nouv)-> {//haut
 			if(nouv) {

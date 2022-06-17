@@ -5,8 +5,8 @@ import java.util.Timer;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
-import application.modele.fonctionnalitees.CoolDown;
-import application.modele.fonctionnalitees.Saut;
+import application.modele.fonctionnalitees.timer.CoolDown;
+import application.modele.fonctionnalitees.timer.Saut;
 
 public abstract class Monstre extends Acteur{
 	private int vision;

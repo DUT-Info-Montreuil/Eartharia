@@ -178,13 +178,13 @@ public class Environnement {
 	}
 
 	public void addMonster() {
-		listActeur.addAll(
-				//		new Sol(this, 3, 10),
-				//		new Sol(this, 10, 10),
-				//		new Sol(this, 15, 4),
-				//		new Volant(this, 3,6),
-				//		new BossSol(this, 16, 2),
-				new BossVolant(this, 7, 7));
+//		listActeur.addAll(
+//				//		new Sol(this, 3, 10),
+//				//		new Sol(this, 10, 10),
+//				//		new Sol(this, 15, 4),
+//				//		new Volant(this, 3,6),
+//				//		new BossSol(this, 16, 2),
+//				new BossVolant(this, 7, 7));
 	}
 	public void addListProjectiles(Projectile p) {
 		listProjectile.add(p);
@@ -193,7 +193,7 @@ public class Environnement {
 		for (int i = listProjectile.size()-1;i>=0;i--) {
 			Projectile projectile = listProjectile.get(i);
 			if(projectile.estMort()){
-				this.listActeur.remove(projectile);
+				this.listProjectile.remove(projectile);
 			}
 			else {
 				projectile.agir();

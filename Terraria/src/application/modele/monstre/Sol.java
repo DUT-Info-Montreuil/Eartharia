@@ -1,17 +1,10 @@
 package application.modele.monstre;
 
-import java.util.Iterator;
 import java.util.Random;
-import java.util.Timer;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
-import application.modele.Exception.CollisionException;
-import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Monstre;
-import application.modele.acteur.Perso;
-import application.modele.acteur.Pnj;
-import application.modele.fonctionnalitees.Tour;
 
 public class Sol extends Monstre {
 	public Sol(Environnement env, int x, int y) {

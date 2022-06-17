@@ -1,4 +1,4 @@
-package application.modele.fonctionnalitees;
+package application.modele.fonctionnalitees.timer;
 
 import java.util.TimerTask;
 

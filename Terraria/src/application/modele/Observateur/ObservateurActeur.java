@@ -1,4 +1,4 @@
-package application.modele.fonctionnalitees;
+package application.modele.Observateur;
 
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class ObservateurActeur  implements ListChangeListener <Acteur>{
 	private void suppresion(List<? extends Acteur> getRemoved) {
 		for (Acteur acteur : getRemoved) {
 			Node n = this.pane.lookup("#"+acteur.getId());
+			System.out.println(n);
 			if(n!=null)
 				this.pane.getChildren().remove(n);
 		}

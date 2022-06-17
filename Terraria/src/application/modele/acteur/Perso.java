@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
-import application.modele.fonctionnalitees.Saut;
+import application.modele.fonctionnalitees.timer.Saut;
 import application.modele.item.Arme;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
