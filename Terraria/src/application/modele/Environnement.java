@@ -30,15 +30,13 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
-	private int temps = 0;
-	private ObservableList<Projectile> projectiles;
-
+	private ObservableList<Projectile> listProjectile;
 	public Environnement() {
 		initialisation();
 		this.gravite = 2;
-		projectiles = FXCollections.observableArrayList();
 		perso = new Perso(this, 0, 0);
 		listActeur= FXCollections.observableArrayList();
+		listProjectile= FXCollections.observableArrayList();
 	}
 
 	private void initialisation(){
@@ -88,6 +86,7 @@ public class Environnement {
 	public void unTour() {
 		if(!perso.surDuSol() && perso.peutTomber())try {this.perso.tombe(gravite);} catch (Exception e) {}
 		this.perso.agir();
+		agitProjectile();
 		for(int i = this.listActeur.size() -1; i>= 0; i --) {
 			Acteur act = listActeur.get(i);
 			if(act.estMort()){
@@ -99,24 +98,9 @@ public class Environnement {
 				act.agir();
 			}
 		}
-		this.lancerProjectiles();
-	}
-	public int getTemp() {
-		return temps;
 	}
 
-	public void addListProjectiles(Projectile p) {
-		projectiles.add(p);
-	}
-	public void lancerProjectiles() {
-		for (int i=0; i<projectiles.size(); i++) {
-			projectiles.get(i).lancer();
-		}
-	}
 
-	public ObservableList<Projectile> getListProjectiles() {
-		return this.projectiles;
-	}
 	public int getIdTuile(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
 	}
@@ -155,8 +139,8 @@ public class Environnement {
 	public ArrayList<Acteur> aProximiter(Acteur me,int range) {
 		ArrayList<Acteur> listA= new ArrayList<Acteur>();
 		if(me.getId()!=perso.getId() &&
-			(Math.abs(me.caseY()-perso.caseY())<=range)	&&
-			(Math.abs(me.caseX()-perso.caseX())<=range)	) {
+				(Math.abs(me.caseY()-perso.caseY())<=range)	&&
+				(Math.abs(me.caseX()-perso.caseX())<=range)	) {
 			listA.add(perso);
 		}
 		for(Acteur acteur : listActeur){
@@ -195,11 +179,28 @@ public class Environnement {
 
 	public void addMonster() {
 		listActeur.addAll(
-//		new Sol(this, 3, 10),
-//		new Sol(this, 10, 10),
-//		new Sol(this, 15, 4),
-//		new Volant(this, 3,6),
-//		new BossSol(this, 16, 2),
-		new BossVolant(this, 7, 7));
+				//		new Sol(this, 3, 10),
+				//		new Sol(this, 10, 10),
+				//		new Sol(this, 15, 4),
+				//		new Volant(this, 3,6),
+				//		new BossSol(this, 16, 2),
+				new BossVolant(this, 7, 7));
+	}
+	public void addListProjectiles(Projectile p) {
+		listProjectile.add(p);
+	}
+	private void agitProjectile() {
+		for (int i = listProjectile.size()-1;i>=0;i--) {
+			Projectile projectile = listProjectile.get(i);
+			if(projectile.estMort()){
+				this.listActeur.remove(projectile);
+			}
+			else {
+				projectile.agir();
+			}
+		}
+	}
+	public ObservableList<Projectile> getListProjectile() {
+		return listProjectile;
 	}
 }

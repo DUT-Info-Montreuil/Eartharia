@@ -33,7 +33,6 @@ import application.modele.fonctionnalitees.ObservateurActeur;
 import application.modele.fonctionnalitees.ObserveCraft;
 import application.modele.fonctionnalitees.ObserveInventaire;
 import application.modele.fonctionnalitees.ObserveMap;
-import application.modele.fonctionnalitees.ObserveProjectile;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
@@ -43,7 +42,6 @@ import application.modele.item.Projectile;
 import application.vue.VueActeur;
 import application.vue.VueHp;
 import application.vue.VueInventaire;
-import application.vue.VueProjectile;
 import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
 
@@ -54,7 +52,6 @@ public class Controleur implements Initializable {
 	private VueActeur vueperso;
 	private VueHp vueHp;
 	private Timeline tour;
-	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueCraft vueCraft;
@@ -83,15 +80,14 @@ public class Controleur implements Initializable {
 
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
-		ListChangeListener<? super Projectile> observeProjectile = new ObserveProjectile(this.paneActeur, this.env);		
 		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
 
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
-		this.env.getListProjectiles().addListener(observeProjectile);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
 		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur));
+		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur));
 		this.env.addMonster();
 	}
 	private void gameLauncher() {

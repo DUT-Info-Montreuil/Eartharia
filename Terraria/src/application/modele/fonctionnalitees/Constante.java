@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
+import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
@@ -69,6 +70,7 @@ public class Constante {
 	}
 	
 	public static int view=40;
+	
 	public static String chemin(Acteur a) {
 		if(a instanceof Perso)
 			return "perso";
@@ -80,6 +82,8 @@ public class Constante {
 			return "sol";
 		else if(a instanceof Volant)
 			return "ghost";
+		else if(a instanceof Projectile)
+			return ((Projectile)a).getType();
 		return"";
 	} 
 

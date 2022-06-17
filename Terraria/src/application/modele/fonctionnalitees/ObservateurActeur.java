@@ -16,8 +16,8 @@ public class ObservateurActeur  implements ListChangeListener <Acteur>{
 
 	private Pane pane;
 
-	public ObservateurActeur(Pane tileInventaire) {
-		this.pane = tileInventaire;
+	public ObservateurActeur(Pane pane) {
+		this.pane = pane;
 	}
 	@Override
 	public void onChanged(Change<? extends Acteur> c) {
@@ -28,6 +28,7 @@ public class ObservateurActeur  implements ListChangeListener <Acteur>{
 	}
 	private void ajout(List<? extends Acteur> addedSubList) {
 		for (Acteur acteur : addedSubList) {
+			System.out.println("ajout");
 			new VueActeur(pane, acteur);
 		}
 	}

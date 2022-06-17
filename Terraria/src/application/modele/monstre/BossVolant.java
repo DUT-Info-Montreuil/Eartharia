@@ -38,7 +38,7 @@ public class BossVolant extends Volant{
 		}
 	}
 	public void attaque(Acteur cible) {
-		Projectile p = new Projectile(11, cible.getX(), cible.getY(),this);
+		Projectile p = new Projectile("bouleCharger",cible.getX(), cible.getY(),32,32,this,50);
 		getEnv().addListProjectiles(p);
 	}
 }

@@ -3,6 +3,7 @@ package application.vue;
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.item.Projectile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -22,7 +23,7 @@ public class VueActeur{
 		this.pane=pane;
 		this.chemin = Constante.chemin(perso);
 		this.acteur = perso;
-		animation();
+		visuel();
 		this.img = new ImageView(img_perso);
 		this.pane.getChildren().add(img);
 		difference();
@@ -34,11 +35,25 @@ public class VueActeur{
 			img.setLayoutY((Constante.view/2)*16);
 		}
 		else {
-			img.layoutXProperty().bind(acteur.getxProperty().add(-(Constante.view)*16));
-			img.layoutYProperty().bind(acteur.getyProperty().add(-(Constante.view)*16));
+			img.translateXProperty().bind(acteur.getxProperty());
+			img.translateYProperty().bind(acteur.getyProperty());
 		}
 	}
-	public void animation() {
+	private void visuel() {
+		if (acteur instanceof Projectile) {
+			animationProjectile();
+		}else {
+			animationActeur();
+		}
+	}	
+	public void animationProjectile() {
+		try {
+			this.img_perso = new Image("ressources/projectile/"+chemin+".png");
+		}catch (Exception e) {
+			this.img_perso = new Image("ressources/projectile/"+chemin+".gif");
+		}
+	}
+	public void animationActeur() {
 		try {
 			this.img_perso = new Image("ressources/"+chemin+"/idle.png");
 		}catch (Exception e) {
@@ -94,10 +109,8 @@ public class VueActeur{
 	public void hitBox() {
 		Rectangle r = new Rectangle(acteur.getBoxPlayer().getX(), acteur.getBoxPlayer().getY());
 		r.setFill(Color.RED);
-		r.translateXProperty().bind(acteur.getxProperty().add(acteur.getEnv().getPerso().getX()));
-		r.translateYProperty().bind(acteur.getyProperty().add(acteur.getEnv().getPerso().getY()));
+		r.translateXProperty().bind(acteur.getxProperty());
+		r.translateYProperty().bind(acteur.getyProperty());
 		this.pane.getChildren().add(r);
 	}
-
 }
-  
