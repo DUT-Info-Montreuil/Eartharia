@@ -2,19 +2,33 @@ package application.modele.fonctionnalitees;
 
 import java.util.ArrayList;
 
+import application.modele.Acteur;
+import application.modele.acteur.Perso;
+import application.modele.item.Projectile;
+import application.modele.monstre.BossSol;
+import application.modele.monstre.BossVolant;
+import application.modele.monstre.Sol;
+import application.modele.monstre.Volant;
+
 public class Constante {
-	public static ArrayList<Integer> BlocSolide = BlocSolide();
-	public static ArrayList<Integer> BlocPierre = BlocPierre();
-	public static ArrayList<Integer> BlocBois = BlocBois();
-	public static ArrayList<Integer> BlocTerre = BlocTerre();
-	
-	private static ArrayList<Integer> BlocSolide(){
+	private static ArrayList<Integer> BlocPierre = BlocPierre();
+	private static ArrayList<Integer> BlocBois = BlocBois();
+	private static ArrayList<Integer> BlocTerre = BlocTerre();
+	private static ArrayList<Integer> BlocTransparent = BlocTransparent();
+
+	private static ArrayList<Integer> BlocTransparent(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
-		listBloc.add(204);
-		listBloc.add(205);
-		listBloc.add(206);
-		listBloc.add(233);//terre
-		listBloc.add(1);
+		//Bloc transparent avec image comme bloc '0'
+		listBloc.add(0);
+		listBloc.add(89);
+		listBloc.add(90);
+		for (int i = 276; i <= 289; i++)
+			listBloc.add(i);
+		for (int i = 119; i <= 272; i+=17) 
+			listBloc.add(i);
+		//Bloc transparent avec image comme bloc '0'
+		listBloc.add(34);//Bloc eau
+
 		return listBloc;
 	}
 	private static ArrayList<Integer> BlocPierre(){
@@ -43,7 +57,7 @@ public class Constante {
 	}
 	
 	public static boolean estUnBlocSolide(int idBloc) {
-		return Constante.BlocSolide.contains(idBloc);
+		return !BlocTransparent.contains(idBloc);
 	}
 	public static boolean estUnBlocPierre(int idBloc) {
 		return Constante.BlocPierre.contains(idBloc);
@@ -54,4 +68,23 @@ public class Constante {
 	public static boolean estUnBlocBois(int idBloc) {
 		return Constante.BlocBois.contains(idBloc);
 	}
+	
+	public static int view=40;
+	
+	public static String chemin(Acteur a) {
+		if(a instanceof Perso)
+			return "perso";
+		else if(a instanceof BossVolant)
+			return "bossVolant";
+		else if(a instanceof BossSol)
+			return "boss";
+		else if(a instanceof Sol)
+			return "sol";
+		else if(a instanceof Volant)
+			return "ghost";
+		else if(a instanceof Projectile)
+			return ((Projectile)a).getType();
+		return"";
+	} 
+
 }

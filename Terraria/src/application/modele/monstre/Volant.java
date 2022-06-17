@@ -38,7 +38,6 @@ public class Volant  extends Monstre{
 	}
 	@Override
 	public void mouvement() {
-		System.out.println("mouvement");
 		if(new Random().nextInt(100)<10) {
 			int trajectoire = (int) super.choixDeplacement();
 			if (trajectoire == 0) {

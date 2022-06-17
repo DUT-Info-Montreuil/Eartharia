@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -20,52 +21,40 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
-import application.modele.Acteur;
 import application.modele.Bloc;
 import application.modele.Environnement;
-import application.modele.Exception.CollisionException;
-import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.InventairePleinException;
 import application.modele.Exception.ItemNonTrouverException;
-import application.modele.Exception.LimiteMapException;
 import application.modele.Exception.RienEquiperExeception;
+import application.modele.Observateur.ObservateurActeur;
+import application.modele.Observateur.ObserveCraft;
+import application.modele.Observateur.ObserveInventaire;
+import application.modele.Observateur.ObserveMap;
 import application.modele.acteur.Perso;
-import application.modele.acteur.Pnj;
 import application.modele.Item;
-import application.modele.fonctionnalitees.ObservateurActeur;
-import application.modele.fonctionnalitees.ObservateurMonstre;
-import application.modele.fonctionnalitees.ObserveCraft;
-import application.modele.fonctionnalitees.ObserveInventaire;
-import application.modele.fonctionnalitees.ObserveMap;
-import application.modele.fonctionnalitees.ObserveProjectile;
+import application.modele.fonctionnalitees.Constante;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pelle;
 import application.modele.item.Pioche;
 import application.modele.item.Projectile;
-import application.modele.monstre.BossSol;
-import application.modele.monstre.Sol;
-import application.modele.monstre.Volant;
+import application.vue.VueActeur;
+import application.vue.VueHp;
 import application.vue.VueInventaire;
-import application.vue.VuePerso;
-import application.vue.VueProjectile;
-import application.vue.vueActeur;
-import application.vue.vueCraft;
-import application.vue.vueHp;
+import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
 
 public class Controleur implements Initializable {
 
 	private Environnement env;
 	private VueMapTerraria vueMap;
-	private VuePerso vueperso;
-	private vueHp vueHp;
+	private VueActeur vueperso;
+	private VueHp vueHp;
 	private Timeline tour;
-	public VueProjectile vueProjectile;
 	private VueInventaire vueInventaire;
-	private vueActeur vue_acteur;
-	private vueCraft vueCraft;
+	private VueActeur vue_acteur;
+	private VueCraft vueCraft;
 
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -73,6 +62,8 @@ public class Controleur implements Initializable {
 	private GridPane tPaneInv;
 	@FXML
 	private Pane pane;
+	@FXML
+	private Pane paneActeur;
 	@FXML
 	private TilePane tileP;
 	@FXML
@@ -89,53 +80,30 @@ public class Controleur implements Initializable {
 
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
-		ListChangeListener<? super Projectile> observeProjectile = new ObserveProjectile(this.pane, this.env);		
 		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
 
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
-		this.env.getListProjectiles().addListener(observeProjectile);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
+		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur));
+		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur));
+		this.env.addMonster();
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
+		this.paneActeur.setPrefSize(env.getColonne()*16,env.getLigne()*16);
+		paneActeur.layoutXProperty().bind(env.getPerso().getxProperty().multiply(-1).add((Constante.view/2)*16));
+		paneActeur.layoutYProperty().bind(env.getPerso().getyProperty().multiply(-1).add((Constante.view/2)*16));
+		
 		this.vueMap = new VueMapTerraria(env, tileP);
-		this.vueperso =  new VuePerso(pane, this.env.getPerso());
+        this.vueperso =  new VueActeur(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
-		this.vueCraft = new vueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
+		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
+		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
+		
 		this.description.setVisible(false);
-		this.vueHp= new vueHp(this.env.getPerso(), tPaneHp);
-		//		this.vue_acteur = new vueActeur(this.env.getActeurs(), pane);
-		this.env.getListeActeur().addListener(new ObservateurActeur(pane));
-		//      for(Acteur a : this.env.getListeActeur()) {
-		//                      if(a instanceof Sol) {
-		//                              new vueActeur((Sol) a, pane);
-		//                      }
-		//                      if(a instanceof volant) {
-		//                               new vueActeur((volant) a, pane);
-		//                      }//dans la vue et le modèle
-		//                      if(a instanceof Boss) {
-		//                               new vueActeur((Boss) a, pane);
-		//                      }
-		//              }
-		for(Acteur a : this.env.getListeActeur()) {
-			if(a instanceof Sol) {
-				new vueActeur((Sol) a, pane);
-			}
-			if(a instanceof Volant) {
-				new vueActeur((Volant) a, pane);
-			}//dans la vue et le modèle
-			if(a instanceof BossSol) {
-				new vueActeur((BossSol) a, pane);
-			}
-			if(a instanceof Pnj) {
-				// p = (Pnj) a; 
-				new vueActeur((Pnj) a, pane);
-			}
-
-		}
 	}
 
 	@FXML
@@ -143,6 +111,7 @@ public class Controleur implements Initializable {
 		Perso perso = this.env.getPerso();
 		try {
 			//perso.addInventaire(new Item(cmpt));
+            if(!pause())
 			switch (k.getCode()) {
 			case UP    :
 				perso.setDeplacement(0, true);
@@ -208,11 +177,16 @@ public class Controleur implements Initializable {
 				break;
 			case V :
 				perso.addInventaire(new BatonMagique(this.env.getPerso()));
+				break;
 			case C :
 				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
-			default:
 				break;
+            default:
+                    break;
 			}
+            else if(k.getCode()== KeyCode.C) {
+                vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+            }
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
 		}catch (ItemNonTrouverException e) {
@@ -269,7 +243,7 @@ public class Controleur implements Initializable {
 		return bool;
 	}
 
-	private void menu (String choice) {
+	void menu (String choice) {
 		BufferedImage bf = null;
 
 		try {
@@ -286,7 +260,7 @@ public class Controleur implements Initializable {
 		}
 
 	}
-	private void setupGame() {
+	void setupGame() {
 
 		//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
 		//        	if(nouv.intValue() <= 0) {
@@ -303,24 +277,25 @@ public class Controleur implements Initializable {
 		//        });
 	}
 	@FXML
-	private void clickEnvironement(MouseEvent m) {
+	void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
 		try {
-			switch(m.getButton()) {
+			if (!pause())
+				switch(m.getButton()) {
 
-			case PRIMARY :
-				perso.useEquipe(yClic, xClic);
+				case PRIMARY :
+					perso.useEquipe(yClic, xClic);
+					break;
+
+				case SECONDARY : 
+					break;
+
+				default : System.out.println("probleme");
 				break;
 
-			case SECONDARY : 
-				break;
-
-			default : System.out.println("probleme");
-			break;
-
-			}
+				}
 		}catch (RienEquiperExeception e) {
 			System.out.println("Le personnage n'a rien equiper");
 		}
@@ -329,7 +304,7 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	private void inventaireMouse(MouseEvent m) {
+	void inventaireMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		try {
 			switch(m.getButton()) {
@@ -352,7 +327,7 @@ public class Controleur implements Initializable {
 		}
 	}
 	@FXML
-	public void craftMouse(MouseEvent m) {
+	void craftMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		try {
 			switch(m.getButton()) {

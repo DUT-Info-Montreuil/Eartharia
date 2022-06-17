@@ -1,5 +1,6 @@
 package application;
 
+import application.modele.fonctionnalitees.Constante;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -13,10 +14,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			HBox root = FXMLLoader.load(getClass().getResource("vue/vue.fxml"));
-			double width = ((Pane) root.getChildren().get(0)).getPrefWidth();
-			double height = ((Pane) root.getChildren().get(0)).getPrefHeight();
-			Scene scene = new Scene(root,width,height);
+			Pane root = FXMLLoader.load(getClass().getResource("vue/vue.fxml"));
+			Scene scene = new Scene(root,Constante.view*16,Constante.view*16);
 	        primaryStage.setTitle("Eartharia");
 	        primaryStage.getIcons().add(new Image("ressources/icon.jpeg"));
 			primaryStage.setScene(scene);

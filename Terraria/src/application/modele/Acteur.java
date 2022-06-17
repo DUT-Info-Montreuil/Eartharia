@@ -6,7 +6,7 @@ import application.modele.Exception.CollisionActeurException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
-import application.modele.fonctionnalitees.Saut;
+import application.modele.fonctionnalitees.timer.Saut;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -96,12 +96,20 @@ public abstract class Acteur {
 	}
 	public boolean surDuSol(){
 		try {
-			for (Integer[] c : getBoxPlayer().limiteBoxBas()) {
-				int colonne=c[0];
-				int ligne=c[1];
+			for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
+				int colonne=cell[0];
+				int ligne=cell[1];
 				if(getEnv().getBloc(ligne+1, colonne).estSolide()) {
 					setSaut(true);
 					return true;
+				}
+			}
+			for (Integer[] cell : getBoxPlayer().parcourBoxCase()) {
+				int colonne=cell[0];
+				int ligne=cell[1];
+				if(getEnv().getIdTuile(ligne, colonne)==34) {
+					setSaut(true);
+					return false;
 				}
 			}
 		}catch(Exception e) {}
