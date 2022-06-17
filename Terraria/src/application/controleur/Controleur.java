@@ -38,7 +38,6 @@ import application.modele.item.BlocItem;
 import application.modele.item.Hache;
 import application.modele.item.Pelle;
 import application.modele.item.Pioche;
-import application.modele.item.Projectile;
 import application.vue.VueActeur;
 import application.vue.VueHp;
 import application.vue.VueInventaire;
@@ -77,11 +76,10 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 		gameLauncher();
 		gameLoop();
-
+		System.out.println(pane.getScene());
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
 		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
-
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);

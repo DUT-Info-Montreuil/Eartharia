@@ -3,20 +3,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Json-library"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Json"/>
-<<<<<<< HEAD
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-=======
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
->>>>>>> refs/heads/Fontionnnalité_Animation
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSON"/>
-<<<<<<< HEAD
-=======
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/json"/>
->>>>>>> refs/heads/Fontionnnalité_Animation
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
