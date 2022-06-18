@@ -38,8 +38,11 @@ import application.modele.Observateur.ObserveMap;
 import application.modele.acteur.Perso;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.item.Arc;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
+import application.modele.item.Epee;
+import application.modele.item.EpeeFlame;
 import application.modele.item.Hache;
 import application.modele.item.Pelle;
 import application.modele.item.Pioche;
@@ -48,6 +51,7 @@ import application.vue.VueHp;
 import application.vue.VueInventaire;
 import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
+import application.vue.AfficheTriche;
 
 public class Controleur implements Initializable {
 
@@ -59,6 +63,7 @@ public class Controleur implements Initializable {
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueCraft vueCraft;
+	private AfficheTriche afficheTriche; 
 
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -115,6 +120,9 @@ public class Controleur implements Initializable {
 		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
 
+		Pane p = new Pane();
+		((Pane)pane.getParent()).getChildren().add(p);
+		this.afficheTriche = new AfficheTriche(p);
 		this.description.setVisible(false);
 	}
 
@@ -122,7 +130,6 @@ public class Controleur implements Initializable {
 	public void move (KeyEvent k) {
 		Perso perso = this.env.getPerso();
 		try {
-			//perso.addInventaire(new Item(cmpt));
 			if(!pause())
 				switch (k.getCode()) {
 				case UP    :
@@ -156,28 +163,26 @@ public class Controleur implements Initializable {
 				case I  :
 					vueInventaire.ouvFerInv();
 					break;
-				case J : 
-					perso.attaque();
-					System.out.println("HP : " +perso.getHp());
-					System.out.println("attaque");
-					//System.out.println(this.env.getActeurs());
+				case C :
+					vueCraft.ouvFerCraft(env.getPerso().peutcraft());
 					break;
-					//Code Cheat
-				case A :
-					this.env.getPerso().setHpPlus(-1);
-					System.out.println(this.env.getPerso().getHp());
+//////////////////////////Code Cheat////////////////////////////////////
+				case H  :
+					perso.addInventaire(new Hache());
 					break;
 				case P  :
 					perso.addInventaire(new Pioche());
 					break;
 				case O  :
 					perso.addInventaire(new Pelle());
-
 					break;
-				case B  :
-					perso.addInventaire(new BlocItem(233,5));
-				case T  :
-					perso.addInventaire(new BlocItem(233,5));
+				case E:
+					perso.addInventaire(new Epee(this.env.getPerso()));
+				case A :
+					perso.addInventaire(new Arc(this.env.getPerso()));
+					break;
+				case SPACE:
+					afficheTriche.ouvFerCraft();
 					break;
 				case W  :
 					perso.addInventaire(new BlocItem(208,1));
@@ -185,20 +190,23 @@ public class Controleur implements Initializable {
 				case S  :
 					perso.addInventaire(new BlocItem(44,1));
 					break;
-				case H  :
-					perso.addInventaire(new Hache());
+				case T  :
+					perso.addInventaire(new BlocItem(233,5));
 					break;
 				case V :
 					perso.addInventaire(new BatonMagique(this.env.getPerso()));
 					break;
-				case C :
-					vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+				case B  :
+					perso.addInventaire(new EpeeFlame(this.env.getPerso()));
 					break;
 				default:
 					break;
 				}
 			else if(k.getCode()== KeyCode.C) {
 				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+			}
+			else if(k.getCode()== KeyCode.SPACE) {
+				afficheTriche.ouvFerCraft();
 			}
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
@@ -250,9 +258,12 @@ public class Controleur implements Initializable {
 			env.getPerso().getCraft().refresh();
 			tileP.setDisable(false);
 		}
-		else
+		bool = bool || afficheTriche.pause();
+		if(afficheTriche.pause()) {
 			tileP.setDisable(false);
-
+		}
+		if(!bool)
+			tileP.setDisable(true);
 		return bool;
 	}
 

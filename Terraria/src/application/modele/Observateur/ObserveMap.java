@@ -33,8 +33,8 @@ public class ObserveMap implements ListChangeListener<Bloc >{
 		}
 	}
 	private void ajout(List<? extends Bloc> addedSubList) {
-		for (Bloc item : addedSubList) {
-			vueMap.afficherMap(env.getMap().indexOf(item),item.getIdTuile(), item.getId());;
+		for (Bloc bloc : addedSubList) {
+			vueMap.afficherMap(env.getMap().indexOf(bloc),bloc.getIdTuile(), bloc.getId());
 		}
 	}
 	private void suppresion(List<? extends Bloc> getRemoved) {

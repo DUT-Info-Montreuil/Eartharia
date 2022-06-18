@@ -13,7 +13,7 @@
 		<Pane fx:id="pane" focusTraversable="true" maxHeight="-Infinity"
 			maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
 			onKeyPressed="#move" onKeyReleased="#moveRelease" prefHeight="320.0"
-			prefWidth="320.0">
+			prefWidth="320.0"/>
 			<Pane fx:id="paneActeur" focusTraversable="true"
 				maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 				minWidth="-Infinity" onKeyPressed="#move"
@@ -67,6 +67,5 @@
 						vgrow="SOMETIMES" />
 				</rowConstraints>
 			</GridPane>
-		</Pane>
 	</children>
 </Pane>

@@ -1,6 +1,9 @@
 package application.modele.acteur;
 
 import application.modele.Item;
+
+import java.util.Timer;
+
 import application.modele.Acteur;
 import application.modele.Environnement;
 import javafx.beans.property.ObjectProperty;
@@ -8,6 +11,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
+import application.modele.fonctionnalitees.timer.CoolDown;
 import application.modele.item.BlocItem;
 import application.modele.item.CoeurDePhoenix;
 import application.modele.item.Hache;
@@ -42,15 +46,15 @@ public class Perso extends Acteur{
 	public void attaque () {
 		for(Acteur m : getEnv().getListeActeur()) {
 			if(m instanceof Monstre)
-			this.echangeDeCoup(m);
+				this.echangeDeCoup(m);
 		}
 	}
 	public void echangeDeCoup (Acteur a) {
-//		System.out.println("Degat : " + this.getDegatAttaque());
-//		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());
+		//		System.out.println("Degat : " + this.getDegatAttaque());
+		//		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());
 		if( Math.abs(a.getX() - this.getX()) <=16 /*|| Math.abs(a.getX() + this.getX()) <=16*/ ){			
-//			a.attaquer(this);
-//			this.recevoirDegat(a.getDegatAttaque());
+			//			a.attaquer(this);
+			//			this.recevoirDegat(a.getDegatAttaque());
 			//this.attaquer(a);
 			a.dommage(this.getDegatAttaque());
 		}
@@ -106,8 +110,13 @@ public class Perso extends Acteur{
 			if((caseY()-5<= y) && (y<=caseY()+5) && (caseX()-5<= x) && (x<=caseX()+5))
 				equipe.get().agit(y, x, getEnv());
 		}
-		else
-			equipe.get().agit(y*16, x*16, getEnv());
+		else {
+			if (peutAttaquer()) {
+				equipe.get().agit(y*16, x*16, getEnv());
+				new Timer().schedule(new CoolDown(this), 1000);
+				setAttaque(false);
+			}
+		}
 		encoreUtilisable();
 	}
 	private void encoreUtilisable() {

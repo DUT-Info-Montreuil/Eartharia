@@ -58,11 +58,9 @@ public class Projectile extends Acteur{
 		for (Acteur acteur : this.getEnv().aProximiter(this, 1)) {
 			if(acteur instanceof Monstre && this.utilisateur instanceof Perso && isInside(acteur)) {
 				acteur.dommage(getDegatAttaque());
-				setHp(-1);
 			}
 			if(!(acteur instanceof Monstre) && this.utilisateur instanceof Monstre && isInside(acteur)) {
 				acteur.dommage(getDegatAttaque());
-				setHp(-1);
 			}
 		}
 	}
@@ -73,6 +71,8 @@ public class Projectile extends Acteur{
 			deplacement((int)trajectoireX,(int)trajectoireY);
 		} catch (Exception e) {
 			attaque();
+			setHp(-1);
+
 		}
 	}
 
