@@ -12,11 +12,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -93,6 +96,11 @@ public class Controleur implements Initializable {
 		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur));
 		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur));
 		this.env.addMonster();
+		
+		MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.mp3").toUri().toString()));
+		music.setCycleCount(music.INDEFINITE);
+		music.play();
+
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -109,6 +117,7 @@ public class Controleur implements Initializable {
 		this.vueOxygene= new application.vue.vueOxygene(this.env.getPerso(), tPOxy);
 		
 		this.description.setVisible(false);
+
 	}
 
 	@FXML
@@ -147,7 +156,11 @@ public class Controleur implements Initializable {
 				perso.prendEnMain(vueInventaire.getItem(3));
 				break;
 			case I  :
+				MediaPlayer ouvInv = new MediaPlayer(new Media(Paths.get("src/ressources/bruitInv.mp3").toUri().toString()));
+				ouvInv.setVolume(0.2);
+				ouvInv.play();
 				vueInventaire.ouvFerInv();
+
 				break;
 			case J : 
 				perso.attaque();
@@ -231,7 +244,7 @@ public class Controleur implements Initializable {
 					if (!pause()) {
 						this.env.unTour();
 						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
-						Constante.setMusics(env.getPerso());
+
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
@@ -294,6 +307,9 @@ public class Controleur implements Initializable {
 
 				case PRIMARY :
 					perso.useEquipe(yClic, xClic);
+					MediaPlayer bruits = new MediaPlayer(new Media(Paths.get(Constante.cheminSons(perso)).toUri().toString()));
+					bruits.setVolume(0.2);
+					bruits.play();
 					break;
 
 				case SECONDARY : 

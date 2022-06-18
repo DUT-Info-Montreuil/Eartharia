@@ -16,11 +16,10 @@ public class pvBarMonstre {
 	
 	public pvBarMonstre(Acteur a, Pane p) {
 		this.pvBar = new ProgressBar();
-		this.pvBar.setPrefSize(Constante.setTailleBarPV(a), 12);
+		this.pvBar.setPrefSize(Constante.setTailleBarPV(a), 36);
 		this.pvBar.layoutXProperty().bind(a.getxProperty());
 		this.pvBar.layoutYProperty().bind(a.getyProperty().subtract(12));
-//		this.pvBar.getStylesheets().add("ressources/stylePvBar.css");
-		this.pvBar.progressProperty().bind(a.getHpProperty());
+		this.pvBar.progressProperty().bind(a.getHpProperty().divide(a.getHpMax()));
 		this.pvBar.setStyle("-fx-accent: red;");
 		this.id= a.getId() + "PB" ;
 		this.pvBar.setId(this.id);

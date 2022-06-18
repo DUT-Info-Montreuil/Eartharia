@@ -4,6 +4,7 @@ import application.modele.Acteur;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,7 +18,7 @@ public class VueActeur{
 	private ImageView img;
 	private Pane pane;
 	private String chemin;
-	private pvBarMonstre pvBar;
+	private ProgressBar pvBar;
 
 	public VueActeur (Pane pane, Acteur perso) {
 		this.pane=pane;
@@ -25,7 +26,14 @@ public class VueActeur{
 		this.acteur = perso;
 		visuel();
 		img.setId(perso.getId());
-		this.pvBar= new pvBarMonstre(perso, pane);
+		this.pvBar= new ProgressBar();
+		this.pvBar.setPrefSize(Constante.setTailleBarPV(perso), 36);
+		this.pvBar.layoutXProperty().bind(perso.getxProperty());
+		this.pvBar.layoutYProperty().bind(perso.getyProperty().subtract(12));
+		this.pvBar.progressProperty().bind(perso.getHpProperty().divide(perso.getHpMax()));
+		this.pvBar.setStyle("-fx-accent: red;");
+		this.pvBar.setId(perso.getId() + "PB");  		
+		this.pane.getChildren().add(this.pvBar);
 		this.pane.getChildren().add(img);
 		difference();
 		//hitBox();

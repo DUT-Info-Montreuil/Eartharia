@@ -23,6 +23,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 
 public class Constante {
 	private static ArrayList<Integer> BlocPierre = BlocPierre();
@@ -154,37 +155,36 @@ public static String cheminSons(Perso p) {
 return null;
 }
 public static void setMusics(Perso p) {
-	boolean playing=false;
-		if (p.getX()<96*16 && !playing) {
-			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicOcean.mp3").toUri().toString()));
-			music.play();
-			playing=true;
-		}
-		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16 && !playing) {
-			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
-			music.play();
-			playing=true;
-		}
-		else if (p.getX()>=296*16 && p.getY()<26*16 && !playing) {
-			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicDesert.mp3").toUri().toString()));	
-			music.play();
-			playing=true;
-		}
-		else if (p.getX()>=296*16 && p.getY()>=26*16 && !playing) {
-			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
-			music.play();
-			playing=true;
+	MediaPlayer musicForet = new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.wav").toUri().toString()));
+//	musicForet.setAutoPlay(p.getX()>=96*16 && p.getX()<296*16 && p.getY()<39*16);
 
-		}
-		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()<39*16 && !playing) {
-			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.wav").toUri().toString()));
-			music.play();
-			playing=true;
-		}
-		else {
-			playing=false;
-		}
+	MediaPlayer musicCaverne = new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+//	musicCaverne.setAutoPlay(p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16);
+//	
+	MediaPlayer musicOcean = new MediaPlayer(new Media(Paths.get("src/ressources/MusicOcean.mp3").toUri().toString()));
+//	musicOcean.setAutoPlay(p.getX()<96*16);
 
+	MediaPlayer musicBoss =new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+//	musicBoss.setAutoPlay(p.getX()>=296*16 && p.getY()>=26*16);
+
+	MediaPlayer musicDesert = new MediaPlayer(new Media(Paths.get("src/ressources/MusicDesert.mp3").toUri().toString()));
+//	musicDesert.setAutoPlay(p.getX()>=296*16 && p.getY()<26*16);
+				
+	if (p.getX()<96*16 && musicOcean.getStatus()!=musicOcean.getStatus().PLAYING) { 
+			musicOcean.play();
+		}
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16 && musicCaverne.getStatus()!=musicCaverne.getStatus().PLAYING) { 
+			musicCaverne.play();
+		}
+		else if (p.getX()>=296*16 && p.getY()<26*16 && musicDesert.getStatus()!=musicDesert.getStatus().PLAYING) {	
+			musicDesert.play();
+		}
+		else if (p.getX()>=296*16 && p.getY()>=26*16 && musicBoss.getStatus()!=musicBoss.getStatus().PLAYING) {
+			musicBoss.play();
+		}
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()<39*16 && musicForet.getStatus()!=musicForet.getStatus().PLAYING) {
+			musicForet.play();
+		}
 }
 public static int setTailleBarPV(Acteur a) {
 	if (a instanceof Sol)

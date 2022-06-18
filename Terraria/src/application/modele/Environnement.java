@@ -178,13 +178,13 @@ public class Environnement {
 	}
 
 	public void addMonster() {
-//		listActeur.addAll(
-//				//		new Sol(this, 3, 10),
-//				//		new Sol(this, 10, 10),
-//				//		new Sol(this, 15, 4),
-//				//		new Volant(this, 3,6),
-//				//		new BossSol(this, 16, 2),
-//				new BossVolant(this, 7, 7));
+		listActeur.addAll(
+//						new Sol(this, this.getColonne()/3, this.getLigne()/3),
+//						new Sol(this, 10, 10),
+//						new Sol(this, 15, 4),
+//						new Volant(this, 3,6),
+//						new BossSol(this, 16, 2),
+				new BossVolant(this, 7, 7));
 	}
 	public void addListProjectiles(Projectile p) {
 		listProjectile.add(p);
