@@ -89,7 +89,7 @@ public class Controleur implements Initializable {
 		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
 
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
-		this.env.getPerso().getOxyProperty().addListener((obs, old, nouv)-> vueOxygene.refreshOxy());
+//		this.env.getPerso().getOxyProperty().addListener((obs, old, nouv)-> vueOxygene.refreshOxy());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
@@ -244,7 +244,7 @@ public class Controleur implements Initializable {
 					if (!pause()) {
 						this.env.unTour();
 						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
-
+//						env.getPerso().seNoie();
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);

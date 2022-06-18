@@ -27,10 +27,11 @@ public class VueActeur{
 		visuel();
 		img.setId(perso.getId());
 		this.pvBar= new ProgressBar();
-		this.pvBar.setPrefSize(Constante.setTailleBarPV(perso), 36);
+		this.pvBar.setPrefSize(160, 12);
 		this.pvBar.layoutXProperty().bind(perso.getxProperty());
 		this.pvBar.layoutYProperty().bind(perso.getyProperty().subtract(12));
-		this.pvBar.progressProperty().bind(perso.getHpProperty().divide(perso.getHpMax()));
+		this.pvBar.progressProperty().bind((perso.getHpProperty().divide(perso.getHpMax())));
+//		this.pvBar.setProgress(0.2);
 		this.pvBar.setStyle("-fx-accent: red;");
 		this.pvBar.setId(perso.getId() + "PB");  		
 		this.pane.getChildren().add(this.pvBar);

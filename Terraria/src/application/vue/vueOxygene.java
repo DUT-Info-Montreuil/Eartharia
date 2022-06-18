@@ -20,7 +20,7 @@ public class vueOxygene {
 	}
 	
 	public void refreshOxy() {
-		this.tP.getChildren().removeAll();
+		this.tP.getChildren().clear();
 		afficheOxy();
 	}
 	

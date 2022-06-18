@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.modele.fonctionnalitees.CraftMenu;
+import application.modele.fonctionnalitees.timer.Noyer;
 import application.modele.fonctionnalitees.timer.Saut;
 import application.modele.item.Arme;
 import application.modele.item.BatonMagique;
@@ -143,6 +144,11 @@ public class Perso extends Acteur{
 				}
 			}
 		}
+	}
+	public void seNoie() {
+		if(surDuSol())
+			new Timer().schedule(new Noyer(getEnv().getPerso()), 30000);
+			System.out.println(this.oxygene);
 	}
 
 }

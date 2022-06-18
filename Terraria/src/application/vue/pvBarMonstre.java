@@ -30,20 +30,6 @@ public class pvBarMonstre {
 		this.p.getChildren().add(this.pvBar);
 		
 		System.out.println("id bar : " + a.getId());
-
-//		removeBar(a);
 	}
-//	public void removeBar(Acteur a) {
-////		for (Acteur a : getRemoved) {
-////			Node n = this.paneActeur.lookup("#" + a.getId());
-////			this.paneActeur.getChildren().remove(n);
-////		}
-//		System.out.println("id bar : " + id);
-//		if(a.estMort()) {
-//			//this.p.getChildren().remove(id);
-//			Node n = this.p.lookup("#" + a.getId());
-//			this.p.getChildren().remove(n);
-//			
-//		}
-//	}
+
 }
