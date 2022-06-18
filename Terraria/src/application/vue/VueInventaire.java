@@ -4,12 +4,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Timer;
 
+import application.modele.Bloc;
 import application.modele.Item;
 import application.modele.Exception.InventaireCaseVideException;
 import application.modele.Exception.ItemNonTrouverException;
+import application.modele.fonctionnalitees.Constante;
 import application.modele.fonctionnalitees.Description;
 import application.modele.fonctionnalitees.ItemFonctionnalite;
 import application.modele.fonctionnalitees.Tableau;
+import application.modele.item.BlocItem;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -39,7 +42,7 @@ public class VueInventaire {
 	private GridPane tPaneInventaireRapide;
 	private boolean visibility;
 
-	public VueInventaire(GridPane tPaneInventaireRapide,GridPane tpInventaire,  ObservableList<Item> inventaire){
+	public VueInventaire(GridPane tPaneInventaireRapide,GridPane tpInventaire, ObservableList<Item> inventaire){
 		this.tPaneInventaire=tpInventaire;
 		this.tPaneInventaireRapide = tPaneInventaireRapide;
 		this.visibility = false;
@@ -121,6 +124,37 @@ public class VueInventaire {
 				return item;
 		}
 		throw new ItemNonTrouverException();
+	}
+	public ImageView getImageView(Item item){
+		ImageView img = null;
+		int dimention,idItem,fit;
+		if(item instanceof BlocItem) {
+			img = new ImageView(img_bloc);
+			idItem= item.getIdItem()-1;
+			dimention=16;
+			fit=10;
+			img.setLayoutX((Constante.view/2)*16+10);
+			img.setLayoutY((Constante.view/2)*16+10);
+		}
+		else {
+			img = new ImageView(img_item);
+			idItem= item.getIdItem();
+			dimention=32;
+			fit=18;
+			img.setLayoutX((Constante.view/2)*16+10);
+			img.setLayoutY((Constante.view/2)*16+5);
+		}
+
+		int y = (int) (idItem/(img.getImage().getHeight()/dimention));
+		int x = (int) (idItem%(img.getImage().getWidth()/dimention));
+		x = x*dimention;
+		y = y*dimention;
+		img.setViewport(new Rectangle2D(x,y, dimention,dimention));
+		img.setFitHeight(fit);
+		img.setFitWidth(fit);
+		img.setScaleX(-1);
+		img.setId("E"+item.getId());
+		return img;
 	}
 	public Item getItem(int place)throws ItemNonTrouverException {
 		Node node = Tableau.getCell(tPaneInventaireRapide, 0, place);

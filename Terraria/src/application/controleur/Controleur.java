@@ -4,7 +4,11 @@ import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +21,7 @@ import javafx.util.Duration;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -76,17 +81,26 @@ public class Controleur implements Initializable {
 		this.env = new Environnement();
 		gameLauncher();
 		gameLoop();
-		System.out.println(pane.getScene());
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
 		ListChangeListener<? super Bloc> observeMap = new ObserveMap(tileP, vueMap,env);
-		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);		
+		ListChangeListener<? super Item> observeCraft = new ObserveCraft(this.tPaneCraft, vueCraft);
+		this.env.getPerso().getEquipeProperty().addListener((obs, old, nouv)-> {
+			if(old!=null) {
+				ImageView img =(ImageView)pane.lookup("#"+"E"+old.getId());
+				pane.getChildren().remove(img);
+			}
+			if(nouv !=null) {
+				ImageView img = vueInventaire.getImageView(nouv);
+				pane.getChildren().add(img);
+			}
+		});
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
 		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur));
 		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur));
-		this.env.addMonster();
+		this.env.initialisation();
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -94,13 +108,13 @@ public class Controleur implements Initializable {
 		this.paneActeur.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		paneActeur.layoutXProperty().bind(env.getPerso().getxProperty().multiply(-1).add((Constante.view/2)*16));
 		paneActeur.layoutYProperty().bind(env.getPerso().getyProperty().multiply(-1).add((Constante.view/2)*16));
-		
+
 		this.vueMap = new VueMapTerraria(env, tileP);
-        this.vueperso =  new VueActeur(pane, this.env.getPerso());
+		this.vueperso =  new VueActeur(pane, this.env.getPerso());
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
-		
+
 		this.description.setVisible(false);
 	}
 
@@ -109,82 +123,83 @@ public class Controleur implements Initializable {
 		Perso perso = this.env.getPerso();
 		try {
 			//perso.addInventaire(new Item(cmpt));
-            if(!pause())
-			switch (k.getCode()) {
-			case UP    :
-				perso.setDeplacement(0, true);
-				break;
-			case DOWN  :
-				perso.setDeplacement(1, true);
-				break;
-			case LEFT  :
-				perso.setDeplacement(2, true);
-				break;
-			case RIGHT :
-				perso.setDeplacement(3, true);
-				break;
-			case DIGIT1  :
-			case NUMPAD1  :
-				perso.prendEnMain(vueInventaire.getItem(0));
-				break;
-			case DIGIT2  :
-			case NUMPAD2  :
-				perso.prendEnMain(vueInventaire.getItem(1));
-				break;
-			case DIGIT3  :
-			case NUMPAD3  :
-				perso.prendEnMain(vueInventaire.getItem(2));
-				break;
-			case DIGIT4  :
-			case NUMPAD4  :
-				perso.prendEnMain(vueInventaire.getItem(3));
-				break;
-			case I  :
-				vueInventaire.ouvFerInv();
-				break;
-			case J : 
-				perso.attaque();
-				System.out.println("HP : " +perso.getHp());
-				System.out.println("attaque");
-				//System.out.println(this.env.getActeurs());
-				break;
-				//Code Cheat
-			case A :
-				this.env.getPerso().setHpPlus(-1);
-				System.out.println(this.env.getPerso().getHp());
-				break;
-			case P  :
-				perso.addInventaire(new Pioche());
-				break;
-			case O  :
-				perso.addInventaire(new Pelle());
-				break;
-			case B  :
-				perso.addInventaire(new BlocItem(233,5));
-			case T  :
-				perso.addInventaire(new BlocItem(233,5));
-				break;
-			case W  :
-				perso.addInventaire(new BlocItem(208,1));
-				break;
-			case S  :
-				perso.addInventaire(new BlocItem(44,1));
-				break;
-			case H  :
-				perso.addInventaire(new Hache());
-				break;
-			case V :
-				perso.addInventaire(new BatonMagique(this.env.getPerso()));
-				break;
-			case C :
+			if(!pause())
+				switch (k.getCode()) {
+				case UP    :
+					perso.setDeplacement(0, true);
+					break;
+				case DOWN  :
+					perso.setDeplacement(1, true);
+					break;
+				case LEFT  :
+					perso.setDeplacement(2, true);
+					break;
+				case RIGHT :
+					perso.setDeplacement(3, true);
+					break;
+				case DIGIT1  :
+				case NUMPAD1  :
+					perso.prendEnMain(vueInventaire.getItem(0));
+					break;
+				case DIGIT2  :
+				case NUMPAD2  :
+					perso.prendEnMain(vueInventaire.getItem(1));
+					break;
+				case DIGIT3  :
+				case NUMPAD3  :
+					perso.prendEnMain(vueInventaire.getItem(2));
+					break;
+				case DIGIT4  :
+				case NUMPAD4  :
+					perso.prendEnMain(vueInventaire.getItem(3));
+					break;
+				case I  :
+					vueInventaire.ouvFerInv();
+					break;
+				case J : 
+					perso.attaque();
+					System.out.println("HP : " +perso.getHp());
+					System.out.println("attaque");
+					//System.out.println(this.env.getActeurs());
+					break;
+					//Code Cheat
+				case A :
+					this.env.getPerso().setHpPlus(-1);
+					System.out.println(this.env.getPerso().getHp());
+					break;
+				case P  :
+					perso.addInventaire(new Pioche());
+					break;
+				case O  :
+					perso.addInventaire(new Pelle());
+
+					break;
+				case B  :
+					perso.addInventaire(new BlocItem(233,5));
+				case T  :
+					perso.addInventaire(new BlocItem(233,5));
+					break;
+				case W  :
+					perso.addInventaire(new BlocItem(208,1));
+					break;
+				case S  :
+					perso.addInventaire(new BlocItem(44,1));
+					break;
+				case H  :
+					perso.addInventaire(new Hache());
+					break;
+				case V :
+					perso.addInventaire(new BatonMagique(this.env.getPerso()));
+					break;
+				case C :
+					vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+					break;
+				default:
+					break;
+				}
+			else if(k.getCode()== KeyCode.C) {
 				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
-				break;
-            default:
-                    break;
 			}
-            else if(k.getCode()== KeyCode.C) {
-                vueCraft.ouvFerCraft(env.getPerso().peutcraft());
-            }
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
 		}catch (ItemNonTrouverException e) {
