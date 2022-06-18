@@ -153,17 +153,38 @@ public static String cheminSons(Perso p) {
 		return "src/ressources/bruitHache.mp3";
 return null;
 }
-public static MediaPlayer setMusics(Perso p) {
-		if (p.getX()<96) 
-			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicOcean.mp3").toUri().toString()));
-		else if (p.getX()>=96 && p.getX()<296 && p.getY()>=39)
-			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
-		else if (p.getX()>=296 && p.getY()<26)
-			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicDesert.mp3").toUri().toString()));
-		else if (p.getX()>=296 && p.getY()>=26)
-			return new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+public static void setMusics(Perso p) {
+	boolean playing=false;
+		if (p.getX()<96*16 && !playing) {
+			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicOcean.mp3").toUri().toString()));
+			music.play();
+			playing=true;
+		}
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16 && !playing) {
+			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+			music.play();
+			playing=true;
+		}
+		else if (p.getX()>=296*16 && p.getY()<26*16 && !playing) {
+			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicDesert.mp3").toUri().toString()));	
+			music.play();
+			playing=true;
+		}
+		else if (p.getX()>=296*16 && p.getY()>=26*16 && !playing) {
+			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicCaverne.mp3").toUri().toString()));
+			music.play();
+			playing=true;
 
-	return new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.wav").toUri().toString()));
+		}
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()<39*16 && !playing) {
+			MediaPlayer music = new MediaPlayer(new Media(Paths.get("src/ressources/MusicGeneral.wav").toUri().toString()));
+			music.play();
+			playing=true;
+		}
+		else {
+			playing=false;
+		}
+
 }
 public static int setTailleBarPV(Acteur a) {
 	if (a instanceof Sol)
