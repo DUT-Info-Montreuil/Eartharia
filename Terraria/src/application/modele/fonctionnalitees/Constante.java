@@ -22,11 +22,39 @@ public class Constante {
 		listBloc.add(0);
 		listBloc.add(89);
 		listBloc.add(90);
+		listBloc.add(253);
+		listBloc.add(251);
+		listBloc.add(17);
+		listBloc.add(211);
+		listBloc.add(268);
+		listBloc.add(208); 
+		listBloc.add(209); 
+		listBloc.add(210); 
+		listBloc.add(211); 
+		listBloc.add(292); 
+		listBloc.add(111);
+		listBloc.add(127);
+		listBloc.add(228);
+		listBloc.add(269);
+		listBloc.add(267);
+		listBloc.add(268);
+		listBloc.add(259);
+		listBloc.add(191);
+		listBloc.add(193);
+		listBloc.add(104);
+		listBloc.add(150);
+		listBloc.add(263);
+		listBloc.add(260);
+		listBloc.add(266);
+		listBloc.add(192);
+		listBloc.add(128);
+		listBloc.add(194);
+		listBloc.add(127);
+		listBloc.add(109);
 		for (int i = 276; i <= 289; i++)
 			listBloc.add(i);
 		for (int i = 119; i <= 272; i+=17) 
 			listBloc.add(i);
-		//Bloc transparent avec image comme bloc '0'
 		listBloc.add(34);//Bloc eau
 
 		return listBloc;
@@ -45,7 +73,6 @@ public class Constante {
 		listBloc.add(209); //Bois bouleau
 		listBloc.add(210); //Bois Sapin
 		listBloc.add(211); //Bois Palmier
-
 		return listBloc;
 	}
 	private static ArrayList<Integer> BlocTerre(){
@@ -53,6 +80,7 @@ public class Constante {
 		for (int i = 233; i < 237; i++) {
 			listBloc.add(i); //Bloc terre			
 		}
+		listBloc.add(218); //Bloc glace
 		return listBloc;
 	}
 	

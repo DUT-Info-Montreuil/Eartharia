@@ -46,12 +46,17 @@ import application.modele.item.EpeeFlame;
 import application.modele.item.Hache;
 import application.modele.item.Pelle;
 import application.modele.item.Pioche;
+import application.modele.monstre.BossSol;
+import application.modele.monstre.BossVolant;
+import application.modele.monstre.Sol;
+import application.modele.monstre.Volant;
 import application.vue.VueActeur;
 import application.vue.VueHp;
 import application.vue.VueInventaire;
 import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
-import application.vue.AfficheTriche;
+import application.vue.VueMenuJeux;
+import application.vue.VueMenuTriche;
 
 public class Controleur implements Initializable {
 
@@ -63,7 +68,7 @@ public class Controleur implements Initializable {
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueCraft vueCraft;
-	private AfficheTriche afficheTriche; 
+	private boolean pause;
 
 	@FXML
 	private GridPane tPaneInvRapide;
@@ -81,9 +86,16 @@ public class Controleur implements Initializable {
 	private Label description;
 	@FXML
 	private TilePane tPaneCraft;
+	@FXML 
+	private Pane menu;
+	@FXML 
+	private Pane menuTriche;
+	private VueMenuJeux vueMenu;
+	private VueMenuTriche vueMenuTriche;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
+		this.pause=false;
 		gameLauncher();
 		gameLoop();
 		ListChangeListener<? super Item> observeInventaire = new ObserveInventaire(tPaneInv,tPaneInvRapide, vueInventaire);
@@ -119,11 +131,8 @@ public class Controleur implements Initializable {
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
-
-		Pane p = new Pane();
-		((Pane)pane.getParent()).getChildren().add(p);
-		this.afficheTriche = new AfficheTriche(p);
-		this.description.setVisible(false);
+		this.vueMenu = new VueMenuJeux(menu);
+		this.vueMenuTriche = new VueMenuTriche(menuTriche);
 	}
 
 	@FXML
@@ -166,7 +175,11 @@ public class Controleur implements Initializable {
 				case C :
 					vueCraft.ouvFerCraft(env.getPerso().peutcraft());
 					break;
-//////////////////////////Code Cheat////////////////////////////////////
+				case DIGIT5  :
+				case NUMPAD5  :
+					pause=true;
+					break;
+					//////////////////////////Code Cheat////////////////////////////////////
 				case H  :
 					perso.addInventaire(new Hache());
 					break;
@@ -182,7 +195,10 @@ public class Controleur implements Initializable {
 					perso.addInventaire(new Arc(this.env.getPerso()));
 					break;
 				case SPACE:
-					afficheTriche.ouvFerCraft();
+					//					afficheTriche.ouvFerCraft();
+					break;
+				case Q  :
+					perso.addInventaire(new BlocItem(190,1));
 					break;
 				case W  :
 					perso.addInventaire(new BlocItem(208,1));
@@ -199,14 +215,53 @@ public class Controleur implements Initializable {
 				case B  :
 					perso.addInventaire(new EpeeFlame(this.env.getPerso()));
 					break;
+				case M:
+					vueMenu.utilisation();
+					break;
+				case Z: 
+					vueMenuTriche.utilisation();
+					break;
+				case G: 
+					env.addMonster(new Sol(env, perso.caseX()+5, perso.caseY()-5));
+					break;
+				case D: 
+					env.addMonster(new BossSol(env, perso.caseX()+5, perso.caseY()-5));
+					break;
+				case F: 
+					env.addMonster(new Volant(env, perso.caseX()+5, perso.caseY()-5));
+					break;
+				case J: 
+					env.addMonster(new BossVolant(env, perso.caseX()+5, perso.caseY()-5));
+					break;
 				default:
 					break;
 				}
-			else if(k.getCode()== KeyCode.C) {
-				vueCraft.ouvFerCraft(env.getPerso().peutcraft());
-			}
-			else if(k.getCode()== KeyCode.SPACE) {
-				afficheTriche.ouvFerCraft();
+			else{
+				switch (k.getCode()) {
+				case C:
+					if (vueCraft.pause()) {
+						vueCraft.ouvFerCraft(env.getPerso().peutcraft());
+					}
+					break;
+				case M:
+					if (vueMenu.pause()) {
+						vueMenu.utilisation();
+					}
+					break;
+				case Z:
+					if (vueMenuTriche.pause()) {
+						vueMenuTriche.utilisation();
+					}
+					break;
+				case DIGIT5  :
+				case NUMPAD5  :
+					if (pause) {
+						pause=false;
+					}
+					break;
+				default:
+					break;
+				}
 			}
 		}catch (InventairePleinException e) {
 			System.out.println("Inventaire Plein !");
@@ -251,6 +306,7 @@ public class Controleur implements Initializable {
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
 	}
+
 	private boolean pause() {
 		boolean bool = false;
 		bool = bool || vueCraft.pause();
@@ -258,59 +314,61 @@ public class Controleur implements Initializable {
 			env.getPerso().getCraft().refresh();
 			tileP.setDisable(false);
 		}
-		bool = bool || afficheTriche.pause();
-		if(afficheTriche.pause()) {
+		bool = bool || vueMenu.pause();
+		bool = bool || vueMenuTriche.pause();
+		bool = bool || pause;
+		if(bool)
 			tileP.setDisable(false);
-		}
-		if(!bool)
-			tileP.setDisable(true);
 		return bool;
 	}
 
-	void menu (String choice) {
-		BufferedImage bf = null;
-
-		try {
-			switch(choice){
-			case "start" : bf = ImageIO.read(new File ("start"));
-			break;
-			case "lose" :  bf = ImageIO.read(new File ("lose"));
-			break;
-			case "win":  bf = ImageIO.read(new File ("win"));
-			break;
-			}
-		}catch (Exception e) {
-			System.out.println("erreur menu");
-		}
-
-	}
-	void setupGame() {
-
-		//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
-		//        	if(nouv.intValue() <= 0) {
-		//        		menu("gameover");
-		//        		this.gameLoop.stop();
-		//        	}
-		//        });
-		//        this.env.getListeActeur().getHpProperty().addListener((obs, old, nouv) -> {
-		//        	System.out.println("boss hp changed");
-		//        	if(nouv.intValue() <= 0){
-		//        		menu("win");
-		//        		this.gameLoop.stop();
-		//        	}
-		//        });
-	}
+	//	void menu (String choice) {
+	//		BufferedImage bf = null;
+	//
+	//		try {
+	//			switch(choice){
+	//			case "start" : bf = ImageIO.read(new File ("start"));
+	//			break;
+	//			case "lose" :  bf = ImageIO.read(new File ("lose"));
+	//			break;
+	//			case "win":  bf = ImageIO.read(new File ("win"));
+	//			break;
+	//			}
+	//		}catch (Exception e) {
+	//			System.out.println("erreur menu");
+	//		}
+	//
+	//	}
+	//	void setupGame() {
+	//
+	//		//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
+	//		//        	if(nouv.intValue() <= 0) {
+	//		//        		menu("gameover");
+	//		//        		this.gameLoop.stop();
+	//		//        	}
+	//		//        });
+	//		//        this.env.getListeActeur().getHpProperty().addListener((obs, old, nouv) -> {
+	//		//        	System.out.println("boss hp changed");
+	//		//        	if(nouv.intValue() <= 0){
+	//		//        		menu("win");
+	//		//        		this.gameLoop.stop();
+	//		//        	}
+	//		//        });
+	//	}
 	@FXML
 	void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
 		int xClic = (int) m.getX()/16;
 		int yClic = (int) m.getY()/16;
+		System.out.println("environement");
 		try {
-			if (!pause())
+			if (!pause()) {
 				switch(m.getButton()) {
 
 				case PRIMARY :
-					perso.useEquipe(yClic, xClic);
+					if (!pause()) {
+						perso.useEquipe(yClic, xClic);
+					}
 					break;
 
 				case SECONDARY : 
@@ -320,6 +378,7 @@ public class Controleur implements Initializable {
 				break;
 
 				}
+			}
 		}catch (RienEquiperExeception e) {
 			System.out.println("Le personnage n'a rien equiper");
 		}
@@ -330,6 +389,7 @@ public class Controleur implements Initializable {
 	@FXML
 	void inventaireMouse(MouseEvent m) {
 		Perso perso = this.env.getPerso();
+		System.out.println("inventaire");
 		try {
 			switch(m.getButton()) {
 			case PRIMARY :
@@ -352,6 +412,7 @@ public class Controleur implements Initializable {
 	}
 	@FXML
 	void craftMouse(MouseEvent m) {
+		System.out.println("craft");
 		Perso perso = this.env.getPerso();
 		try {
 			switch(m.getButton()) {

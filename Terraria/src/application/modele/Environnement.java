@@ -38,7 +38,7 @@ public class Environnement {
 	public Environnement() {
 		initialisationMap();
 		this.gravite = 5;
-		perso = new Perso(this, 0, 0);
+		perso = new Perso(this, 108, 32);
 		listActeur= FXCollections.observableArrayList();
 		listProjectile= FXCollections.observableArrayList();
 	}
@@ -51,11 +51,12 @@ public class Environnement {
 	private void initialisationActeur() {
 		listActeur.addAll(
 				new BossVolant(this, 232, 56),
-				new BossSol(this, 188, 63),
-				new BossSol(this, 156, 47),
-				new BossSol(this, 397, 61)
+				new BossSol(this, 188, 61),
+				new BossSol(this, 152, 43),
+				new BossSol(this, 397, 59)
 		);
 	}
+	
 
 	private void initialisationMap(){
 		Object ob;
@@ -139,6 +140,9 @@ public class Environnement {
 		return this.listActeur;
 	}
 
+	public void addMonster(Acteur a) {
+		listActeur.add(a);
+	}
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));

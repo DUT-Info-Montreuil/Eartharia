@@ -7,6 +7,7 @@ import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.timer.Saut;
+import application.modele.item.Projectile;
 import application.modele.monstre.Volant;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -79,8 +80,8 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-//		if(surDuSol() && peutTomber)
-//			new Timer().schedule(new Saut(this), 1500);
+		if(surDuSol() && peutTomber)
+			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut() || true)
 			deplacement(0, -getVitesse());
 	}
@@ -205,8 +206,8 @@ public abstract class Acteur {
 				throw new LimiteMapException();
 			if(getEnv().boxCollisionBloc(ligne,colonne) && !(this instanceof Volant))
 				throw new CollisionException();
-			if(getEnv().boxCollisionActeur(this,ligne,colonne))
-				throw new CollisionActeurException(); 
+//			if(getEnv().boxCollisionActeur(this,ligne,colonne) && (this instanceof Projectile))
+//				throw new CollisionActeurException(); 
 		}
 		setX(getX()+x);
 		setY(getY()+y);

@@ -3,6 +3,7 @@ package application.modele.item;
 import java.util.Iterator;
 
 import application.modele.Acteur;
+import application.modele.Exception.CollisionActeurException;
 import application.modele.acteur.Monstre;
 import application.modele.acteur.Perso;
 public class Projectile extends Acteur{
@@ -58,9 +59,12 @@ public class Projectile extends Acteur{
 		for (Acteur acteur : this.getEnv().aProximiter(this, 1)) {
 			if(acteur instanceof Monstre && this.utilisateur instanceof Perso && isInside(acteur)) {
 				acteur.dommage(getDegatAttaque());
+				setHp(-1);
 			}
 			if(!(acteur instanceof Monstre) && this.utilisateur instanceof Monstre && isInside(acteur)) {
 				acteur.dommage(getDegatAttaque());
+				setHp(-1);
+
 			}
 		}
 	}
@@ -69,10 +73,9 @@ public class Projectile extends Acteur{
 		try {
 			trajectoireY =(lineEquation[0]*(getX()+trajectoireX)+lineEquation[1])-getY();
 			deplacement((int)trajectoireX,(int)trajectoireY);
-		} catch (Exception e) {
 			attaque();
+		}catch (Exception e) {
 			setHp(-1);
-
 		}
 	}
 

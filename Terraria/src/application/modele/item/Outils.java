@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 public abstract class Outils extends Item {
 
 	public Outils(int id) {
-		super(id, 1);
+		super(id, 20);
 		// TODO Auto-generated constructor stub
 	}
 

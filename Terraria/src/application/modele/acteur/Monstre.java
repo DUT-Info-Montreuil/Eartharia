@@ -12,7 +12,7 @@ public abstract class Monstre extends Acteur{
 	private int vision;
 	private int type;
 	public Monstre(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox, int vision) {
-		super(env, x, y,hp,vitesse, atq, xBox, yBox);
+		super(env, x, y,hp,vitesse, xBox, yBox,atq);
 		this.vision=vision;
 	}
 

@@ -7,7 +7,7 @@ import application.modele.item.Projectile;
 
 public class BossVolant extends Volant{
 	public BossVolant(Environnement env, int x, int y) {
-		super(env, x, y, 150,6, 10, 16, 16,15);
+		super(env, x, y, 150,6, 10, 16, 16,25);
 	}
 	@Override
 	public void methodeAttaque(Acteur cible) {
