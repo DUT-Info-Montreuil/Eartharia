@@ -160,8 +160,6 @@ public class Controleur implements Initializable {
 		this.vueMenuTriche = new VueMenuTriche(menuTriche);
 		this.vueInter = new VueInteraction(menuPnj, description);
 		this.music = new Media(Paths.get("src/ressources/son/MusicGeneral.mp3").toUri().toString());
-		this.vueMenu.utilisation();
-		new Timer().schedule(new MenuTimer(vueMenu), 10000);
 		musicPlayer = new MediaPlayer(music);
 		musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		musicPlayer.play();
