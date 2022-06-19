@@ -13,6 +13,7 @@ public class Noyer extends TimerTask {
 
 	@Override
 	public void run() {
-		p.getOxyProperty().set(p.getOxygene()-3);
+		if(p.getOxygene()>0)
+			p.getOxyProperty().set(p.getOxygene()-3);
 	}
 }

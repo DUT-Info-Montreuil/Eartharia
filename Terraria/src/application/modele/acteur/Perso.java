@@ -146,9 +146,13 @@ public class Perso extends Acteur{
 		}
 	}
 	public void seNoie() {
-		if(surDuSol())
-			new Timer().schedule(new Noyer(getEnv().getPerso()), 30000);
+		//if(surDuSol())
+			new Timer().schedule(new Noyer(this), 0, 300000000);
 			System.out.println(this.oxygene);
+	}
+	@Override
+	public void agir() {
+		seNoie();
 	}
 
 }

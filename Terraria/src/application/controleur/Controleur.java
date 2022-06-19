@@ -244,7 +244,7 @@ public class Controleur implements Initializable {
 					if (!pause()) {
 						this.env.unTour();
 						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
-//						env.getPerso().seNoie();
+
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
