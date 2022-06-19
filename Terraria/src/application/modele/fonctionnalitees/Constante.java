@@ -1,5 +1,6 @@
 package application.modele.fonctionnalitees;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import application.modele.Acteur;
@@ -20,6 +21,8 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Constante {
 	private static ArrayList<Integer> BlocPierre = BlocPierre();
@@ -153,5 +156,17 @@ public class Constante {
 		if (p.getEquipe() instanceof Hache)
 			return "src/ressources/son/bruitHache.mp3";
 		return null;
+	}
+	public static String setMusics(Perso p) {
+		if (p.getX()<96*16) 
+			return "src/ressources/son/MusicOcean.mp3";
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16)
+			return "src/ressources/son/MusicCaverne.mp3";
+		else if (p.getX()>=296*16 && p.getY()<26*16)
+			return "src/ressources/son/MusicDesert.mp3";
+		else if (p.getX()>=296*16 && p.getY()>=26*16)
+			return "src/ressources/son/MusicCaverne.mp3";
+		else
+			return "src/ressources/son/MusicGeneral.mp3";
 	}
 }

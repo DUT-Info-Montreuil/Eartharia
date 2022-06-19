@@ -96,6 +96,9 @@ public class Controleur implements Initializable {
 	private Pane menuTriche;
 	private VueMenuJeux vueMenu;
 	private VueMenuTriche vueMenuTriche;
+	private Media music;
+	private MediaPlayer musicPlayer;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {    
 		this.env = new Environnement();
@@ -137,6 +140,11 @@ public class Controleur implements Initializable {
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
 		this.vueMenu = new VueMenuJeux(menu);
 		this.vueMenuTriche = new VueMenuTriche(menuTriche);
+		
+		this.music = new Media(Paths.get("src/ressources/son/MusicGeneral.mp3").toUri().toString());
+		musicPlayer = new MediaPlayer(music);
+		musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		musicPlayer.play();
 	}
 
 	@FXML
@@ -306,11 +314,22 @@ public class Controleur implements Initializable {
 				(ev -> {
 					if (!pause()) {
 						this.env.unTour();
-						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
+						this.decore();
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
 		this.tour.play();    
+	}
+	private void decore() {
+		this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
+		String url = Constante.setMusics(env.getPerso());
+		if (!music.getSource().contains(url)) {
+			this.music = new Media(Paths.get(url).toUri().toString());
+			musicPlayer.stop();
+			musicPlayer = new MediaPlayer(music);
+			musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+			musicPlayer.play();
+		}		
 	}
 
 	private boolean pause() {
@@ -345,7 +364,7 @@ public class Controleur implements Initializable {
 							String url = Constante.cheminSons(perso);
 							if (url != null) {
 								MediaPlayer bruits = new MediaPlayer(new Media(Paths.get(url).toUri().toString()));
-								bruits.setVolume(0.5);
+								bruits.setVolume(0.2);
 								bruits.play();
 							}
 						}catch (Exception e) {
