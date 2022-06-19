@@ -9,6 +9,12 @@ import application.modele.monstre.BossSol;
 import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
 import application.modele.monstre.Volant;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 public class Constante {
 	private static ArrayList<Integer> BlocPierre = BlocPierre();
@@ -83,7 +89,7 @@ public class Constante {
 		listBloc.add(218); //Bloc glace
 		return listBloc;
 	}
-	
+
 	public static boolean estUnBlocSolide(int idBloc) {
 		return !BlocTransparent.contains(idBloc);
 	}
@@ -96,9 +102,8 @@ public class Constante {
 	public static boolean estUnBlocBois(int idBloc) {
 		return Constante.BlocBois.contains(idBloc);
 	}
-	
+
 	public static int view=40;
-	
 	public static String chemin(Acteur a) {
 		if(a instanceof Perso)
 			return "perso";
@@ -114,5 +119,21 @@ public class Constante {
 			return ((Projectile)a).getType();
 		return"";
 	} 
+	public static Background backgroundJeu(Perso p) {
+		Image img;
+		if (p.getX()<96*16) 
+			img =new Image("ressources/fond/caverneOcean.jpg");
+		else if (p.getX()>=96*16 && p.getX()<296*16 && p.getY()>=39*16)
+			img =new Image("ressources/fond/lave.jpg"); 
+		else if (p.getX()>=296*16 && p.getY()<26*16)
+			img =new Image("ressources/fond/desert.png");
+		else if (p.getX()>=296*16 && p.getY()>=26*16)
+			img =new Image("ressources/fond/lave.jpg");
+		else
+			img = new Image("ressources/fond/foret.jpg");	
+		BackgroundImage bgimg = (new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false)));
+		Background bg = new Background(bgimg);
+		return bg;
 
+	}
 }

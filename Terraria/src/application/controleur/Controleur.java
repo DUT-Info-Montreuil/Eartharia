@@ -121,7 +121,7 @@ public class Controleur implements Initializable {
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
-		this.pane.setPrefSize(env.getColonne()*16,env.getLigne()*16);
+		this.pane.setPrefSize(Constante.view*16,Constante.view*16);
 		this.paneActeur.setPrefSize(env.getColonne()*16,env.getLigne()*16);
 		paneActeur.layoutXProperty().bind(env.getPerso().getxProperty().multiply(-1).add((Constante.view/2)*16));
 		paneActeur.layoutYProperty().bind(env.getPerso().getyProperty().multiply(-1).add((Constante.view/2)*16));
@@ -289,6 +289,7 @@ public class Controleur implements Initializable {
 			break;
 		case RIGHT :
 			perso.setDeplacement(3, false);
+			break;
 		default:
 			break;
 		}
@@ -301,6 +302,7 @@ public class Controleur implements Initializable {
 				(ev -> {
 					if (!pause()) {
 						this.env.unTour();
+						this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
