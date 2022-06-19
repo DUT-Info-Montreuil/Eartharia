@@ -5,6 +5,7 @@ import java.util.Timer;
 import application.modele.Exception.CollisionActeurException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
+import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Box;
 import application.modele.fonctionnalitees.timer.Noyade;
 import application.modele.fonctionnalitees.timer.Saut;
@@ -90,10 +91,12 @@ public abstract class Acteur {
 	}
 
 	public void saut() throws Exception{
-		if(surDuSol() && peutTomber)
-			new Timer().schedule(new Saut(this), 1500);
-		if(getSaut())
-			deplacement(0, -getVitesse()-5);
+		if(surDuSol())
+			new Timer().schedule(new Saut(this), 500);
+		if(getSaut()) {
+			System.out.println("saut");
+			deplacement(0, -getVitesse()-10);
+		}
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
@@ -106,12 +109,11 @@ public abstract class Acteur {
 		deplacement(-getVitesse(), 0);
 	}
 	public boolean surDuSol(){
-		for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
+		for (Integer[] cell : getBoxPlayer().limiteBoxBasCase()) {
 			int colonne=cell[0];
 			int ligne=cell[1];
 			try {
-
-				if(getEnv().getBloc(ligne+1, colonne).estSolide()) {
+				if(getEnv().getBloc(ligne, colonne).estSolide()) {
 					setSaut(true);
 					return true;
 				}
@@ -129,7 +131,6 @@ public abstract class Acteur {
 	public DoubleProperty getHpProperty() {
 		return hp;
 	}
-
 	public void setHp(int hp) {
 		this.hp.set(hp);
 	}
@@ -266,13 +267,13 @@ public abstract class Acteur {
 
 	private boolean inWater() {
 		if(getEnv().getIdTuile(caseY(), caseX())==34) {
-			setSaut(true);
 			return true;
 		}
 		return false;
 	}
 	private void noyade() {
 		if (inWater()) {
+			setSaut(true);
 			if (peutNoyer) {
 				new Timer().schedule(new Noyade(this), 2000);
 				if (oxygene.get()>0) 

@@ -1,7 +1,10 @@
 package application.vue;
 
+import java.util.Random;
+
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
 import javafx.scene.control.ProgressBar;
@@ -48,19 +51,28 @@ public class VueActeur{
 		pvBar.layoutYProperty().bind(img.layoutYProperty().subtract(24));
 		pvBar.setId("pv"+acteur.getId());
 		pvBar.setStyle("-fx-accent: red;");
-		System.out.println(pvBar.progressProperty());
 		pvBar.progressProperty().bind(acteur.getHpProperty().divide(acteur.getHpMax()));
 		pane.getChildren().add(pvBar);
 	}
 	private void visuel() {
 		if (acteur instanceof Projectile) {
 			animationProjectile();
-		}else {
-			animationActeur();
+		}else if(acteur instanceof Pnj) {
+			animationPnj();
+		}else{
+			animationMonstre();
 		}
 		this.img = new ImageView(img_acteur);
 
 	}	
+	public void animationPnj() {
+		int rand = new Random().nextInt(3)+1; 
+		try {
+			this.img_acteur = new Image("ressources/pnj/idle"+rand+".png");
+		}catch (Exception e) {
+			this.img_acteur = new Image("ressources/pnj/idle"+rand+".gif");
+		}
+	}
 	public void animationProjectile() {
 		try {
 			this.img_acteur = new Image("ressources/projectile/"+chemin+".png");
@@ -68,7 +80,7 @@ public class VueActeur{
 			this.img_acteur = new Image("ressources/projectile/"+chemin+".gif");
 		}
 	}
-	public void animationActeur() {
+	public void animationMonstre() {
 		try {
 			this.img_acteur = new Image("ressources/"+chemin+"/idle.png");
 		}catch (Exception e) {

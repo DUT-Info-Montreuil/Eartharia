@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
+import application.modele.acteur.Pnj;
 import application.modele.item.Arc;
 import application.modele.item.BatonMagique;
 import application.modele.item.Epee;
@@ -125,6 +126,8 @@ public class Constante {
 			return "ghost";
 		else if(a instanceof Projectile)
 			return ((Projectile)a).getType();
+		else if(a instanceof Pnj)
+			return "pnj";
 		return"";
 	} 
 	public static Background backgroundJeu(Perso p) {

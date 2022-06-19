@@ -13,6 +13,8 @@ public class Saut extends TimerTask {
 
 	@Override
 	public void run() {
-		a.setSaut(false);
+		if (a.peutTomber()) {
+			a.setSaut(false);
+		}
 	}
 }

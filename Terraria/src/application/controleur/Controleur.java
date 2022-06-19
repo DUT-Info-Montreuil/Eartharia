@@ -56,6 +56,7 @@ import application.modele.monstre.Sol;
 import application.modele.monstre.Volant;
 import application.vue.VueActeur;
 import application.vue.VueHp;
+import application.vue.VueInteraction;
 import application.vue.VueInventaire;
 import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
@@ -73,7 +74,8 @@ public class Controleur implements Initializable {
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueOxygene vueOxy;
-
+	
+	private VueInteraction vueInter;
 	private VueCraft vueCraft;
 	private boolean pause;
 
@@ -99,6 +101,10 @@ public class Controleur implements Initializable {
 	private Pane menu;
 	@FXML 
 	private Pane menuTriche;
+	@FXML
+	private Pane menuPnj;
+
+	
 	private VueMenuJeux vueMenu;
 	private VueMenuTriche vueMenuTriche;
 	private Media music;
@@ -129,8 +135,8 @@ public class Controleur implements Initializable {
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
-		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur));
-		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur));
+		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur,vueInter));
+		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur,vueInter));
 		this.env.initialisation();
 	}
 	private void gameLauncher() {
@@ -148,6 +154,7 @@ public class Controleur implements Initializable {
 		this.vueOxy = new VueOxygene(env.getPerso(), tPaneOxy);
 		this.vueMenu = new VueMenuJeux(menu);
 		this.vueMenuTriche = new VueMenuTriche(menuTriche);
+		this.vueInter = new VueInteraction(menuPnj, description);
 		this.music = new Media(Paths.get("src/ressources/son/MusicGeneral.mp3").toUri().toString());
 		musicPlayer = new MediaPlayer(music);
 		musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -214,7 +221,9 @@ public class Controleur implements Initializable {
 					perso.addInventaire(new Arc(this.env.getPerso()));
 					break;
 				case SPACE:
-					//					afficheTriche.ouvFerCraft();
+					if (env.getPerso().interaction()) {
+						vueInter.utilisation();
+					}
 					break;
 				case Q  :
 					perso.addInventaire(new BlocItem(190,1));

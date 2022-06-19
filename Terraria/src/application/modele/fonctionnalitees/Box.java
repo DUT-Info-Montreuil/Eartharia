@@ -54,11 +54,11 @@ public class Box {
 		}		
 		return taille;
 	}
-	public ArrayList<Integer[]> limiteBoxBas() {
+	public ArrayList<Integer[]> limiteBoxBasCase() {
 		ArrayList<Integer[]> taille = new ArrayList<Integer[]>();
-		for(int j = 0; j<width; j+=acteur.getVitesse()) {
-			int futurposX =(acteur.getX()+j)/16; //future position d'une case de la box en X
-			int futurposY =(acteur.getY()+height-16)/16; //future position d'une case de la box en Y
+		for(int j = 0; j<width/16; j+=1) {
+			int futurposX =(acteur.caseX()+j); //future position d'une case de la box en X
+			int futurposY =(acteur.caseY()+height/16); //future position d'une case de la box en Y
 			Integer[] futurPos = {futurposX,futurposY};
 			taille.add(futurPos);
 		}

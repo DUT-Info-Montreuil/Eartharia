@@ -52,6 +52,17 @@ public class Perso extends Acteur{
 				this.echangeDeCoup(m);
 		}
 	}
+	public boolean interaction() {
+		boolean interaction = false;
+		for (Acteur a: getEnv().getListeActeur()) {
+			if(a instanceof Pnj) {
+				Pnj p = (Pnj)a;
+				if(p.interactionPnj())
+					return true;
+			}
+		}
+		return interaction;
+	}
 	public void echangeDeCoup (Acteur a) {
 		//		System.out.println("Degat : " + this.getDegatAttaque());
 		//		System.out.println("ECHANGE DE COUP : " + a.getX() + " HP " + a.getHp() + " Y : " + a.getY());

@@ -38,9 +38,10 @@ public class Environnement {
 	private ObservableList<Projectile> listProjectile;
 	public Environnement() {
 		initialisationMap("src/JSONFile.json");
-		this.gravite = 5;
+		this.gravite = 4;
 		perso = new Perso(this, 108, 32);
 		listActeur= FXCollections.observableArrayList();
+		listActeur.add(new Pnj(this, 170, 34, "test"));
 		listProjectile= FXCollections.observableArrayList();
 	}
 	public Environnement(String mapTest) {
@@ -62,8 +63,9 @@ public class Environnement {
 				new BossVolant(this, 232, 56),
 				new BossSol(this, 188, 61),
 				new BossSol(this, 152, 43),
-				new BossSol(this, 397, 59)
-				);
+				new BossSol(this, 397, 59),
+				new Pnj(this, 158, 35,"Test")
+		);
 	}
 
 	private void initialisationMap(String chemin){
@@ -123,7 +125,7 @@ public class Environnement {
 		return this.map.get(ligne*this.colonne+colonne).estSolide();
 	}
 	public void unTour() {
-		if(!perso.surDuSol() && perso.peutTomber()&& !perso.getDeplacement()[0].get())try {this.perso.tombe(gravite);} catch (Exception e) {}
+		if(!perso.surDuSol() && perso.peutTomber())try {this.perso.tombe(gravite);} catch (Exception e) {}
 		this.perso.agir();
 		agitProjectile();
 		for(int i = this.listActeur.size() -1; i>= 0; i --) {
@@ -132,7 +134,7 @@ public class Environnement {
 				this.listActeur.remove(act);
 			}
 			else {
-				if(act.peutTomber() && !act.surDuSol() && !act.getDeplacement()[0].get())
+				if(act.peutTomber() && !act.surDuSol())
 					try {act.tombe(gravite);} catch (Exception e) {}
 				act.agir();
 			}

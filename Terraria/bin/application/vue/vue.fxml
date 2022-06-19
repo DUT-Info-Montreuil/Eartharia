@@ -15,6 +15,7 @@
 				<TilePane fx:id="tPaneCraft" onMouseClicked="#craftMouse" prefHeight="200.0" prefWidth="40.0" style="-fx-padding: 10;" />
 				<Pane fx:id="menu" prefHeight="200.0" prefWidth="40.0"/>
 				<Pane fx:id="menuTriche" prefHeight="200.0" prefWidth="40.0"/>
+				<Pane fx:id="menuPnj" prefHeight="200.0" prefWidth="40.0"/>
 				<GridPane fx:id="tPaneInvRapide" onMouseClicked="#inventaireMouse" prefHeight="30.0" prefWidth="174.0">
 					<columnConstraints>
 						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
