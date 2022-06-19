@@ -92,13 +92,12 @@ public abstract class Acteur {
 	public void saut() throws Exception{
 		if(surDuSol() && peutTomber)
 			new Timer().schedule(new Saut(this), 1500);
-		if(getSaut() || true)
+		if(getSaut())
 			deplacement(0, -getVitesse()-5);
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
 		deplacement(0, viteseChute);
-		//System.out.println("tombe");
 	}
 	public void droite() throws Exception{
 		deplacement(getVitesse(), 0);
@@ -107,16 +106,17 @@ public abstract class Acteur {
 		deplacement(-getVitesse(), 0);
 	}
 	public boolean surDuSol(){
-		try {
-			for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
-				int colonne=cell[0];
-				int ligne=cell[1];
+		for (Integer[] cell : getBoxPlayer().limiteBoxBas()) {
+			int colonne=cell[0];
+			int ligne=cell[1];
+			try {
+
 				if(getEnv().getBloc(ligne+1, colonne).estSolide()) {
 					setSaut(true);
 					return true;
 				}
-			}
-		}catch(Exception e) {}
+			}catch(Exception e) {}
+		}
 		return false;
 	}
 
@@ -271,7 +271,6 @@ public abstract class Acteur {
 		}
 		return false;
 	}
-
 	private void noyade() {
 		if (inWater()) {
 			if (peutNoyer) {
@@ -291,7 +290,6 @@ public abstract class Acteur {
 	public boolean isPeutNoyer() {
 		return peutNoyer;
 	}
-
 	public void setPeutNoyer(boolean peutNoyer) {
 		this.peutNoyer = peutNoyer;
 	}
