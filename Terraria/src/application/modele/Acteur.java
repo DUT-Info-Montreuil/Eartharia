@@ -6,15 +6,18 @@ import application.modele.Exception.CollisionActeurException;
 import application.modele.Exception.CollisionException;
 import application.modele.Exception.LimiteMapException;
 import application.modele.fonctionnalitees.Box;
+import application.modele.fonctionnalitees.timer.Noyade;
 import application.modele.fonctionnalitees.timer.Saut;
 import application.modele.item.Projectile;
 import application.modele.monstre.Volant;
+import javafx.animation.KeyFrame;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.util.Duration;
 
 public abstract class Acteur {
 
@@ -30,6 +33,9 @@ public abstract class Acteur {
 	private int attaque;
 	private String id;
 	public static int compteur = 0; 
+	private IntegerProperty oxygene;
+
+	private boolean peutNoyer; //cooldown pour pas perdre de oxygene beaucoup de fois a suite
 	private boolean peutAttaquer; //cooldown pour pas que le monstre puisse attaquer beaucoup de fois a suite
 	private boolean peutTomber;
 
@@ -39,21 +45,23 @@ public abstract class Acteur {
 		this.x =new SimpleIntegerProperty(x*16) ;
 		this.y =new SimpleIntegerProperty(y*16) ;
 		this.boxPlayer = new Box(xBox, yBox,this);
-		
+
 		this.saut = false;
 		this.vitesse = vitesse;
 		this.attaque = atq;
 		this.peutAttaquer=true;
 		this.peutTomber=true;
+		this.peutNoyer=true;
 
 		this.hpMax =new SimpleDoubleProperty(hpMax) ;
 		this.hp =new SimpleDoubleProperty(hpMax) ;
+		this.oxygene = new SimpleIntegerProperty(8);
 		this.deplacement = new BooleanProperty[4];
 		this.deplacement[0] = new SimpleBooleanProperty(false);
 		this.deplacement[1] = new SimpleBooleanProperty(false);
 		this.deplacement[2] = new SimpleBooleanProperty(false);
 		this.deplacement[3] = new SimpleBooleanProperty(false);
-		
+
 		Acteur.compteur ++; 
 	}
 
@@ -85,7 +93,7 @@ public abstract class Acteur {
 		if(surDuSol() && peutTomber)
 			new Timer().schedule(new Saut(this), 1500);
 		if(getSaut() || true)
-			deplacement(0, -getVitesse());
+			deplacement(0, -getVitesse()-5);
 	}
 	public void tombe(int gravite) throws Exception{
 		int viteseChute = gravite;//gravite * (5/vitesse acteur) > division pour que plus la vitesse est basse plus les degats sont haut
@@ -108,14 +116,6 @@ public abstract class Acteur {
 					return true;
 				}
 			}
-			for (Integer[] cell : getBoxPlayer().parcourBoxCase()) {
-				int colonne=cell[0];
-				int ligne=cell[1];
-				if(getEnv().getIdTuile(ligne, colonne)==34) {
-					setSaut(true);
-					return false;
-				}
-			}
 		}catch(Exception e) {}
 		return false;
 	}
@@ -129,7 +129,7 @@ public abstract class Acteur {
 	public DoubleProperty getHpProperty() {
 		return hp;
 	}
-	
+
 	public void setHp(int hp) {
 		this.hp.set(hp);
 	}
@@ -209,8 +209,8 @@ public abstract class Acteur {
 				throw new LimiteMapException();
 			if(getEnv().boxCollisionBloc(ligne,colonne) && !(this instanceof Volant))
 				throw new CollisionException();
-//			if(getEnv().boxCollisionActeur(this,ligne,colonne) && (this instanceof Projectile))
-//				throw new CollisionActeurException(); 
+			//			if(getEnv().boxCollisionActeur(this,ligne,colonne) && (this instanceof Projectile))
+			//				throw new CollisionActeurException(); 
 		}
 		setX(getX()+x);
 		setY(getY()+y);
@@ -232,20 +232,21 @@ public abstract class Acteur {
 			if(deplacement[3].get())
 				droite();
 		}catch (LimiteMapException e) {
-//			System.out.println("Limite map !");
+			//			System.out.println("Limite map !");
 		}catch (CollisionException e) {
-//			System.out.println("Collision Bloc map !");
+			//			System.out.println("Collision Bloc map !");
 		}catch (Exception e) {
-//			e.printStackTrace();
+			//			e.printStackTrace();
 		}
+		noyade();
 	}
 	public void dommage(int damage) {
 		this.setHp((int) (this.getHp() - damage));
 	}
-    public String getId() {
-    	return id;
-    }
-    public boolean peutTomber() {
+	public String getId() {
+		return id;
+	}
+	public boolean peutTomber() {
 		return peutTomber;
 	}
 	public boolean peutAttaquer() {
@@ -254,5 +255,44 @@ public abstract class Acteur {
 
 	public void setPeutAttaquer(boolean peutAttaquer) {
 		this.peutAttaquer = peutAttaquer;
+	}
+	public int getOxygene() {
+		return oxygene.get();
+	}
+
+	public IntegerProperty getOxygeneProperty() {
+		return oxygene;
+	}
+
+	private boolean inWater() {
+		if(getEnv().getIdTuile(caseY(), caseX())==34) {
+			setSaut(true);
+			return true;
+		}
+		return false;
+	}
+
+	private void noyade() {
+		if (inWater()) {
+			if (peutNoyer) {
+				new Timer().schedule(new Noyade(this), 2000);
+				if (oxygene.get()>0) 
+					oxygene.set(oxygene.get()-1);
+				else
+					this.dommage(25);
+				setPeutNoyer(false);
+			}
+
+		}
+		else {
+			oxygene.set(8);
+		}
+	}
+	public boolean isPeutNoyer() {
+		return peutNoyer;
+	}
+
+	public void setPeutNoyer(boolean peutNoyer) {
+		this.peutNoyer = peutNoyer;
 	}
 }

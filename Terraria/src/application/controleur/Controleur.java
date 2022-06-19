@@ -61,6 +61,7 @@ import application.vue.VueCraft;
 import application.vue.VueMapTerraria;
 import application.vue.VueMenuJeux;
 import application.vue.VueMenuTriche;
+import application.vue.VueOxygene;
 
 public class Controleur implements Initializable {
 
@@ -71,6 +72,8 @@ public class Controleur implements Initializable {
 	private Timeline tour;
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
+	private VueOxygene vueOxy;
+
 	private VueCraft vueCraft;
 	private boolean pause;
 
@@ -86,6 +89,8 @@ public class Controleur implements Initializable {
 	private TilePane tileP;
 	@FXML
 	private TilePane tPaneHp;
+	@FXML
+	private TilePane tPaneOxy;
 	@FXML
 	private Label description;
 	@FXML
@@ -119,6 +124,8 @@ public class Controleur implements Initializable {
 			}
 		});
 		this.env.getPerso().getHpProperty().addListener((obs, old, nouv)-> vueHp.refresh());
+		this.env.getPerso().getOxygeneProperty().addListener((obs, old, nouv)-> vueOxy.refreshOxy());
+
 		this.env.getPerso().getInventaire().addListener(observeInventaire);
 		this.env.getMap().addListener(observeMap);
 		this.env.getPerso().getCraft().getListCraft().addListener(observeCraft);
@@ -138,9 +145,9 @@ public class Controleur implements Initializable {
 		this.vueInventaire= new VueInventaire(tPaneInvRapide,tPaneInv,this.env.getPerso().getInventaire());
 		this.vueCraft = new VueCraft(tPaneCraft, env.getPerso().getCraft().getListCraft());
 		this.vueHp= new VueHp(this.env.getPerso(), tPaneHp);
+		this.vueOxy = new VueOxygene(env.getPerso(), tPaneOxy);
 		this.vueMenu = new VueMenuJeux(menu);
 		this.vueMenuTriche = new VueMenuTriche(menuTriche);
-		
 		this.music = new Media(Paths.get("src/ressources/son/MusicGeneral.mp3").toUri().toString());
 		musicPlayer = new MediaPlayer(music);
 		musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -318,7 +325,7 @@ public class Controleur implements Initializable {
 					}
 				}));
 		this.tour.getKeyFrames().add(kf);
-		this.tour.play();    
+		this.tour.play();
 	}
 	private void decore() {
 		this.pane.setBackground(Constante.backgroundJeu(env.getPerso()));

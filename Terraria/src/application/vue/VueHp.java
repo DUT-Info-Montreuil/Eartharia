@@ -1,6 +1,7 @@
 package application.vue;
 
 import application.modele.acteur.Perso;
+import application.modele.fonctionnalitees.Constante;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
@@ -18,6 +19,7 @@ public class VueHp {
 	public VueHp(Perso perso, TilePane tPane) {
 		this.perso=perso;
 		this.tPane=tPane;
+		tPane.setLayoutX(Constante.view*16-tPane.getPrefWidth()-10);
 		imgCoeurPlein= new Image("ressources/coeur.png", 16, 16, true, true);
 		imgDemiCoeur= new Image("ressources/demicoeur.png", 16, 16, true, true);
 		imgCoeurVide= new Image("ressources/coeurvide.png", 16, 16, true, true);

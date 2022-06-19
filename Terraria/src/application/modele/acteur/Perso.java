@@ -6,7 +6,9 @@ import java.util.Timer;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +29,7 @@ public class Perso extends Acteur{
 	private ObservableList<Item> inventaire;
 	private ObjectProperty<Item> equipe;
 	private CraftMenu craft;
+	private IntegerProperty oxygene;
 
 	public Perso(Environnement env, int x, int y) {
 		super(env, x, y, 200,4,16,32,10);

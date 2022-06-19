@@ -27,6 +27,7 @@
 					</rowConstraints>
 				</GridPane>
 				<TilePane fx:id="tPaneHp" alignment="TOP_RIGHT" layoutX="175.0" prefHeight="37.0" prefWidth="145.0" />
+				<TilePane fx:id="tPaneOxy" alignment="TOP_RIGHT" layoutX="175.0" prefHeight="37.0" prefWidth="145.0" />
 				<Label fx:id="description" />
 				<GridPane fx:id="tPaneInv" layoutX="9.0" layoutY="16.0" onMouseClicked="#inventaireMouse" prefHeight="125.0" prefWidth="192.0">
 					<columnConstraints>
