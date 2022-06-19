@@ -266,6 +266,9 @@ public class Controleur implements Initializable {
 				}
 			else{
 				switch (k.getCode()) {
+				case SPACE:
+						vueInter.utilisation();
+					break;
 				case C:
 					if (vueCraft.pause()) {
 						vueCraft.ouvFerCraft(env.getPerso().peutcraft());
@@ -357,6 +360,7 @@ public class Controleur implements Initializable {
 		}
 		bool = bool || vueMenu.pause();
 		bool = bool || vueMenuTriche.pause();
+		bool = bool || vueInter.pause();
 		bool = bool || pause;
 		if(bool)
 			tileP.setDisable(false);

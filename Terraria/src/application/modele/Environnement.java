@@ -64,7 +64,10 @@ public class Environnement {
 				new BossSol(this, 188, 61),
 				new BossSol(this, 152, 43),
 				new BossSol(this, 397, 59),
-				new Pnj(this, 158, 35,"Test")
+				new Pnj(this, 121, 32,"Bonjour voici mon message"),
+				new Pnj(this, 92, 28,"J'ai pas de chose importante"),
+				new Pnj(this, 396, 38,"Bonjour voici mon message à Moi !!")
+
 		);
 	}
 

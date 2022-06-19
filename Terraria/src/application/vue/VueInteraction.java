@@ -29,18 +29,18 @@ public class VueInteraction {
 		}
 	}
 	private void set() {
-		this.zoneMessage.setVisible(true);
+		this.zoneMessage.setVisible(false);
+		this.label.setVisible(false);
 		//		Image img = new Image(chemin);
 		//		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		//		Background bGround = new Background(bImg);
 		//		zoneMessage.setBackground(bGround);	
-		zoneMessage.setLayoutX(Constante.view-zoneMessage.getPrefWidth());
-		zoneMessage.setLayoutY(0);
 		zoneMessage.setPrefSize(Constante.view*16/4, Constante.view*16/4);
 	}
 
 	public void utilisation() {
 		this.zoneMessage.setVisible(!zoneMessage.isVisible());
+		this.label.setVisible(!label.isVisible());
 		for (int iterator = 0;iterator<=((Pane) this.zoneMessage.getParent()).getChildren().size(); iterator++) {
 			if (zoneMessage.isVisible()) 
 				this.zoneMessage.toFront();

@@ -10,10 +10,9 @@ public class Pnj extends Acteur {
 	public String interationText;
 	
 	public Pnj(Environnement env, int x, int y,String message) {
-		super(env, x, y,1, 4, 16,16,10);
+		super(env, x, y,1, 4, 16,32,10);
 		this.interact_on = new SimpleBooleanProperty(false);
 		this.interationText = message;
-		System.out.println("interaction text"+count+":"+interationText);
 		count ++;
 	}
 	public String getInterationText() {
