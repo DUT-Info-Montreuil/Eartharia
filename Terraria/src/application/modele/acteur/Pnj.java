@@ -2,20 +2,47 @@ package application.modele.acteur;
 
 import application.modele.Acteur;
 import application.modele.Environnement;
+import javafx.beans.property.*;
 
 public class Pnj extends Acteur {
-	public static int compteur = 0;
-	private String idActeur;
+	private BooleanProperty interact_on;
+	public static int count = 0;
+	public String interationText;
 	
-	public Pnj(Environnement env, int x, int y, int hp) {
-		super(env, x, y,0, hp, 0,36,36);
-		
+	public Pnj(Environnement env, int x, int y,String message) {
+		super(env, x, y,1, 4, 16,32,10);
+		this.interact_on = new SimpleBooleanProperty(false);
+		this.interationText = message;
+		count ++;
+	}
+	public String getInterationText() {
+		return interationText;
 	}
 
 	@Override
 	public void agir() {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.tombe(3);
+		} catch (Exception e) {
+
+		}
+	}
+	public boolean interactionPnj() {
+		if(Math.abs(getEnv().getPerso().caseX() - this.caseX()) <=1) {
+			interact_on.set(true);
+			return true;
+		}
+		interact_on.set(false);
+		return false;
 	}
 
+	public BooleanProperty getInteract_onProperty() {
+		return interact_on;
+	}
+	public void setInteract_on(boolean interact_on) {
+		this.interact_on.setValue(interact_on);
+	}
+	public boolean getInteract_on() {
+		return interact_on.getValue();
+	}
 }

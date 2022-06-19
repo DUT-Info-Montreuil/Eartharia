@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,10 +17,14 @@ import application.modele.Exception.LimiteMapException;
 import application.modele.acteur.Perso;
 import application.modele.acteur.Pnj;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.item.Hache;
+import application.modele.item.Pelle;
+import application.modele.item.Pioche;
 import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
+import application.modele.monstre.BossVolant;
 import application.modele.monstre.Sol;
-import application.modele.monstre.volant;
+import application.modele.monstre.Volant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -29,27 +35,46 @@ public class Environnement {
 	private Perso perso;
 	private int gravite;
 	private ObservableList<Acteur> listActeur;
-	private int temps = 0;
-	private ObservableList<Projectile> projectiles;
-
+	private ObservableList<Projectile> listProjectile;
 	public Environnement() {
-		initialisation();
-		this.gravite = 2;
-		projectiles = FXCollections.observableArrayList();
-		perso = new Perso(this, 0, 0);
-		listActeur= FXCollections.observableArrayList(
-				new Sol(this, 3, 10, this.perso),
-				new Sol(this, 10, 10, this.perso),
-				new Sol(this, 15, 4, this.perso),
-//				new volant(this, 3,6),
-				new BossSol(this, 16, 2, this.perso)
-				);
+		initialisationMap("src/JSONFile.json");
+		this.gravite = 4;
+		perso = new Perso(this, 108, 32);
+		listActeur= FXCollections.observableArrayList();
+		listActeur.add(new Pnj(this, 170, 34, "test"));
+		listProjectile= FXCollections.observableArrayList();
+	}
+	public Environnement(String mapTest) {
+		initialisationMap(mapTest);
+		this.gravite = 16;
+		perso = new Perso(this, 1, 6);
+		listActeur= FXCollections.observableArrayList();
+		listActeur.add(new Sol(this,8,6));
+		listProjectile= FXCollections.observableArrayList();
 	}
 
-	private void initialisation(){
+	public void initialisation() {
+		this.initialisationActeur();
+		perso.initialisation();
+	}
+
+	private void initialisationActeur() {
+		listActeur.addAll(
+				new BossVolant(this, 232, 56),
+				new BossSol(this, 188, 61),
+				new BossSol(this, 152, 43),
+				new BossSol(this, 397, 59),
+				new Pnj(this, 121, 32,"Bonjour voici mon message"),
+				new Pnj(this, 92, 28,"J'ai pas de chose importante"),
+				new Pnj(this, 396, 38,"Bonjour voici mon message à Moi !!")
+
+		);
+	}
+
+	private void initialisationMap(String chemin){
 		Object ob;
 		try {
-			ob = new JSONParser().parse(new FileReader("src/JSONFile.json"));
+			ob = new JSONParser().parse(new FileReader(chemin));
 			JSONObject Jsonbject = (JSONObject) ob;
 
 			@SuppressWarnings("rawtypes")
@@ -71,87 +96,52 @@ public class Environnement {
 			e.printStackTrace();
 		}
 	}
-	public boolean boxCollisionActeur(int ligne, int colonne){
-        for (Acteur acteur : listActeur) {
-            if(acteur.caseX()==colonne && acteur.caseY()==ligne)
-                return true;
-        }
-        return false;
-    }
+	public void vueNombre() {
+		for (int j = 0; j < colonne; j++) {
+			System.out.print(j+"-\t");			
+		}
+		System.out.println();
+		for (int i = 0; i < ligne; i++) {
+			for (int j = 0; j <colonne; j++) {
+				if ((perso.caseX()==j && perso.caseY()==i) || 
+					(perso.caseX()==j && perso.caseY()+1==i)) { //le perso fait 16x32 (1 largeur 2 hauteur)
+					System.out.print("P\t");
+				}
+				else if (listActeur.get(0).caseX()==j && listActeur.get(0).caseY()==i) {
+					System.out.print("M\t");
+				}
+				else
+					System.out.print(this.map.get(i*colonne+j).getIdTuile()+"\t");
+			}
+			System.out.println("-"+i);
+		}
+	}
 
+	public boolean boxCollisionActeur(Acteur a,int ligne, int colonne){
+		for (Acteur acteur : listActeur) {
+			if( a.getId()!= acteur.getId() &&acteur.caseX()==colonne && acteur.caseY()==ligne)
+				return true;
+		}
+		return false;
+	}
 	public boolean boxCollisionBloc(int ligne, int colonne){
 		return this.map.get(ligne*this.colonne+colonne).estSolide();
 	}
-	public void vueNombre() {
-		for (int i = 0; i < ligne; i++) {
-			for (int j = 0; j <colonne; j++) {
-				System.out.print(this.map.get(i*ligne+j).getId()+"\t");
-			}
-			System.out.println();
-		}
-	}
 	public void unTour() {
-		this.gravite();
-		this.lancerProjectiles();
+		if(!perso.surDuSol() && perso.peutTomber())try {this.perso.tombe(gravite);} catch (Exception e) {}
 		this.perso.agir();
+		agitProjectile();
 		for(int i = this.listActeur.size() -1; i>= 0; i --) {
 			Acteur act = listActeur.get(i);
 			if(act.estMort()){
 				this.listActeur.remove(act);
 			}
 			else {
+				if(act.peutTomber() && !act.surDuSol())
+					try {act.tombe(gravite);} catch (Exception e) {}
 				act.agir();
 			}
 		}
-		for( Acteur a : listActeur ) {
-			a.agir();
-		}
-
-		if (temps%8==0){
-		}
-		temps++;
-	}
-	public int getTemp() {
-		return temps;
-	}
-	public Acteur getActeurs (String id) {
-		for (Acteur a : this.listActeur){
-			if(a.getId().equals(id))
-				return a;
-		}
-		return null;
-
-	}
-	private void gravite() {
-		//plus tard faire un for each pour la liste acteur
-		try {
-			if(!perso.surDuSol())
-				this.perso.tombe(gravite);
-		}catch (LimiteMapException e) {
-			System.out.println("fin limite map");
-		}catch (CollisionException e) {
-			System.out.println("Boite de collision touche un bloc");
-		}catch (Exception e) {
-			e.printStackTrace();
-		};
-	}
-	public void addListProjectiles(Projectile p) {
-		projectiles.add(p);
-	}
-	public void lancerProjectiles() {
-		for (int i=0; i<projectiles.size(); i++) {
-			projectiles.get(i).lancer();
-		}
-	}
-//	public boolean verifAutourProjectile(Projectile p) {
-//		if (!this.getBloc((int)p.getX(), p.getY()).estSolide()) {
-//			return true;
-//		}
-//		return false;
-//	}
-
-	public ObservableList<Projectile> getListProjectiles() {
-		return this.projectiles;
 	}
 	public int getIdTuile(int ligne, int colonne) {
 		return this.map.get(ligne*this.colonne+colonne).getIdTuile();
@@ -175,6 +165,9 @@ public class Environnement {
 		return this.listActeur;
 	}
 
+	public void addMonster(Acteur a) {
+		listActeur.add(a);
+	}
 	public void setBlock(int yClic, int xClic,int idTuile) {
 		getBloc(yClic,xClic).setIdTuile(idTuile);
 		getBloc(yClic,xClic).setCollision(Constante.estUnBlocSolide(idTuile));
@@ -187,13 +180,63 @@ public class Environnement {
 		map.remove(getBloc(ligne,colonne));
 		map.add(ligne*this.colonne+colonne, new Bloc(0));
 	}
-	public ArrayList<Acteur> ennemiPresent() {
-		ArrayList<Acteur> ennemis=new ArrayList<Acteur>();
-		for (int i=0; i<listActeur.size(); i++) {
-			if ((listActeur.get(i).getX()<=this.perso.getX()+1 || listActeur.get(i).getX()>=this.perso.getX()-1 || listActeur.get(i).getY()>=this.perso.getY()-1 || (listActeur.get(i).getX()>=this.perso.getX()-1 && listActeur.get(i).getY()>=this.perso.getY()-1) || (listActeur.get(i).getX()<=this.perso.getX()+1 && listActeur.get(i).getY()>=this.perso.getY()-1)) && listActeur.get(i) instanceof Pnj ) {
-				ennemis.add(listActeur.get(i));
+
+	public ArrayList<Acteur> aProximiter(Acteur me,int range) {
+		ArrayList<Acteur> listA= new ArrayList<Acteur>();
+		if(me.getId()!=perso.getId() &&
+				(Math.abs(me.caseY()-perso.caseY())<=range)	&&
+				(Math.abs(me.caseX()-perso.caseX())<=range)	) {
+			listA.add(perso);
+		}
+		for(Acteur acteur : listActeur){
+			if(me.getId()!=acteur.getId() &&
+					(Math.abs(me.caseY()-acteur.caseY())<=range)&&
+					(Math.abs(me.caseX()-acteur.caseX())<=range)) {
+				listA.add(acteur);
 			}
 		}
-		return ennemis; 
+		return listA;
 	}
+	public Acteur plusProche(Acteur me,int range) {
+		Acteur a = perso;
+		for(Acteur acteur : listActeur){
+			if(me.getId()!=acteur.getId()){
+				if (Math.abs(a.caseX()-me.caseX())> Math.abs(acteur.caseX()-me.caseX()) &&
+						Math.abs(a.caseY()-me.caseY())> Math.abs(acteur.caseY()-me.caseY())){
+					a=acteur;
+				}
+			}
+		}
+		if (Math.abs(a.caseX()-me.caseX())<=range && Math.abs(a.caseY()-me.caseY())<=range) {
+			return a;
+		}
+		return null;
+	}
+	public Acteur getActeurs (String id) {
+		for (Acteur a : this.listActeur){
+			if(a.getId().equals(id))
+				return a;
+		}
+		return null;
+
+	}
+
+	public void addListProjectiles(Projectile p) {
+		listProjectile.add(p);
+	}
+	private void agitProjectile() {
+		for (int i = listProjectile.size()-1;i>=0;i--) {
+			Projectile projectile = listProjectile.get(i);
+			if(projectile.estMort()){
+				this.listProjectile.remove(projectile);
+			}
+			else {
+				projectile.agir();
+			}
+		}
+	}
+	public ObservableList<Projectile> getListProjectile() {
+		return listProjectile;
+	}
+
 }
