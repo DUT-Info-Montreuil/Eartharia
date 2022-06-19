@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import application.modele.Item;
 import application.modele.Exception.ItemNonTrouverException;
+import application.modele.fonctionnalitees.Constante;
 import application.modele.fonctionnalitees.ItemFonctionnalite;
 import application.modele.fonctionnalitees.Tableau;
 import javafx.beans.property.BooleanProperty;
@@ -61,17 +62,18 @@ public class VueCraft {
 		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		Background bGround = new Background(bImg);
 		craftPane.setBackground(bGround);	
-		Pane p = (Pane)craftPane.getParent();
-		craftPane.setLayoutX(p.getPrefWidth()-craftPane.getPrefWidth()*2);
-		craftPane.setLayoutY(p.getPrefHeight()/2-craftPane.getPrefHeight()/2);
+		craftPane.setLayoutX((Constante.view/2)*16-craftPane.getPrefWidth()*2);
+		craftPane.setLayoutY((Constante.view/2)*16-craftPane.getPrefHeight()/2);
 	}
 	public void ouvFerCraft(boolean peutCraft){
 		if(peutCraft) {
 			visibility=!visibility;
 			this.craftPane.setVisible(visibility);
 			if(visibility)
-				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) 
+				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) {
 					this.craftPane.toFront();
+					System.out.println("front");
+		}
 			else
 				for (int iterator = 0;iterator<=((Pane) this.craftPane.getParent()).getChildren().size(); iterator++) 
 					this.craftPane.toBack();

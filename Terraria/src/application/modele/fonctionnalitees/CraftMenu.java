@@ -11,6 +11,7 @@ import application.modele.acteur.Perso;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
 import application.modele.item.Epee;
+import application.modele.item.EpeeFlame;
 import application.modele.item.Hache;
 import application.modele.item.Pioche;
 import javafx.collections.FXCollections;
@@ -43,8 +44,10 @@ public class CraftMenu {
 	private void arme() {
 		if(!estPresent(16) && canCraft(16))
 			craft.add(new BatonMagique(acteur));
-		if(!estPresent(59) && canCraft(59))
+		if(!estPresent(3) && canCraft(3))
 			craft.add(new Epee(acteur));
+		if(!estPresent(59) && canCraft(59))
+			craft.add(new EpeeFlame(acteur));
 	}
 	public boolean estPresent(int i) {
 		for (Item item : craft) 
@@ -60,7 +63,9 @@ public class CraftMenu {
 				acteur.addInventaire(item);
 				craft(item.getIdItem());
 				craft.remove(item);
+				break;
 			}
+			refresh();
 		}
 	}
 	public ObservableList<Item> getListCraft() {

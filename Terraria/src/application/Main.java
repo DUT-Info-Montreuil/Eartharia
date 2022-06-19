@@ -1,4 +1,4 @@
-package application;
+ package application;
 
 import application.modele.fonctionnalitees.Constante;
 import javafx.application.Application;
@@ -24,10 +24,10 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
 	public static void main(String[] args) {
 //		MediaPlayer media = new MediaPlayer(new Media(new File("src/ressources/MusicGeneral.wav").toURI().toString()));
 //		media.play();
 		launch(args);
 	}
+	
 }

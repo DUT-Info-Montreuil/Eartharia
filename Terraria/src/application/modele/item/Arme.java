@@ -3,6 +3,8 @@ package application.modele.item;
 import application.modele.Acteur;
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.acteur.Monstre;
+import application.modele.acteur.Perso;
 
 public abstract class Arme extends Item {
 	
@@ -21,14 +23,6 @@ public abstract class Arme extends Item {
 		this.utilisateur = utilisateur;
 	}
 
-//	public void Attaque() {
-//		if(this.env.ennemiPresent().size()!=0 /*&& this.env.getPerso().getEquipe() instanceof Arme*/) {
-//			for (int i=0; i<this.env.ennemiPresent().size(); i++) {
-//				this.env.ennemiPresent().get(i).setHp(this.degats);
-//			}
-//		}
-//	}
-
 	@Override
 	public abstract void agit(int y, int x, Environnement env);
 
@@ -38,6 +32,10 @@ public abstract class Arme extends Item {
 
 	public void setUtilisateur(Acteur utilisateur) {
 		this.utilisateur = utilisateur;
+	}
+
+	public int getDegats() {
+		return degats;
 	}
 
 }
