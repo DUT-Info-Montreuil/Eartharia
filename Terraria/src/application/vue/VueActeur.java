@@ -4,6 +4,7 @@ import application.modele.Acteur;
 import application.modele.acteur.Perso;
 import application.modele.fonctionnalitees.Constante;
 import application.modele.item.Projectile;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -34,9 +35,22 @@ public class VueActeur{
 			img.setLayoutY((Constante.view/2)*16);
 		}
 		else {
+			if (!(acteur instanceof Projectile))
+				acteurPv();
 			img.layoutXProperty().bind(acteur.getxProperty());
 			img.layoutYProperty().bind(acteur.getyProperty());
 		}
+	}
+	private void acteurPv() {
+		ProgressBar pvBar= new ProgressBar();
+		pvBar.setPrefSize(acteur.getBoxPlayer().getX()*3, 12);
+		pvBar.layoutXProperty().bind(img.layoutXProperty().subtract(pvBar.getPrefWidth()/2-8));
+		pvBar.layoutYProperty().bind(img.layoutYProperty().subtract(24));
+		pvBar.setId("pv"+acteur.getId());
+		pvBar.setStyle("-fx-accent: red;");
+		System.out.println(pvBar.progressProperty());
+		pvBar.progressProperty().bind(acteur.getHpProperty().divide(acteur.getHpMax()));
+		pane.getChildren().add(pvBar);
 	}
 	private void visuel() {
 		if (acteur instanceof Projectile) {

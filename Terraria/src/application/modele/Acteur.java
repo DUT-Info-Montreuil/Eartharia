@@ -10,8 +10,10 @@ import application.modele.fonctionnalitees.timer.Saut;
 import application.modele.item.Projectile;
 import application.modele.monstre.Volant;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Acteur {
@@ -19,8 +21,8 @@ public abstract class Acteur {
 	private IntegerProperty x;
 	private IntegerProperty y;
 	private boolean saut;
-	private IntegerProperty hpMax;
-	private IntegerProperty hp;
+	private DoubleProperty hpMax;
+	private DoubleProperty hp;
 	private Environnement env;
 	private int vitesse;
 	private Box boxPlayer;
@@ -44,8 +46,8 @@ public abstract class Acteur {
 		this.peutAttaquer=true;
 		this.peutTomber=true;
 
-		this.hpMax =new SimpleIntegerProperty(hpMax) ;
-		this.hp =new SimpleIntegerProperty(hpMax) ;
+		this.hpMax =new SimpleDoubleProperty(hpMax) ;
+		this.hp =new SimpleDoubleProperty(hpMax) ;
 		this.deplacement = new BooleanProperty[4];
 		this.deplacement[0] = new SimpleBooleanProperty(false);
 		this.deplacement[1] = new SimpleBooleanProperty(false);
@@ -124,26 +126,27 @@ public abstract class Acteur {
 	public Box getBoxPlayer() {
 		return boxPlayer;
 	}
-	public IntegerProperty getHpProperty() {
+	public DoubleProperty getHpProperty() {
 		return hp;
 	}
+	
 	public void setHp(int hp) {
 		this.hp.set(hp);
 	}
-	public int getHp() {
+	public double getHp() {
 		return this.hp.getValue();
 	}
 
-	public void setHpPlus(int hpPlus) {
-		this.hp.setValue(this.hp.getValue()+hpPlus);
+	public void setHpPlus(double d) {
+		this.hp.setValue(this.hp.getValue()+d);
 		limiteHp();
 	}
 
-	public IntegerProperty getHpMaxProperty() {
+	public DoubleProperty getHpMaxProperty() {
 		return this.hpMax;
 	}
 
-	public int getHpMax() {
+	public double getHpMax() {
 		return this.hpMax.getValue();
 	}
 
@@ -237,7 +240,7 @@ public abstract class Acteur {
 		}
 	}
 	public void dommage(int damage) {
-		this.setHp(this.getHp() - damage);
+		this.setHp((int) (this.getHp() - damage));
 	}
     public String getId() {
     	return id;

@@ -64,7 +64,6 @@ public class Projectile extends Acteur{
 			if(!(acteur instanceof Monstre) && this.utilisateur instanceof Monstre && isInside(acteur)) {
 				acteur.dommage(getDegatAttaque());
 				setHp(-1);
-
 			}
 		}
 	}

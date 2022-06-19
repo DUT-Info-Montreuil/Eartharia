@@ -33,7 +33,7 @@ public class VueHp {
 		int decalage = 0;
 		if (this.perso.getHp()%2==1) 
 			decalage =1;
-		for (int i = (perso.getHp())/50; i <perso.getHpMax()/50 -decalage; i++) {
+		for (int i = (int) ((perso.getHp())/50); i <perso.getHpMax()/50 -decalage; i++) {
 			imgVH = new ImageView(imgCoeurVide);
 			tPane.getChildren().add(imgVH);
 		}
