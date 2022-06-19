@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -27,6 +28,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 
@@ -42,6 +44,8 @@ import application.modele.Observateur.ObserveMap;
 import application.modele.acteur.Perso;
 import application.modele.Item;
 import application.modele.fonctionnalitees.Constante;
+import application.modele.fonctionnalitees.timer.CoolDown;
+import application.modele.fonctionnalitees.timer.MenuTimer;
 import application.modele.item.Arc;
 import application.modele.item.BatonMagique;
 import application.modele.item.BlocItem;
@@ -156,6 +160,8 @@ public class Controleur implements Initializable {
 		this.vueMenuTriche = new VueMenuTriche(menuTriche);
 		this.vueInter = new VueInteraction(menuPnj, description);
 		this.music = new Media(Paths.get("src/ressources/son/MusicGeneral.mp3").toUri().toString());
+		this.vueMenu.utilisation();
+		new Timer().schedule(new MenuTimer(vueMenu), 10000);
 		musicPlayer = new MediaPlayer(music);
 		musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		musicPlayer.play();
