@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.json.simple.JSONArray;
@@ -36,10 +37,18 @@ public class Environnement {
 	private ObservableList<Acteur> listActeur;
 	private ObservableList<Projectile> listProjectile;
 	public Environnement() {
-		initialisationMap();
+		initialisationMap("src/JSONFile.json");
 		this.gravite = 5;
 		perso = new Perso(this, 108, 32);
 		listActeur= FXCollections.observableArrayList();
+		listProjectile= FXCollections.observableArrayList();
+	}
+	public Environnement(String mapTest) {
+		initialisationMap(mapTest);
+		this.gravite = 16;
+		perso = new Perso(this, 1, 6);
+		listActeur= FXCollections.observableArrayList();
+		listActeur.add(new Sol(this,8,6));
 		listProjectile= FXCollections.observableArrayList();
 	}
 
@@ -54,14 +63,13 @@ public class Environnement {
 				new BossSol(this, 188, 61),
 				new BossSol(this, 152, 43),
 				new BossSol(this, 397, 59)
-		);
+				);
 	}
-	
 
-	private void initialisationMap(){
+	private void initialisationMap(String chemin){
 		Object ob;
 		try {
-			ob = new JSONParser().parse(new FileReader("src/JSONFile.json"));
+			ob = new JSONParser().parse(new FileReader(chemin));
 			JSONObject Jsonbject = (JSONObject) ob;
 
 			@SuppressWarnings("rawtypes")
@@ -84,11 +92,23 @@ public class Environnement {
 		}
 	}
 	public void vueNombre() {
+		for (int j = 0; j < colonne; j++) {
+			System.out.print(j+"-\t");			
+		}
+		System.out.println();
 		for (int i = 0; i < ligne; i++) {
 			for (int j = 0; j <colonne; j++) {
-				System.out.print(this.map.get(i*ligne+j).getId()+"\t");
+				if ((perso.caseX()==j && perso.caseY()==i) || 
+					(perso.caseX()==j && perso.caseY()+1==i)) { //le perso fait 16x32 (1 largeur 2 hauteur)
+					System.out.print("P\t");
+				}
+				else if (listActeur.get(0).caseX()==j && listActeur.get(0).caseY()==i) {
+					System.out.print("M\t");
+				}
+				else
+					System.out.print(this.map.get(i*colonne+j).getIdTuile()+"\t");
 			}
-			System.out.println();
+			System.out.println("-"+i);
 		}
 	}
 
@@ -213,4 +233,5 @@ public class Environnement {
 	public ObservableList<Projectile> getListProjectile() {
 		return listProjectile;
 	}
+
 }

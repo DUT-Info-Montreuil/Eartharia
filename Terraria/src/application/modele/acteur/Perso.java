@@ -65,7 +65,7 @@ public class Perso extends Acteur{
 	public void addInventaire(Item i) throws InventairePleinException {
 		if(inventaire.size()>=16)
 			throw new InventairePleinException();
-		if(estPresent(i))
+		if(estPasPresent(i))
 			this.inventaire.add(i);
 	}
 	public void delInventaire(Item item) {
@@ -74,7 +74,7 @@ public class Perso extends Acteur{
 	public ObservableList<Item> getInventaire() {
 		return inventaire;
 	}
-	public boolean estPresent(Item i) {
+	public boolean estPasPresent(Item i) {
 		for (Item item : inventaire) {
 			if(item.getIdItem()==i.getIdItem()) {
 				item.addQuantite(i.getQuantite());
