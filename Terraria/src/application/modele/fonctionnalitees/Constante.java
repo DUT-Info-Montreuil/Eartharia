@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import application.modele.Acteur;
 import application.modele.acteur.Perso;
+import application.modele.item.Arc;
+import application.modele.item.BatonMagique;
+import application.modele.item.Epee;
+import application.modele.item.Hache;
+import application.modele.item.Pioche;
 import application.modele.item.Projectile;
 import application.modele.monstre.BossSol;
 import application.modele.monstre.BossVolant;
@@ -135,5 +140,18 @@ public class Constante {
 		Background bg = new Background(bgimg);
 		return bg;
 
+	}
+	public static String cheminSons(Perso p) {
+		if (p.getEquipe() instanceof Epee)
+			return "src/ressources/son/bruitEpee.mp3";
+		if (p.getEquipe() instanceof BatonMagique)
+			return "src/ressources/son/bruitBDF.mp3";
+		if (p.getEquipe() instanceof Arc)
+			return "src/ressources/son/bruitFleche.mp3";
+		if (p.getEquipe() instanceof Pioche)
+			return "src/ressources/son/bruitPioche.mp3";
+		if (p.getEquipe() instanceof Hache)
+			return "src/ressources/son/bruitHache.mp3";
+		return null;
 	}
 }

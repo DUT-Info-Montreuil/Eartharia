@@ -16,11 +16,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -324,39 +328,6 @@ public class Controleur implements Initializable {
 		return bool;
 	}
 
-	//	void menu (String choice) {
-	//		BufferedImage bf = null;
-	//
-	//		try {
-	//			switch(choice){
-	//			case "start" : bf = ImageIO.read(new File ("start"));
-	//			break;
-	//			case "lose" :  bf = ImageIO.read(new File ("lose"));
-	//			break;
-	//			case "win":  bf = ImageIO.read(new File ("win"));
-	//			break;
-	//			}
-	//		}catch (Exception e) {
-	//			System.out.println("erreur menu");
-	//		}
-	//
-	//	}
-	//	void setupGame() {
-	//
-	//		//        this.env.getPerso().getHp().addListener((obs, old, nouv) -> {
-	//		//        	if(nouv.intValue() <= 0) {
-	//		//        		menu("gameover");
-	//		//        		this.gameLoop.stop();
-	//		//        	}
-	//		//        });
-	//		//        this.env.getListeActeur().getHpProperty().addListener((obs, old, nouv) -> {
-	//		//        	System.out.println("boss hp changed");
-	//		//        	if(nouv.intValue() <= 0){
-	//		//        		menu("win");
-	//		//        		this.gameLoop.stop();
-	//		//        	}
-	//		//        });
-	//	}
 	@FXML
 	void clickEnvironement(MouseEvent m) {
 		Perso perso = this.env.getPerso();
@@ -370,6 +341,16 @@ public class Controleur implements Initializable {
 				case PRIMARY :
 					if (!pause()) {
 						perso.useEquipe(yClic, xClic);
+						try {
+							String url = Constante.cheminSons(perso);
+							if (url != null) {
+								MediaPlayer bruits = new MediaPlayer(new Media(Paths.get(url).toUri().toString()));
+								bruits.setVolume(0.5);
+								bruits.play();
+							}
+						}catch (Exception e) {
+							System.out.println("Pas de son");
+						}
 					}
 					break;
 
