@@ -7,13 +7,13 @@ import application.modele.acteur.Monstre;
 public class Epee extends Arme{
 
 	public Epee(Acteur utilisateur) {
-		super(3, 100, utilisateur);
+		super(3, 5, utilisateur);
 	}
 	public Epee(Acteur acteur,int quantite) {
-		super(3, quantite, 30,acteur);
+		super(3, 5, 30,acteur);
 	}
-	protected Epee(int id, int quantite, Acteur utilisateur) {
-		super(id, quantite, utilisateur);
+	protected Epee(int id, int degat, Acteur utilisateur) {
+		super(id, degat, utilisateur);
 	}
 	protected Epee(int id, int quantite,int degat, Acteur utilisateur) {
 		super(id, quantite,degat,utilisateur);

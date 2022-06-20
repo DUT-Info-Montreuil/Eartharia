@@ -94,7 +94,6 @@ public abstract class Acteur {
 		if(surDuSol())
 			new Timer().schedule(new Saut(this), 500);
 		if(getSaut()) {
-			System.out.println("saut");
 			deplacement(0, -getVitesse()-10);
 		}
 	}

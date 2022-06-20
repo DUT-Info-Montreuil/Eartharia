@@ -6,11 +6,11 @@ import application.modele.Environnement;
 public class EpeeFlame extends Epee{
 
 	public EpeeFlame(Acteur utilisateur) {
-		super(59, 30, utilisateur);
+		super(59, 4, utilisateur);
 		// TODO Auto-generated constructor stub
 	}
 	public EpeeFlame(Acteur acteur,int quantite) {
-		super(59, quantite, 30,acteur);
+		super(59, 30, 4,acteur);
 	}
 	@Override
 	public void agit(int y, int x, Environnement env) {

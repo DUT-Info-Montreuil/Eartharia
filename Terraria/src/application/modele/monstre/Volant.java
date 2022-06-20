@@ -12,12 +12,12 @@ import application.modele.acteur.Perso;
 public class Volant  extends Monstre{
 
 	public Volant(Environnement env, int x, int y) {
-		super(env, x, y,20 , 3, 8, 16, 16,4);
+		super(env, x, y, 50, 8, 25, 16, 16,4);
 		super.setPeutTomber(false);
 		super.setSaut(true);
 	}
 	protected Volant(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox,int vision) {
-		super(env, x, y,20 , vitesse, atq, xBox, yBox,vision);
+		super(env, x, y,hp , vitesse, atq, xBox, yBox,vision);
 		super.setPeutTomber(false);
 		super.setSaut(true);
 	}

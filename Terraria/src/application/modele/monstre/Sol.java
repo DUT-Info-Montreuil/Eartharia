@@ -8,7 +8,7 @@ import application.modele.acteur.Monstre;
 
 public class Sol extends Monstre {
 	public Sol(Environnement env, int x, int y) {
-		super(env, x, y,20 , 1, 10, 16, 32,8);
+		super(env, x, y,20 , 1, 10, 32, 32,8);
 	}
 	protected Sol(Environnement env, int x, int y, int hp,int vitesse, int atq, int xBox, int yBox,int vision) {
 		super(env, x, y,20 , vitesse, atq, xBox, yBox,vision);

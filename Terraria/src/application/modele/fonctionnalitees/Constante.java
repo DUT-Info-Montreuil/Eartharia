@@ -76,6 +76,7 @@ public class Constante {
 	}
 	private static ArrayList<Integer> BlocPierre(){
 		ArrayList<Integer> listBloc = new ArrayList<>();
+		listBloc.add(27); //Pierre
 		listBloc.add(44); //Pierre
 		listBloc.add(76); //Pierre + cuivre
 		listBloc.add(78); //Pierre + fer

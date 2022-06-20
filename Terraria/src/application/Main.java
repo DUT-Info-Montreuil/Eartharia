@@ -25,8 +25,6 @@ public class Main extends Application {
 		}
 	}
 	public static void main(String[] args) {
-//		MediaPlayer media = new MediaPlayer(new Media(new File("src/ressources/MusicGeneral.wav").toURI().toString()));
-//		media.play();
 		launch(args);
 	}
 	

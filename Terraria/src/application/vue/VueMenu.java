@@ -18,13 +18,13 @@ public abstract class VueMenu {
 		set(chemin);
 		paneSet();
 	}
-	private void paneSet() {
+	public void paneSet() {
+		this.menu.setVisible(false);
 		for (int iterator = 0;iterator<=((Pane) this.menu.getParent()).getChildren().size(); iterator++) {
 			this.menu.toBack();
 		}
 	}
 	private void set(String chemin) {
-		this.menu.setVisible(false);
 		Image img = new Image(chemin);
 		BackgroundImage bImg = new BackgroundImage(img,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT);
 		Background bGround = new Background(bImg);

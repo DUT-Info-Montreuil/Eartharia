@@ -20,6 +20,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ import java.util.Timer;
 
 import javax.imageio.ImageIO;
 
+import application.modele.Acteur;
 import application.modele.Bloc;
 import application.modele.Environnement;
 import application.modele.Exception.InventairePleinException;
@@ -78,7 +80,7 @@ public class Controleur implements Initializable {
 	private VueInventaire vueInventaire;
 	private VueActeur vue_acteur;
 	private VueOxygene vueOxy;
-	
+
 	private VueInteraction vueInter;
 	private VueCraft vueCraft;
 	private boolean pause;
@@ -108,7 +110,7 @@ public class Controleur implements Initializable {
 	@FXML
 	private Pane menuPnj;
 
-	
+
 	private VueMenuJeux vueMenu;
 	private VueMenuTriche vueMenuTriche;
 	private Media music;
@@ -142,6 +144,8 @@ public class Controleur implements Initializable {
 		this.env.getListeActeur().addListener(new ObservateurActeur(paneActeur,vueInter));
 		this.env.getListProjectile().addListener(new ObservateurActeur(paneActeur,vueInter));
 		this.env.initialisation();
+		menu("start");
+		setupMenu();
 	}
 	private void gameLauncher() {
 		this.tileP.setPrefSize(env.getColonne()*16,env.getLigne()*16);
@@ -209,6 +213,10 @@ public class Controleur implements Initializable {
 				case NUMPAD5  :
 					pause=true;
 					break;
+				case ESCAPE : 
+					System.out.println("BYE");
+					((Stage) pane.getScene().getWindow()).close();
+					break ;
 					//////////////////////////Code Cheat////////////////////////////////////
 				case H  :
 					perso.addInventaire(new Hache());
@@ -271,7 +279,7 @@ public class Controleur implements Initializable {
 			else{
 				switch (k.getCode()) {
 				case SPACE:
-						vueInter.utilisation();
+					vueInter.utilisation();
 					break;
 				case C:
 					if (vueCraft.pause()) {
@@ -462,4 +470,53 @@ public class Controleur implements Initializable {
 			e.printStackTrace();
 		}
 	}	
+
+	public void menu(String str) {
+		Image start = null;
+		try {
+			switch(str){
+			case "start" : start = new Image("ressources/menuJeux.jpg");
+			
+			break;
+			case "lose" :  start = new Image("ressources/TerrariaEnd.jpg");
+			break;
+						case "win":  start =  new Image("ressources/TerrariaWin.jpg");
+						break;
+			}
+		}catch (Exception e) {
+			System.out.println("erreur menu");
+		}
+		
+		ImageView imgV = new ImageView(start);
+		pane.getChildren().add(imgV);
+		new Timer().schedule(new MenuTimer(imgV,pane), 6000);
+
+	}
+	private void setupMenu() {
+		System.out.println("setup");
+		this.env.getPerso().getHpProperty().addListener((obs, old, nouv) -> {
+			if(nouv.intValue() <= 0) {
+				menu("lose");
+				System.out.println("test menu");
+				System.out.println("BYE");
+//				((Stage) pane.getScene().getWindow()).close();
+				this.pause = true;
+			}
+		});
+		for(Acteur a : env.getListeActeur()) {
+			if(a instanceof BossSol) {
+				a.getHpProperty().addListener((obs, old, nouv) -> {
+					System.out.println("boss hp changed");
+					if(nouv.intValue() <= 0){
+						menu("win");
+						this.pause();
+					}
+				});	
+			}
+		}
+	}
+//	private void description(Item i) {
+//		Label l = new Label();
+//		l.setText("ID : "+i.getId()+"\nQuantiter : "+i.getQuantite()+i.);
+//	}
 }

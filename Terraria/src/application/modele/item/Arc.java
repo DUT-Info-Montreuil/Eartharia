@@ -6,11 +6,11 @@ import application.modele.Environnement;
 public class Arc extends ArmeDistance{
 
 	public Arc(Acteur acteur) {
-		super(9, 20,acteur);
+		super(9, 2,acteur);
 	}
 	
 	public Arc(Acteur acteur,int quantite) {
-		super(9, quantite, 20,acteur);
+		super(9, quantite, 2,acteur);
 	}
 
 	public Projectile tire(int y, int x, Environnement env) {

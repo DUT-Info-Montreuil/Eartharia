@@ -10,7 +10,7 @@ import application.modele.acteur.Perso;
 public class BossSol extends Sol {
 
 	public BossSol(Environnement env, int x, int y) {
-		super(env, x, y, 50,3, 50, 16, 32,7);
+		super(env, x, y, 150,3, 50, 16, 32,7);
 	}
 
 	@Override
